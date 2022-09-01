@@ -10,6 +10,9 @@ static void Go()
 
 
 
+
+
+
 Thread t =new Thread(Go);
 
 t.Start();
