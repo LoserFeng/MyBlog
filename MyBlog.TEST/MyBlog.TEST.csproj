@@ -7,11 +7,5 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MyBlog.TEST.Expression\MyBlog.TEST.Expression.csproj" />
-    <ProjectReference Include="..\TEST.Interface\TEST.Interface.csproj" />
-    <ProjectReference Include="..\TEST.MySql\TEST.MySql.csproj" />
-  </ItemGroup>
-
 
 </Project>
