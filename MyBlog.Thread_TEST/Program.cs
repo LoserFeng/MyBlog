@@ -325,36 +325,36 @@ namespace MyBlog.Thread_TEST
         ///立即执行。
         /// </summary>
         /// <param name="args"></param>
-        static void Main(String[] args)
-        {
-            Task<int> primeNumberTask = Task<int>.Run(
-                () =>
-                    Enumerable.Range(2, 3000000).Count(n =>
-                        Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i != 0))
+        /*        static void Main(String[] args)
+                {
+                    Task<int> primeNumberTask = Task<int>.Run(
+                        () =>
+                            Enumerable.Range(2, 3000000).Count(n =>
+                                Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i != 0))
 
 
-                );
-
-
-
-            var awaiter = primeNumberTask.GetAwaiter();
+                        );
 
 
 
-
-            awaiter.OnCompleted(() =>
-            {
-                int result = awaiter.GetResult();
-                Console.WriteLine(result);
-            });
-
-
-            Console.ReadKey();
+                    var awaiter = primeNumberTask.GetAwaiter();
 
 
 
-        }
 
+                    awaiter.OnCompleted(() =>
+                    {
+                        int result = awaiter.GetResult();
+                        Console.WriteLine(result);
+                    });
+
+
+                    Console.ReadKey();
+
+
+
+                }
+        */
 
 
 
@@ -362,6 +362,176 @@ namespace MyBlog.Thread_TEST
 
         #endregion
 
+
+
+
+
+
+        #region 异步
+        /*
+                static void Main(String[] args)
+                {
+
+
+
+
+                    DisplayPrimeCounts();
+                    Console.ReadKey();
+
+
+                }
+
+
+                static void DisplayPrimeCounts()
+                {
+                    for(int i = 0; i < 10; i++)
+                    {
+                        int temp = i;
+                        var awaiter = GetPrimesCountAsync(i * 10000 + 2, 10000).GetAwaiter();
+                        awaiter.OnCompleted(() => Console.WriteLine(awaiter.GetResult() + " primes between " + (temp * 10000) + " and " + ((temp + 1) * 10000 - 1)));
+
+
+                    }
+                    Console.WriteLine("Done");
+                }
+
+
+
+                static Task<int>GetPrimesCountAsync(int start,int count)
+                {
+
+
+
+
+                    return Task.Run(
+                    () =>
+                     ParallelEnumerable.Range(start, start + count).Count(n =>         //ParallelEnumerable会支持并行计算
+                    Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i != 0)));
+
+                }
+        */
+
+        #endregion
+
+
+
+
+        #region  async 和await _(:з」∠)_
+
+
+        /*
+                static void Main(String[]args)
+                {
+
+                    DisplayPrimesCountAsync();
+
+                    Console.WriteLine("Done");
+                    Console.ReadKey();
+
+
+                }
+
+
+
+                static async Task DisplayPrimesCountAsync()
+                {
+
+                    for(int i = 0; i < 10; i++) {
+
+                        int res = await GetPrimesCountAsync(i*10000+2, 10000);
+                        Console.Write(i+" ");
+                        Console.WriteLine(res); 
+                    }
+
+                }
+
+
+
+                static Task<int>GetPrimesCountAsync(int start,int count)
+                {
+                    return Task.Run(() => ParallelEnumerable.Range(start, count).Count(n => Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i != 0)));
+
+                }
+
+
+        */
+
+        #endregion
+
+
+
+
+        #region await zhihou
+
+
+        /*
+                static void Main(String[] args)
+                {
+
+                    DisplayPrimesCountAsync();
+
+                    Console.WriteLine("Done");
+                    Console.ReadKey();
+
+
+                }
+
+
+
+                static async Task DisplayPrimesCountAsync()
+                {
+
+                    for (int i = 0; i < 10; i++)
+                    {
+
+                        int res = await GetPrimesCountAsync(i * 10000 + 2, 10000);
+                        Console.Write(i + " ");
+                        Console.WriteLine(res);
+                    }
+
+                }
+
+
+
+                static Task<int> GetPrimesCountAsync(int start, int count)
+                {
+                    return Task.Run(() => ParallelEnumerable.Range(start, count).Count(n => Enumerable.Range(2, (int)Math.Sqrt(n) - 1).All(i => n % i != 0)));
+
+                }
+
+        */
+
+
+        #endregion
+
+
+
+
+
+        #region async demo
+
+        static async Task Main(String[] args)
+        {
+            PrintAnswerToLife();
+
+            Console.WriteLine("where");
+
+        }
+
+
+
+        static async Task<int> PrintAnswerToLife()
+        {
+            await Task.Delay(1000);
+            int answer = 21 * 2;
+            return answer;
+        }
+
+
+        #endregion
+
+
+        //说实话还是有些不懂，为啥命名同步就能解决的问题，非要拆成不同的异步的线程来同步地执行。。。。。
 
     }
 
