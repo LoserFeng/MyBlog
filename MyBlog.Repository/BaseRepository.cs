@@ -14,10 +14,6 @@ namespace MyBlog.Repository
     public class BaseRepository<TEntity> : SimpleClient<TEntity>, IBaseRepository<TEntity> where TEntity : class, new()
     {
 
-        public BaseRepository()
-        {
-
-        }
 
         public BaseRepository(ISqlSugarClient? context =null) : base(context)    //继承父类的构造函数  :base(参数）
         {
@@ -27,9 +23,10 @@ namespace MyBlog.Repository
             base.Context.DbMaintenance.CreateDatabase();
             //创建表
             base.Context.CodeFirst.SetStringDefaultLength(200).InitTables(
-                typeof(BlogNews),
                 typeof(TypeInfo),
-                typeof(WriterInfo)
+                typeof(WriterInfo),
+                typeof(BlogNews)
+
                 
                 );//
 
