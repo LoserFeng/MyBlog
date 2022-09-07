@@ -1,15 +1,14 @@
 ﻿using MyBlog.IRepository;
+using MyBlog.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.IService
+namespace MyBlog.Repository
 {
-    public interface IBaseService<TEntity>:IBaseRepository<TEntity> where TEntity:class,new() 
+    internal class TypeInfoRepository:BaseRepository<TypeInfo>,ITypeInfoRepository
     {
-
-
     }
 }

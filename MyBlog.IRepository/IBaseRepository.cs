@@ -12,8 +12,8 @@ namespace MyBlog.IRepository
     {
 
         Task<bool> CreateAsync(TEntity entity);
-        Task<bool> DeleteByIdAsync(TEntity entity); 
-        Task<bool>EditAsync(TEntity entity);
+        Task<bool> DeleteByIdAsync(int id); 
+        Task<bool>UpdateAsync(TEntity entity);
 
         Task<TEntity>FindByIdAsync(int id);
 
@@ -24,7 +24,7 @@ namespace MyBlog.IRepository
         /// <returns></returns>
         Task<IEnumerable<TEntity>> QueryAllAsync();  
 
-        Task<IEnumerable<TEntity>> FindByNameAsync(string name);
+        //Task<IEnumerable<TEntity>> FindByNameAsync(string name);
 
         /// <summary>
         /// 自定义条件查询

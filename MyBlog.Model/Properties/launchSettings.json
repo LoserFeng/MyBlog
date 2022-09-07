@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MyBlog.Model": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53462;http://localhost:53463"
+    }
+  }
+}
