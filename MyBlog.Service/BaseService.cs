@@ -13,7 +13,7 @@ namespace MyBlog.Service
     public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : class, new()
     {
 
-
+        //从子类的构造函数中传入
         protected IBaseRepository<TEntity> _iBaseRepository;
 
         public async Task<bool> CreateAsync(TEntity entity)

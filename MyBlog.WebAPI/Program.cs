@@ -28,6 +28,14 @@ builder.Services.AddSqlSugar(new IocConfig()
 
 
 
+#region IOC“¿¿µ◊¢»Î
+builder.Services.AddCustomIOC();
+
+
+#endregion
+
+
+
 
 /*var _config = new ConfigurationBuilder()
                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -62,4 +70,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
 

@@ -1,4 +1,5 @@
 ﻿using MyBlog.IRepository;
+using MyBlog.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
