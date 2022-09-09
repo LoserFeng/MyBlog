@@ -17,6 +17,7 @@ namespace MyBlog.IRepository
 
         Task<TEntity>FindByIdAsync(int id);
 
+        Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func);
 
         /// <summary>
         /// 查询全部
@@ -42,7 +43,6 @@ namespace MyBlog.IRepository
         /// <param name="total"></param>
         /// <returns></returns>
         Task<List<TEntity>> QueryAsync(int page, int size,RefAsync<int>total);
-
 
         /// <summary>
         /// 自定义条件分页查询

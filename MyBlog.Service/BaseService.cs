@@ -35,6 +35,11 @@ namespace MyBlog.Service
             return await _iBaseRepository.FindByIdAsync(id);
         }
 
+        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func)
+        {
+            return await _iBaseRepository.FindAsync(func);
+        }
+
         public async Task<IEnumerable<TEntity>> QueryAllAsync()
         {
             return await _iBaseRepository.QueryAllAsync();

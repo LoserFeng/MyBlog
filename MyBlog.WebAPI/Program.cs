@@ -37,19 +37,7 @@ builder.Services.AddCustomIOC();
 
 
 
-/*var _config = new ConfigurationBuilder()
-                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                 .Build();*/
-//引入配置文件
-/*#region 注入数据库
-builder.Services.AddScoped(options =>
-{
-return new SqlSugarClient(new List<ConnectionConfig>()
-    {
-        new ConnectionConfig() { ConnectionString = _config.GetConnectionString("SugarConnectString"), DbType = DbType.MySql, IsAutoCloseConnection = true }
-    });
-});
-#endregion*/
+
 
 
 

@@ -19,6 +19,10 @@ namespace MyBlog.Repository
         {
             
             base.Context = DbScoped.Sugar;    //base.Context 就是官方栗子的db
+
+
+            //创建过一次之后就不用重复创建了
+            /*
             //创建数据库
             base.Context.DbMaintenance.CreateDatabase();
             //创建表
@@ -28,7 +32,9 @@ namespace MyBlog.Repository
                 typeof(BlogNews)
 
                 
-                );//
+                );
+
+            */
 
         }
 
@@ -68,7 +74,7 @@ namespace MyBlog.Repository
             return await base.GetListAsync(func);
         }
 
-        public virtual async Task<List<TEntity>> QueryAsync(int page, int size, RefAsync<int> total)
+        public virtual async Task<List<TEntity>> QueryAsync(int page, int size, RefAsync<int> total)    //RefAsync<int>可以简单理解为int,这么搞一个类是为了解决ref out 不支持异步的问题
         {
             return await base.Context.Queryable<TEntity>().ToPageListAsync(page,size,total);
         }
@@ -76,6 +82,11 @@ namespace MyBlog.Repository
         public virtual async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> func, int page, int size, RefAsync<int> total)
         {
             return await base.Context.Queryable<TEntity>().Where(func).ToPageListAsync(page, size, total);
+        }
+
+        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func)
+        {
+            return await base.GetSingleAsync(func);
         }
     }
 }
