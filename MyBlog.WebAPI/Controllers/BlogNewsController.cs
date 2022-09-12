@@ -1,35 +1,50 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.IRepository;
 using MyBlog.IService;
 using MyBlog.Model;
-using MyBlog.WebAPI.Utility.ApiResult;
+using MyBlog.Model.DTO;
+using MyBlog.Utility.ApiResult;
+using SqlSugar;
 using System.Data;
+using System.Security.Claims;
 
 namespace MyBlog.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BlogNewsController : ControllerBase
     {
 
 
         private readonly IBlogNewsService _blogNewsService;
 
+
         public BlogNewsController(IBlogNewsService blogNewsService)
         {
             this._blogNewsService = blogNewsService;  
         }
         [HttpGet("BlogNews")]
-        public async Task<ActionResult<ApiResult>> GetBlogNews()
+        public async Task<ActionResult<ApiResult>> GetBlogNews([FromServices] IMapper iMapper)
         {
-            var data = await _blogNewsService.QueryAllAsync();
+            Claim? claim = this.User.FindFirst("Id");
+            int id = Convert.ToInt32(claim?.Value);
+            var data = await _blogNewsService.QueryAllAsync(c =>c.WriterId==id);
             //return Ok(data);  //code 200 404 之类的
-            if (data == null)
+            if (data.Count == 0)
             {
-                return ApiResultHelper.Error("没有更多的文章");
+                return ApiResultHelper.Success(data);
             }
-            return ApiResultHelper.Success(data);
+
+            List<BlogNewsDTO>BlogNewsDTOList=Queryable.AsQueryable(data).Select(c => iMapper.Map<BlogNewsDTO>(c)).ToList();
+
+
+
+            
+            return ApiResultHelper.Success(BlogNewsDTOList);
         }
 
 
@@ -44,6 +59,8 @@ namespace MyBlog.WebAPI.Controllers
         public async Task<ActionResult<ApiResult>> Create(string title,string content,int typeId)
         {
             //数据验证
+            Claim? claim = this.User.FindFirst("Id");
+            int id = Convert.ToInt32(claim?.Value);
 
             BlogNews blogNews = new BlogNews
             {
@@ -53,7 +70,7 @@ namespace MyBlog.WebAPI.Controllers
                 Time = DateTime.Now,
                 Title = title,
                 TypeId = typeId,
-                WriterId = 1
+                WriterId =id 
             };
 
             bool b = await _blogNewsService.CreateAsync(blogNews);    //异步的方法本身返回的是Task<bool>类型，因此需要await来等待其运行完成后返回一个bool类型
@@ -102,6 +119,30 @@ namespace MyBlog.WebAPI.Controllers
 
             if (!b) return ApiResultHelper.Error("修改失败");
             return ApiResultHelper.Success(blogNews);
+        }
+
+        [HttpGet("BlogNewsPage")]
+
+        public async Task<ApiResult> GetBlogNewsPage([FromServices]IMapper iMapper,int page,int size)
+        {
+            
+            RefAsync<int> total=0;
+            var blogNewsList=await _blogNewsService.QueryAsync(page, size, total);   //这里total的值会被传入,这个方法中total是ref的方式传入的
+            List<BlogNewsDTO> blogNewsDTO;
+            try
+            {
+                blogNewsDTO = iMapper.Map<List<BlogNewsDTO>>(blogNewsList);
+
+            }
+            catch (Exception)
+            {
+                return ApiResultHelper.Error("映射错误");
+            }
+
+            return ApiResultHelper.Success(blogNewsDTO,total);
+
+
+
         }
     }
 }

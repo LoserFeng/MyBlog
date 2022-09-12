@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -43,12 +44,12 @@ namespace MyBlog.Repository
             return await base.InsertAsync(entity);
         }
 
-        public async Task<bool> DeleteByIdAsync(int id)
+        public virtual async Task<bool> DeleteByIdAsync(int id)
         {
             return await base.DeleteByIdAsync(id);
         }
 
-        public async Task<bool> UpdateAsync(TEntity entity)
+        public override async Task<bool> UpdateAsync(TEntity entity)
         {
             return await base.UpdateAsync(entity);
         }
@@ -64,12 +65,12 @@ namespace MyBlog.Repository
             
         }*/
 
-        public virtual async Task<IEnumerable<TEntity>> QueryAllAsync()
+        public virtual async Task<List<TEntity>> QueryAllAsync()
         {
             return await GetListAsync();
         }
 
-        public virtual async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> func)
+        public virtual async Task<List<TEntity>> QueryAllAsync(Expression<Func<TEntity, bool>> func)
         {
             return await base.GetListAsync(func);
         }
@@ -84,7 +85,7 @@ namespace MyBlog.Repository
             return await base.Context.Queryable<TEntity>().Where(func).ToPageListAsync(page, size, total);
         }
 
-        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func)
+        public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func)
         {
             return await base.GetSingleAsync(func);
         }

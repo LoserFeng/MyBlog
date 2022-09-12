@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
 using MyBlog.Model;
-using MyBlog.WebAPI.Utility._MD5;
-using MyBlog.WebAPI.Utility.ApiResult;
+using MyBlog.Model.DTO;
+using MyBlog.Utility._MD5;
+using MyBlog.Utility.ApiResult;
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Tls;
 using System.Net.WebSockets;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
 
 namespace MyBlog.WebAPI.Controllers
 {
@@ -21,10 +26,12 @@ namespace MyBlog.WebAPI.Controllers
         }
 
 
+    
+
 
 
         [HttpPost("Create")]
-        public async Task<ApiResult>Create(string name,string username,string userpwd)
+        public async Task<ApiResult>Create([FromServices] IMapper iMapper,string name,string username,string userpwd)
         {
             WriterInfo writerInfo = new WriterInfo
             {
@@ -38,16 +45,18 @@ namespace MyBlog.WebAPI.Controllers
 
             bool b=await _writerInfoService.CreateAsync(writerInfo);
             if (!b) return ApiResultHelper.Error("添加失败");
-            return ApiResultHelper.Success(writerInfo);
+            var writerDTO = iMapper.Map<WriterDTO>(writerInfo);
+            return ApiResultHelper.Success(writerDTO);
 
         }
 
         [HttpGet("GetAll")]
-        public async Task<ApiResult> GetAll()
+        public async Task<ApiResult> GetAll([FromServices] IMapper iMapper)
         {
-            var AllWriterInfo = await _writerInfoService.QueryAllAsync();
-
-            return ApiResultHelper.Success(AllWriterInfo);
+            List<WriterInfo> AllWriterInfo = await _writerInfoService.QueryAllAsync();
+            List<WriterDTO> WriterDTOList;
+            WriterDTOList = AllWriterInfo.ConvertAll<WriterDTO>(w => iMapper.Map<WriterDTO>(w));
+            return ApiResultHelper.Success(WriterDTOList);
 
         }
 
@@ -63,13 +72,30 @@ namespace MyBlog.WebAPI.Controllers
 
 
         [HttpPut("Edit")]
-        public async Task<ApiResult> Edit(string name)
+        public async Task<ApiResult> Edit([FromServices] IMapper iMapper,string name)
         {
-            int id = Convert.ToInt32(this.User.FindFirst("Id").Value);  //JWT授权。。 
 
-            return ApiResultHelper.Error("还没有做完...");
+            Claim ?claim = this.User.FindFirst("Id");
+            int id = Convert.ToInt32(claim?.Value);  //JWT授权。。 
+            var writer = await _writerInfoService.FindByIdAsync(id);
+            writer.Name = name;
+            bool b= await _writerInfoService.UpdateAsync(writer);
+
+            if(!b)return ApiResultHelper.Error("修改失败");
+            var writerDTO = iMapper.Map<WriterDTO>(writer);
+            return ApiResultHelper.Success(writerDTO);
 
             
+        }
+
+
+        [HttpGet("FindById")]
+        public async Task<ApiResult> FindById([FromServices]IMapper iMapper,int id)
+        {
+            var writerInfo= await _writerInfoService.FindByIdAsync(id);
+            var writerDTO=iMapper.Map<WriterDTO>(writerInfo);
+            return ApiResultHelper.Success(writerDTO);
+
         }
 
     }

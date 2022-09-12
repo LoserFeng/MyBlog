@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace MyBlog.WebAPI.Utility._MD5
+namespace MyBlog.Utility._MD5
 {
     public class MD5Helper
     {

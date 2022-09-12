@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
-using SqlSugar;
+﻿using SqlSugar;
 
-namespace MyBlog.WebAPI.Utility.ApiResult
+namespace MyBlog.Utility.ApiResult
 {
     public class ApiResultHelper
     {

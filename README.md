@@ -218,7 +218,11 @@ namespace MyBlog.WebAPI.Utility._MD5
 
 
 
-## JWT授权
+
+
+## JWT
+
+### JWT授权
 
 1.添加一个webapi项目
 
@@ -243,7 +247,7 @@ var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 return jwtToken;
 ```
 
-## JWT鉴权
+### JWT鉴权
 
 安装Microsoft.AspNetCore.Authentication.JwtBearer
 
@@ -265,7 +269,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             });
 ```
 
-## JWT授权鉴权使用
+### JWT授权鉴权使用
 
 Swagger想要使用鉴权需要注册服务的时候添加以下代码
 
@@ -295,7 +299,17 @@ c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         });
 ```
 
-# 
+
+
+遇到的问题：
+
+[(2条消息) .Net Core 6 web api jwt 一直 401 Postman返回WWW-Authenticate Bearer没有其他提示的解决方法_シ゛甜虾的博客-CSDN博客](https://blog.csdn.net/g313105910/article/details/120883318)
+
+
+
+切记这个顺序
+
+![image-20220911204819789](E:\develop\VS_Workspace\CSharp\MyBlog\图片\image-20220911204819789.png)
 
 
 
@@ -304,6 +318,10 @@ c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 
 
 
+
+
+
+## AutoMapper
 
 
 

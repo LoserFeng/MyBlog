@@ -23,7 +23,7 @@ namespace MyBlog.IRepository
         /// 查询全部
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<TEntity>> QueryAllAsync();  
+        Task<List<TEntity>> QueryAllAsync();  
 
         //Task<IEnumerable<TEntity>> FindByNameAsync(string name);
 
@@ -33,7 +33,7 @@ namespace MyBlog.IRepository
         /// <param name="func"></param>
         /// <returns></returns>
 
-        Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> func);
+        Task<List<TEntity>> QueryAllAsync(Expression<Func<TEntity, bool>> func);
 
         /// <summary>
         /// 分页查询
@@ -53,6 +53,8 @@ namespace MyBlog.IRepository
         /// <param name="total"></param>
         /// <returns></returns>
         Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> func, int page, int size, RefAsync<int> total);
+
+
 
     }
 

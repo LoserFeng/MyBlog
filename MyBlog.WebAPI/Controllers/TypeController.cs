@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
 using MyBlog.Model;
-using MyBlog.WebAPI.Utility.ApiResult;
+using MyBlog.Utility.ApiResult;
 
 namespace MyBlog.WebAPI.Controllers
 {

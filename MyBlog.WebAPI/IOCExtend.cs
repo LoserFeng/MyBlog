@@ -1,8 +1,11 @@
-﻿using MyBlog.IRepository;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using MyBlog.IRepository;
 using MyBlog.IService;
 using MyBlog.Repository;
 using MyBlog.Service;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 
 
@@ -24,6 +27,28 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
+        public static IServiceCollection AddCustomJWT(this IServiceCollection services)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SDMC-CJAS1-SAD-DFSFA-SADHJVF-VF")),  //和JWT的密钥一样
+                    ValidateIssuer = true,
+                    ValidIssuer = "http://localhost:6060",
+                    ValidateAudience = true,
+                    ValidAudience = "http://localhost:5000",
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(60)
+                };
+            });
+            return services;
+        }
+
+
 
     }
 }

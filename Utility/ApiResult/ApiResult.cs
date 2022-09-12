@@ -1,4 +1,4 @@
-﻿namespace MyBlog.WebAPI.Utility.ApiResult
+﻿namespace MyBlog.Utility.ApiResult
 {
     public class ApiResult
     {
