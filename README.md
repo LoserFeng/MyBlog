@@ -325,9 +325,213 @@ c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 
 
 
+一个将返回给前端的数据进行映射成DAO的一个工具
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 前端
+
+* 暂且准备用vue+element-ui来做，毕竟web技术更新实在是太快了，用一些最新的可以防止被淘汰的太快，买就不买新_(:з」∠)_
+
+
+
+用到的工具
+
+* node.js一个前端的编译器似乎？
+* pnpm，这个主要是npm似乎很多功能因为天朝网络的原因用不了，所以用pnpm+淘宝的源。
+
+
+
+
+
+## 创建项目
+
+在web项目下直接创建一个名字叫wwwroot的前端项目，wwwroot是.NET core默认的前端视图的文件。
+
+~~~sh
+pnpm create vite@latest wwwroot
+~~~
+
+
+
+
+
+但是要注意编码的问题，VS是GBK，所以要改变编码为UTF-8.
+
+
+
+
+
+~~~
+pnpm dev
+~~~
+
+打开网页
+
+
+
+安装sass 也是scss
+
+~~~
+pnpm install sass
+~~~
+
+
+
+
+
+## 路由
+
+
+
+~~~
+pnpm install vue-router@4
+~~~
+
+
+
+
+
+
+
+在src/router目录下创建index.ts中加入两个方法
+
+
+
+~~~ts
+import { createRouter, createWebHistory } from 'vue-router'
+const router = createRouter({
+	history: createWebHistory(),//路由模式
+	routes: [
+		{ name: "home", path: "/", component: () => import("../views/HomePage.vue") },
+		{ name: "test", path: "/test", component: () => import("../views/TestPage.vue") }
+	]
+})
+export default router
+~~~
+
+
+
+在src/views/中创建页面
+
+
+
+
+
+在main.ts中启用router模块
+
+
+
+~~~ts
+import { createApp } from 'vue'
+import './style.css'
+import App from './App.vue'
+import router from './router/index'
+
+
+
+
+createApp(App).use(router).mount('#app')
+
+~~~
+
+
+
+
+
+
+
+![image-20220917133856602](E:\develop\VS_Workspace\CSharp\MyBlog\图片\image-20220917133856602.png)
+
+
+
+
+
+
+
+## element-plus
+
+[一个 Vue 3 UI 框架 | Element Plus (gitee.io)](https://element-plus.gitee.io/zh-CN/)
+
+* 安装
+
+~~~sh
+pnpm install element-plus
+~~~
+
+
+
+
+
+* 按需导入
+
+~~~
+pnpm install -D unplugin-vue-components unplugin-auto-import
+~~~
+
+
+
+
+
+* 配置文件tsconfig.json里面再include里面加入 "**/*.d.ts"，防止以外发生
+
+
+
+* 图标的安装
+
+~~~
+pnpm install @element-plus/icons-vue
+~~~
+
+
+
+
+
+
+
+
+
+## view模板
+
+
+
+~~~vue
+<template>
+	<div class="container">
+
+
+    
+
+    
+  	</div>
+
+</template>
+
+<script lang="ts" setup>
+
+</script>
+
+
+
+<stype lang="scss" scoped>
+	
+</stype>
+
+~~~
 
