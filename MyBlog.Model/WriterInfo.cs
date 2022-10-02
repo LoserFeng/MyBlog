@@ -1,21 +1,25 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SqlSugar;
+
 namespace MyBlog.Model
 {
     public class WriterInfo:BaseId
     {
-        [SugarColumn(ColumnDataType ="nvarchar(12)")]
-        public string Name { get; set; }
 
-        [SugarColumn(ColumnDataType ="nvarchar(16)")]
-        public string UserName { get; set; }
-        [SugarColumn(ColumnDataType ="nvarchar(64)")]
-        public string  UserPwd { get; set; }
 
+        //吐了，必须额外要加一个属性，否则不给过，会报Sequence contains no elements的错误，这个导航插入也太脑残了。。。
+        public String WriterName { get; set; }
+
+
+        [Navigate(typeof(Follow), nameof(Follow.WriterId), nameof(Follow.UserId))]
+        public List<UserInfo> Fans { get; set; }
+
+        [Navigate(NavigateType.OneToMany, nameof(BlogNews.WriterId))]
+        public List<BlogNews> Blogs { get; set; }
 
     }
 }

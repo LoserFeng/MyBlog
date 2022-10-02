@@ -23,19 +23,21 @@ namespace MyBlog.Repository
 
 
             //创建过一次之后就不用重复创建了
-            /*
+
             //创建数据库
             base.Context.DbMaintenance.CreateDatabase();
             //创建表
             base.Context.CodeFirst.SetStringDefaultLength(200).InitTables(
                 typeof(TypeInfo),
                 typeof(WriterInfo),
-                typeof(BlogNews)
-
-                
+                typeof(BlogNews),
+                typeof(UserInfo),
+                typeof(Photo),
+                typeof(Favorite),
+                typeof(Follow)
                 );
 
-            */
+
 
         }
 

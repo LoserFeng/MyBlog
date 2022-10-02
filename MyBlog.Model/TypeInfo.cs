@@ -13,5 +13,10 @@ namespace MyBlog.Model
         [SugarColumn(ColumnDataType = "nvarchar(12)")]
         public string Name { get; set; }
 
+
+        [Navigate(NavigateType.OneToMany, nameof(BlogNews.TypeId))]
+        public List<BlogNews> blogs { get; set; }
+        
+
     }
 }

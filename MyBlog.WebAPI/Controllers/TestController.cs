@@ -4,23 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyBlog.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TestController : ControllerBase
+
+    [NonController]
+    [Route("[controller]/[action]")]
+    public class TestController : Controller
     {
-        [HttpGet("NoAuthorize")]
-        public string NoAuthorize()
-        {
-
-            return "this is NoAuthorize";
-        }
-
-        [Authorize]
-        [HttpGet("Authorize")]
-        public string Authorize()
-        {
-
-            return "this is Authorize";
-        }
+     
     }
 }

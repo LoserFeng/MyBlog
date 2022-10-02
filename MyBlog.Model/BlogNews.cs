@@ -35,8 +35,10 @@ namespace MyBlog.Model
         [Navigate(NavigateType.OneToOne,nameof(WriterId))]
         public WriterInfo WriterInfo { get; set; }
 
-        
 
+        //算了，这个估计用不到，但是还是先加上好了。。。。
+        [Navigate(typeof(Favorite), nameof(Favorite.BlogId), nameof(Favorite.UserId))]
+        public List<UserInfo> Admirers { get; set; }
 
 
     }
