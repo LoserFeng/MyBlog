@@ -1,0 +1,257 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+
+    //  Layout = null;  //这样就可以不使用布局页面了
+}
+
+@model RegisterInfo
+
+
+
+<body>
+
+
+
+    @*    <div class="layui-tab">
+    <ul class="layui-tab-title">
+    <li class="layui-this">登录</li>
+    <li>注册</li>
+    </ul>
+    <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+    1. 高度默认自适应，也可以随意固宽。
+    <br>2. Tab进行了响应式处理，所以无需担心数量多少。
+    </div>
+    <div class="layui-tab-item">内容2</div>
+    </div>
+    </div>*@
+
+    <div class="layui-tab layui-tab-card">
+        <ul class="layui-tab-title layui-row">
+            <li class=" layui-col-xs6"> <b><a href="login"> 登录</a></b></li>
+            <li class="layui-this layui-col-xs6"><b><a href="register">注册 </a></b></li>
+        </ul>
+        <div class="layui-tab-content" style="height: 500px;">
+            <div class="layui-tab-item ">
+
+
+
+            </div>
+
+
+
+            <div class="layui-tab-item layui-show">
+
+
+                <form enctype="multipart/form-data" id="register_form" lay-filter="register_form" asp-controller="UserInfo" asp-action="Create" class="layui-form" method="post">
+
+                    <div asp-validation-summary="All"></div>
+                    <div class="layui-form-item">
+                        <label asp-for="Name" class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <input asp-for="Name" lay-verify="Name" type="text" lay-verify="required" lay-reqtext="昵称是必填项" placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label asp-for="UserName" class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <input asp-for="UserName" lay-verify="UserName" type="text" lay-verify="required" lay-reqtext="用户名是必填项" placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="layui-form-item">
+                        <label asp-for="UserPwd"  class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input asp-for="UserPwd" lay-verify="UserPwd" type="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+
+
+                    <div class="layui-form-item">
+                        <label asp-for="motto" class="layui-form-label">座右铭</label>
+                        <div class="layui-input-block">
+                            <input asp-for="motto" type="text" lay-verify="motto" lay-reqtext="座右铭是选填项" placeholder="请输入座右铭" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label asp-for="photo" class="layui-form-label" style=" text-overflow:initial">主页图</label>
+                        <div class="layui-input-block">
+                            <div class="custom-file">
+                                <input asp-for="photo" class="form-control custom-file-input" />
+                                <label class="custom-file-label">请选择照片....</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div>
+                        <div style="text-align:center"></div>
+                        <button type="button" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius" onClick="register()">注册</button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    @section Scripts{
+
+        <script>
+
+
+            layui.use(['form', 'layedit', 'laydate'], function () {
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate;
+
+
+
+                //创建一个编辑器
+                var editIndex = layedit.build('LAY_demo_editor');
+
+                //自定义验证规则
+                form.verify({
+
+
+                    Name: function (value) {
+                        if (value.length > 15) {
+                            return '名字至多只能15个字符啊';
+                        }
+                        if(value.length==0){
+                            return '名字不能为空！'
+                        }
+                    }
+                    ,
+
+
+                    UserName: function (value) {
+                        if (value.length >15) {
+                            return '用户名字至多只能15个字符啊';
+                        }
+                        if (value.length <5) {
+                            return '用户名字至少有5个字符';
+                        }
+                    }
+
+                    , UserPwd: [
+                        /^[\S]{6,12}$/
+                        , '密码必须6到12位，且不能出现空格'
+                    ]
+                });
+
+
+                
+                
+
+
+
+
+            });
+
+            //图形加载之后的变化
+
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    console.log($(this).val());
+                    var filename = $(this).val().split("\\").pop();
+                    $(this).next(".custom-file-label").html(filename);
+                });
+
+            });
+
+
+
+
+/*
+
+
+
+
+
+*/
+
+            function register(){
+
+                var formData=new FormData(document.getElementById('register_form'))
+
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+
+                    url:"/api/UserInfo/Create",
+                    data: formData,
+                    success: function(result){
+                        console.log(result);
+                        if(result.statusCode==200){
+                            alert("注册成功!");
+                            window.location.href="SkipPage"; 
+
+                            var userName=formData.get("UserName");
+                            var userPwd=formData.get("UserPwd");
+                            document.cookie="UserName="+userName+"; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+                            document.cookie="UserPwd="+userPwd +"; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+
+                        }else{
+
+                            alert(result.message);
+                        }
+                    },
+                    error:function(){
+                        alert("注册失败！");
+                    }
+
+                    
+                });
+                
+            }
+
+
+
+        </script>
+
+
+
+        <style>
+
+            .header {
+                font-size: 38px;
+                font-weight: bold;
+                text-align: center;
+                line-height: 200px;
+                color: #61dafb;
+            }
+
+
+            .btn_login {
+                align-items: center;
+            }
+
+        </style>
+    }
+
+
+
+    </body>

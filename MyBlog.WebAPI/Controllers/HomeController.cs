@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyBlog.IService;
+using MyBlog.Model;
+using MyBlog.Model.ViewModels.Home;
+using System.Security.Claims;
 
 namespace MyBlog.WebAPI.Controllers
 {
@@ -9,23 +15,75 @@ namespace MyBlog.WebAPI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUserInfoService _userInfoService;
 
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUserInfoService userInfoService, ILogger<HomeController> logger)
         {
+            _userInfoService = userInfoService;
             _logger = logger;
         }
 
 
         //~/表示的就是localhost:ip 和/没啥区别
+
+
+
+
+
+
         [Route("~/")]
-        [Route("/Home")]
         [Route("~/Home/Index")]
 
         public IActionResult Index()
         {
+
+
+            HomeViewModel model = new HomeViewModel()
+            {
+                motto = "Hello  World!",
+                photo=new Photo
+                {
+                    FileName = "default_homepage",
+                    FilePath = "photos/default_homepage.jpeg"
+                }
+
+
+        };
+
+              
+
+            
+
+
+
+            Console.WriteLine("一位旅客");
+            return View(model);
+
+        }
+
+
+        [Route("~/Home/Login")]
+        public IActionResult Login()
+        {
             return View();
         }
+
+
+        [Route("~/Home/Register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+
+
+        [Route("~/Home/SkipPage")]
+        public IActionResult SkipPage()
+        {
+            return View();
+        }
+
 
         /// <summary>
         /// 新增页
@@ -47,6 +105,7 @@ namespace MyBlog.WebAPI.Controllers
             return View();
         }
 
+        
 
         
     }

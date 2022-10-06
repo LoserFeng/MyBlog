@@ -2,6 +2,10 @@
 
 public class HomeViewModel
 {
-    public String usrName;
+
+    public String motto { get; set; }
+    public Photo photo { get; set; }
+
+
 
 }

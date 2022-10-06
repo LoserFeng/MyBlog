@@ -32,7 +32,7 @@ builder.Services.AddControllersWithViews().AddJsonOptions((options =>
 #endregion
 
 
-builder.Services.AddMvc();
+builder.Services.AddMvc().AddRazorRuntimeCompilation(); 
 builder.Services.AddEndpointsApiExplorer();
 
 #region swagger JWT
@@ -147,6 +147,7 @@ app.UseAuthorization();  //用于授权 使用授权
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
 
 
 

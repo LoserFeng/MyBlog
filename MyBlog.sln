@@ -37,8 +37,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB.TEST", "WEB.TEST\WEB.TE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEBAPI.TEST", "WEBAPI.TEST\WEBAPI.TEST.csproj", "{AF990FF8-6731-4CF3-987C-DD11E8323C16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.JWT", "MyBlog.JWT\MyBlog.JWT.csproj", "{EC75E170-F562-47F5-B3AA-8288CE0ABC7D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,10 +79,6 @@ Global
 		{AF990FF8-6731-4CF3-987C-DD11E8323C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF990FF8-6731-4CF3-987C-DD11E8323C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF990FF8-6731-4CF3-987C-DD11E8323C16}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC75E170-F562-47F5-B3AA-8288CE0ABC7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC75E170-F562-47F5-B3AA-8288CE0ABC7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC75E170-F562-47F5-B3AA-8288CE0ABC7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC75E170-F562-47F5-B3AA-8288CE0ABC7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

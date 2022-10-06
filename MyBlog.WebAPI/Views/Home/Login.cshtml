@@ -1,0 +1,216 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+
+    // Layout = null; //这样就可以不使用布局页面了
+}
+
+@model LoginUser
+
+
+
+<body>
+
+
+
+
+
+    <div class="layui-tab layui-tab-card">
+        <ul class="layui-tab-title layui-row">
+            <li id="login_tab" class="layui-this layui-col-xs6"> <b> <a href="Login"> 登录</a></b></li>
+            <li id="register_tab" class=" layui-col-xs6"><b><a href="Register">注册 </a></b></li>
+        </ul>
+        <div class="layui-tab-content" style="height: 500px;">
+            <div class="layui-tab-item layui-show">
+
+
+
+                <br />
+                <br />
+
+
+
+                <form enctype="multipart/form-data" id="login_form" lay-filter="login_form" class="layui-form"
+                    asp-controller="Authorize" asp-action="Login" method="post">
+                    <div class="layui-form-item">
+                        <label asp-for="Username" class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <input asp-for="Username" lay-verify="Username" type="text" lay-verify="required"
+                                lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+
+                    <div class="layui-form-item">
+                        <label asp-for="Password" class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <input asp-for="Password" lay-verify="Password" type="password" placeholder="请输入密码"
+                                autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <span>
+                        <br />
+                        <br />
+
+
+                    </span>
+                    <div>
+                        <div style="text-align:center"></div>
+                        <button type="button" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius" onclick= 'login()'   >登录</button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+
+            <div class="layui-tab-item">
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    @section Scripts{
+
+    <script>
+
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+
+            //日期
+            laydate.render({
+                elem: '#date'
+            });
+            laydate.render({
+                elem: '#date1'
+            });
+
+            var editIndex = layedit.build('LAY_demo_editor');
+
+            //自定义验证规则
+            form.verify({
+                Username: function (value) {
+                    if (value.length > 15) {
+                        return '用户名字至多只能15个字符啊';
+                    }
+                    if (value.length < 5) {
+                        return '用户名字至少有5个字符';
+                    }
+                }
+                , Password: [
+                    /^[\S]{6,12}$/
+                    , '密码必须6到12位，且不能出现空格'
+                ]
+            });
+
+        });
+
+
+
+
+
+
+
+
+
+        function login() {
+
+            var formData = new FormData(document.getElementById('login_form'));
+
+
+            $.ajax({
+                type: "POST",
+                processData: false,//这个必须有，不然会报错
+                contentType: false,//这个必须有，不然会报错
+
+                url: "/api/Authorize/Login",
+                data: formData,
+                success: function (result) {
+                    console.log(result);
+                    if (result.statusCode == 200) {
+
+
+                        
+                        var storage=window.localStorage;
+                        var token=result.data.token;
+                        alert(token.toString());
+                        var jwtToken_str="Bearer "+token.toString();
+
+                        storage.setItem("JWTtoken",JSON.stringify(jwtToken_str));
+
+
+                        var Days = 30;
+                        var exp = new Date();
+                        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+
+                        document.cookie = "is_login" + "="+ "true" + ";expires=" + exp.toGMTString()+"; path=/"; 
+                        document.cookie = "Authorization" + "="+ jwtToken_str + ";expires=" + exp.toGMTString()+"; path=/"; 
+
+
+
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg('已经成功登录！');
+                            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                            parent.layer.close(index);
+                        });
+
+                    } else {
+
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    alert("登录失败！");
+                }
+
+
+            });
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+    }
+
+    <style>
+        .header {
+            font-size: 38px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 200px;
+            color: #61dafb;
+        }
+
+
+        .btn_login {
+            align-items: center;
+
+        }
+    </style>
+    
+
+
+
+</body>

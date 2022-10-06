@@ -25,11 +25,11 @@ namespace MyBlog.WebAPI.Controllers.Api
         }
 
         [HttpPost("Login")]
-        public async Task<ApiResponse> Login(string username, string password)
+        public async Task<ApiResponse> Login([FromForm]LoginUser loginUser)
         {
             //数据校验
-            string userpwd = MD5Helper.MD5Encrypt32(password.ToString());
-            var user = await _userInfoService.FindAsync(usr => usr.UserName == username && usr.UserPwd == userpwd);
+            string userpwd = MD5Helper.MD5Encrypt32(loginUser.Password.ToString());
+            var user = await _userInfoService.FindAsync(usr => usr.UserName == loginUser.Username && usr.UserPwd == userpwd);
             LoginToken userToken;
             if (user == null)
             {

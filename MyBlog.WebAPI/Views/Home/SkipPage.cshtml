@@ -1,0 +1,132 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+
+    // Layout = null; //这样就可以不使用布局页面了
+}
+
+@model RegisterInfo
+
+
+
+<body>
+
+
+
+
+
+    <h1> 注册成功，已经自动为您登录，请等待3s。。。正在跳转回主页面</h1>
+
+
+
+
+
+
+
+
+
+
+    @section Scripts{
+
+    <script>
+
+
+
+
+
+        function getCookie(name) {
+            var str = document.cookie;
+            var arr = str.split("; ");
+            for (var i = 0; i < arr.length; i++) {
+                var arr1 = arr[i].split("=");
+                if (arr1[0] == name) {
+                    return arr1[1];
+                }
+            }
+        }
+
+
+
+
+
+
+        function login() {
+
+            @* var formData = new FormData(document.getElementById('login_form')) *@
+
+
+            var formData = new FormData(); 
+            formData.append("Username",getCookie("UserName"));
+            formData.append("Password",getCookie("UserPwd"));
+
+
+
+            $.ajax({
+                type: "POST",
+                processData: false,//这个必须有，不然会报错
+                contentType: false,//这个必须有，不然会报错
+
+                url: "/api/Authorize/Login",
+                data: formData,
+                success: function (result) {
+                    console.log(result);
+                    if (result.statusCode == 200) {
+                        setTimeout(5000);
+
+
+                        var storage=window.localStorage;
+                        var jwtToken_str="Bearer "+result.data.Token.toString();
+
+                        storage.setItem("JWTtoken",JSON.stringify(jwtToken_str));
+                        
+                        var Days = 30;
+                        var exp = new Date();
+                        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+
+                        document.cookie = "is_login" + "=" + "true" + ";expires=" + exp.toGMTString() + "; path=/";
+                        document.cookie = "Authorization" + "=" + jwtToken_str + ";expires=" + exp.toGMTString() + "; path=/";
+
+
+
+
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+                            layer.msg('已经成功登录！');
+                            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                            parent.layer.close(index);
+                        });
+
+
+
+                    } else {
+
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    alert("登录失败！");
+                }
+
+
+            });
+
+        }
+
+        document.onload = login();
+
+
+
+
+
+    </script>
+
+
+
+
+    }
+
+
+
+</body>

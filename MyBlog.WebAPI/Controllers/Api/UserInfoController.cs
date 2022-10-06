@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using MyBlog.IService;
 using MyBlog.Model;
 using MyBlog.Model.DTO;
@@ -7,6 +9,7 @@ using MyBlog.Model.ViewModels.Auth;
 using MyBlog.Model.ViewModels.Register;
 using MyBlog.Service;
 using MyBlog.Utility._MD5;
+using SqlSugar;
 using System.DirectoryServices;
 using System.Security.Claims;
 
@@ -21,10 +24,11 @@ namespace MyBlog.WebAPI.Controllers.Api
 
         private readonly IUserInfoService _userInfoService;
 
-
-        public UserInfoController(IUserInfoService userInfoService)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public UserInfoController(IUserInfoService userInfoService,IWebHostEnvironment webHostEnvironment)
         {
             _userInfoService = userInfoService;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet("GetById")]
@@ -49,6 +53,7 @@ namespace MyBlog.WebAPI.Controllers.Api
 
 
         [HttpGet("GetUserInfo")]
+        [Authorize]
         public async Task<ActionResult<ApiResponse>> GetUserInfo([FromServices] IMapper iMapper)
         {
 
@@ -95,47 +100,73 @@ namespace MyBlog.WebAPI.Controllers.Api
 
 
         [HttpPost("Create")]
-        public async Task<ApiResponse> Create([FromServices] IMapper iMapper, RegisterInfo registerInfo)
+        public async Task<ApiResponse> Create([FromServices] IMapper iMapper, [FromForm] RegisterInfo registerInfo)
         {
 
 
 
-
-            UserInfo user = new UserInfo
+            if (ModelState.IsValid)
             {
-                Name = registerInfo.Name,
-                UserName = registerInfo.UserName,
-                UserPwd = MD5Helper.MD5Encrypt32(registerInfo.UserPwd),
-                writerInfo =new WriterInfo()
+
+
+                string filePath =null;
+                if (registerInfo.photo != null)
                 {
-                    Id=0,
-                    WriterName=registerInfo.Name,
-                },
-                motto = registerInfo.motto,
-                MainPagePhoto = registerInfo.MainPagePhoto,
-                Concerns = new List<WriterInfo>(),
-                Favorites = new List<BlogNews>()
+                   
+                    string uploadFolder = Path.Combine(webHostEnvironment.ContentRootPath,"wwwroot", "photos");
+                    string uniqueFileName =Guid.NewGuid().ToString()+"_"+registerInfo.photo.FileName;
+                    filePath=Path.Combine(uploadFolder ,uniqueFileName);
+                    await registerInfo.photo.CopyToAsync(new FileStream(filePath,FileMode.Create));
 
-            };
+                }
 
 
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+                UserInfo user = new UserInfo
+                {
+                    Name = registerInfo.Name,
+                    UserName = registerInfo.UserName,
+                    UserPwd = MD5Helper.MD5Encrypt32(registerInfo.UserPwd),
+                    writerInfo =new WriterInfo()
+                    {
+                        Id=0,
+                        WriterName=registerInfo.Name,
+                    },
+                    motto = registerInfo.motto,
+                    MainPagePhoto = filePath!=null? new Photo()
+                    {
+                        FileName=registerInfo.photo.FileName,
+                        CreateTime = DateTime.Now,
+                        FilePath= filePath,
+
+                    }:null,
+                    Concerns = new List<WriterInfo>(),
+                    Favorites = new List<BlogNews>()
+
+                };
+#pragma warning restore CS8601 // 引用类型赋值可能为 null。
 
 
 
-            if (! await _userInfoService.CheckInfoAsync(user.Name,user.UserName))
-            {
-                return ApiResponse.Ok(false, message: "名字或用户名已存在");
+
+
+
+
+                if (! await _userInfoService.CheckInfoAsync(user.Name,user.UserName))
+                {
+                    return ApiResponse.BadRequest(  "名字或用户名已存在");
+                }
+
+                bool res=await _userInfoService.register(user);
+
+                if (res == true)
+                {
+                    return ApiResponse.Ok(true, message: "注册成功！");
+                }
             }
 
-            bool res=await _userInfoService.register(user);
 
-            if (res == true)
-            {
-                return ApiResponse.Ok(true, message: "注册成功");
-            }
-
-
-            return ApiResponse.Error(Response,"用户数据插入失败!");
+            return ApiResponse.BadRequest("用户数据插入失败!");
 
         }
 

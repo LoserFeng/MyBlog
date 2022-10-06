@@ -10,30 +10,28 @@
     <title>@ViewData["Title"] - MyBlog.WebAPI</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WEB.TEST.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/layui/css/layui.css">
 
 
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="css/index_style.css" rel="stylesheet" type="text/css">
-    <link href="css/animate.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/index_style.css" rel="stylesheet" type="text/css">
+    <link href="~/css/animate.min.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
     <header>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div>
+        <main role="main" >
             @RenderBody()
+
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+@*    <footer class="border-top footer text-muted">
+        <div class="container-fluid">
             &copy; 2022 - MyBlog.WebAPI - <a asp-area="" asp-page="/Privacy">MyBlog</a>
         </div>
-    </footer>
-
+    </footer>*@
 
 
 
@@ -44,9 +42,10 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
 
-    <script src="js/wow.min.js"></script>
-    <script src="js/index.js"></script>
-    <script src="layui/layui.js"></script>
+    <script src="~/layui/layui.js"></script>
+    <script src="~/js/wow.min.js"></script>
+
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
