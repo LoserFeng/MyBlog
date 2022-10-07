@@ -9,7 +9,6 @@ using System.Security.Claims;
 namespace MyBlog.WebAPI.Controllers
 {
 
-
     //Route只是一个防火墙 
     [Route("[controller]/[action]")]
     public class HomeController : Controller

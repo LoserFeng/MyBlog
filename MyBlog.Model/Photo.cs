@@ -21,6 +21,7 @@ public class Photo:BaseId {
 
 
 
+    public string Url { get; set; }
     public string FilePath { get; set; }
 
     /// <summary>

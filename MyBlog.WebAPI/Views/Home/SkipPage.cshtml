@@ -76,11 +76,13 @@
                         setTimeout(5000);
 
 
-                        var storage=window.localStorage;
-                        var jwtToken_str="Bearer "+result.data.Token.toString();
+                        var storage = window.localStorage;
+                        var token = result.data.token;
+                        alert(token.toString());
+                        var jwtToken_str = "Bearer " + token.toString();
 
-                        storage.setItem("JWTtoken",JSON.stringify(jwtToken_str));
-                        
+                        storage.setItem("JWTtoken", jwtToken_str);
+
                         var Days = 30;
                         var exp = new Date();
                         exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
@@ -96,6 +98,7 @@
                             layer.msg('已经成功登录！');
                             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                             parent.layer.close(index);
+                            parent.location.href="Index"
                         });
 
 

@@ -41,9 +41,9 @@
 
                 
 
-                @if(Model==null){
-                <li class="layui-nav-item layui-hide layui-show-md-inline-block" style="margin-right:40px ;">
 
+                <li id="login_register" class="layui-nav-item layui-hide layui-show-md-inline-block" style="margin-right:40px;display:none">
+                    
                     <div >
                         
                         <div type="button" onclick="login_register_click()">
@@ -52,23 +52,20 @@
                     </div>
                 </li>
 
-                }
 
-                else{
 
-                    <li class="layui-nav-item" lay-unselect="">
-                            <a href="javascript:;">
-                                <img src="" tppabs="http://t.cn/RCzsdCq" class="layui-nav-img">
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd><a href="javascript:;">子级菜单</a></dd>
-                                <dd><a href="javascript:;">横线隔断</a></dd>
-                                <hr>
-                                <dd style="text-align: center;"><a href="">退出</a></dd>
-                            </dl>
-                    </li>
+                <li id="usermodule" class="layui-nav-item"  lay-unselect="" style="display:none;">
+                        <a href="javascript:;">
+                            <img id="head_img" src="" tppabs="http://t.cn/RCzsdCq" class="layui-nav-img">
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">子级菜单</a></dd>
+                            <dd><a href="javascript:;">横线隔断</a></dd>
+                            <hr>
+                            <dd style="text-align: center;" onclick="exit_login()"><a href="">退出</a></dd>
+                        </dl>
+                </li>
 
-                }
 
 
 
@@ -88,12 +85,12 @@
     <div id="main_body">
 
         <div style="padding: 20px;">顶上填充的东西，千万别露馅了，你看不到_(:з」∠)_</div>
-        <div class="main_page" >
+        <div id="main_page" class="main_page" >
             
 
             @* <img title="default" src="photos/default_homepage.jpeg" /> *@
 
-            <h1 class="motto_class"> @Model?.motto</h1>
+            <h1 id="motto" class="motto_class"> </h1>
 
 
 
@@ -106,7 +103,7 @@
             <br>
             <br>
 
-            <button type="button" onclick="window.location.href='Home/MainPage'" class="layui-btn layui-btn-lg layui-btn-radius">进入博客</button>
+            <button type="button" onclick="window.location.href='Blog/BlogPage'" class="layui-btn layui-btn-lg layui-btn-radius">进入博客</button>
 
         
             
@@ -174,20 +171,59 @@
 
 
 
-        document.onload=function(){
-            var is_login = getCookie("is_login");
-            if(is_login!="true"){
-                $.ajax({
-                    url: "/Home/Index",
-                    type: 'GET',
-                    success: function (res) {
-                        $('#router').html($(res));
-                    }
-                
+        document.ready = function () {
 
-                })
+            var is_login = getCookie("is_login");
+
+            if (is_login == "true") {
+
+
+                $.ajax({
+                    url: "/api/UserInfo/GetUserInfo",
+                    type: 'GET',
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    success: function (res) {
+                        $('body').append("<style>.main_page:after{background:none}</style>");
+                        var url_txt = res.data.mainPagePhoto.url;
+
+                        var url = url_txt.toString();
+                        $('body').append("<style>.main_page:after{background:" + "url(" + url + ") no-repeat;background-size: cover;content: '';position: absolute;top: 0;left: 0;right:0;z-index: -1;opacity: 0.5;" + "}</style>");
+
+                        $("#motto").text(res.data.motto);
+                        $("#login_register").remove();
+                        $("#usermodule").css("display", "inline-block");
+
+                        $("#head_img").attr("src", url);
+                    },
+                    error: function (res) {
+                        alert("获取用户数据失败！");
+                    }
+
+
+
+
+                });
+            } else {
+                $("#motto").text("@Model?.motto");
+
+                $("#login_register").css("display", "inline-block");
+
             }
         }
+
+
+
+        function exit_login(){
+            document.cookie = "is_login" + "=" + "false" +"; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+            localStorage.remove("JWTtoken");
+            window.location.href='Home/Index';
+            
+            
+        }
+
+
 
 
 

@@ -73,6 +73,7 @@ namespace MyBlog.WebAPI.Controllers.Api
                 return ApiResponse.Error(Response, "没有找到相关的用户数据");
 
             }
+            Console.WriteLine(data.MainPagePhoto.FilePath.ToString());
 
 
 
@@ -110,14 +111,19 @@ namespace MyBlog.WebAPI.Controllers.Api
 
 
                 string filePath =null;
+                string url = null;
                 if (registerInfo.photo != null)
                 {
                    
                     string uploadFolder = Path.Combine(webHostEnvironment.ContentRootPath,"wwwroot", "photos");
+
+
+
                     string uniqueFileName =Guid.NewGuid().ToString()+"_"+registerInfo.photo.FileName;
                     filePath=Path.Combine(uploadFolder ,uniqueFileName);
                     await registerInfo.photo.CopyToAsync(new FileStream(filePath,FileMode.Create));
-
+                    url = "/photos"+"/"+ uniqueFileName;
+                    
                 }
 
 
@@ -135,6 +141,7 @@ namespace MyBlog.WebAPI.Controllers.Api
                     motto = registerInfo.motto,
                     MainPagePhoto = filePath!=null? new Photo()
                     {
+                        Url=url,
                         FileName=registerInfo.photo.FileName,
                         CreateTime = DateTime.Now,
                         FilePath= filePath,
