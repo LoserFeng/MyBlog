@@ -28,7 +28,7 @@ namespace MyBlog.Repository
             base.Context.DbMaintenance.CreateDatabase();
             //创建表
             base.Context.CodeFirst.SetStringDefaultLength(200).InitTables(
-                typeof(TypeInfo),
+                typeof(TagInfo),
                 typeof(WriterInfo),
                 typeof(BlogNews),
                 typeof(UserInfo),

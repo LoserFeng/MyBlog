@@ -44,7 +44,7 @@ namespace MyBlog.WebAPI.Controllers
                 photo=new Photo
                 {
                     FileName = "default_homepage",
-                    FilePath = "photos/default_homepage.jpeg"
+                    FilePath = "/photos/default_homepage.jpeg"
                 }
 
 

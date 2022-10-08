@@ -27,7 +27,7 @@ namespace MyBlog.WebAPI.Controllers.Api
             if (string.IsNullOrWhiteSpace(name)) return ApiResponse.Error(Response,"类型名不能为空");
 
 
-            var typeInfo = new TypeInfo
+            var typeInfo = new TagInfo
             {
                 Name = name
             };

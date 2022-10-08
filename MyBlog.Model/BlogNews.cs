@@ -19,6 +19,11 @@ namespace MyBlog.Model
         public int LikeCount { get; set; }
 
 
+        public string Introduction { get; set; }
+
+
+
+
         public int TypeId { get; set; }
         public int WriterId { get; set; }
 
@@ -29,7 +34,7 @@ namespace MyBlog.Model
         /// 导航查询，不映射到数据库
         /// </summary>
         [Navigate(NavigateType.OneToOne,nameof(TypeId))]
-        public TypeInfo TypeInfo { get; set; }
+        public TagInfo TypeInfo { get; set; }
 
 
         [Navigate(NavigateType.OneToOne,nameof(WriterId))]

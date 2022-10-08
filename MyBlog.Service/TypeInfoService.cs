@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Service
 {
-    public class TypeInfoService:BaseService<TypeInfo>,ITypeInfoService
+    public class TypeInfoService:BaseService<TagInfo>,ITypeInfoService
     {
 
         private readonly ITypeInfoRepository _iTypeInfoRepository;   //readonly的值只能在构造方法内修改，但是不能在别的地方进行修改

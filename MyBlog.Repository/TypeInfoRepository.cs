@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Repository
 {
-    public class TypeInfoRepository:BaseRepository<TypeInfo>,ITypeInfoRepository
+    public class TypeInfoRepository:BaseRepository<TagInfo>,ITypeInfoRepository
     {
     }
 }

@@ -18,7 +18,7 @@ namespace Utility._AutoMapper
             base.CreateMap<WriterInfo, WriterDTO>();
             base.CreateMap<BlogNews, BlogNewsDTO>();
            /* base.CreateMap<BlogNews, BlogNewsDTO>().ForMember( dst=>dst.WriterName,src=>src.MapFrom(Src2=>Src2->WriterInfo.Name);*/
-            base.CreateMap<TypeInfo, TypeInfoDTO>();
+            base.CreateMap<TagInfo, TypeInfoDTO>();
 
         }
     }

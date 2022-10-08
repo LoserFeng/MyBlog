@@ -1,14 +1,17 @@
-﻿using MyBlog.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.IService
+namespace Utility.MarkDown
 {
-    public interface ITypeInfoService:IBaseService<TagInfo>
+    public class MDProcessor
     {
+
+
         
+
+
     }
 }
