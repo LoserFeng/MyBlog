@@ -80,7 +80,7 @@
 
                 <ul class="layui-nav layui-layout-right">
 
-                    <li id="login_register" class="layui-nav-item layui-hide layui-show-md-inline-block" style="margin-right:40px;">
+                    <li id="login_register" class="layui-nav-item layui-hide layui-show-md-inline-block" style="margin-right:50px;">
 
                         <div>
 
@@ -99,11 +99,20 @@
                         <dl class="layui-nav-child">
                             <dd><a href="javascript:;">子级菜单</a></dd>
                             <dd><a href="javascript:;">横线隔断</a></dd>
-                            <hr>
+                           @* <hr>*@
                             <dd style="text-align: center;" onclick="exit_login()"><a href="">退出</a></dd>
                         </dl>
                     </li>
 
+
+
+                    <li id="publish_module" class="layui-nav-item" style="display:none;margin-left:40px">
+                        <div>
+
+                            <button id="creation_btn" type="button" onclick="window.location.href='/Blog/Creation'" class="layui-btn layui-btn-radius layui-btn-danger" style="font-size:16px">发布</button>
+                        </div>
+
+                    </li>
 
 
 
@@ -240,7 +249,7 @@
                         var url = url_txt.toString();
                         $("#login_register").remove();
                         $("#usermodule").css("display", "inline-block");
-
+                        $("#publish_module").css("display","inline-block");
                         $("#head_img").attr("src", url);
 
                         $("#logo").text(res.data.name + " のBlog");

@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Model
 {
-    internal class FeaturedBlog
+    public class Comment:BaseId
     {
+
+
+
+        public string Conent;
+
+
+        public int SupportCount;
+
+
     }
 }

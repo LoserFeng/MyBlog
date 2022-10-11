@@ -20,8 +20,8 @@ namespace MyBlog.WebAPI.Extensions
 
             services.AddScoped<IBlogNewsRepository, BlogNewsRepository>();
             services.AddScoped<IBlogNewsService, BlogNewsService>();
-            services.AddScoped<ITypeInfoRepository, TypeInfoRepository>();
-            services.AddScoped<ITypeInfoService, TypeInfoService>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagService, TagService>();
             services.AddScoped<IWriterInfoRepository, WriterInfoRepository>();
             services.AddScoped<IWriterInfoService, WriterInfoService>();
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.IRepository
 {
-    public interface ITypeInfoRepository:IBaseRepository<TagInfo>
+    public interface ITagRepository:IBaseRepository<TagInfo>
     {
     }
 }

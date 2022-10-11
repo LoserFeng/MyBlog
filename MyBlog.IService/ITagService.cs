@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.IService
 {
-    public interface ITypeInfoService:IBaseService<TagInfo>
+    public interface ITagService:IBaseService<TagInfo>
     {
         
     }

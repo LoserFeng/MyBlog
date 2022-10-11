@@ -22,7 +22,7 @@ namespace MyBlog.Repository
                 .Include(c=>c.MainPagePhoto)
                 .Include(c => c.Favorites)
                 .Include(c => c.Concerns)
-                .Include(c => c.writerInfo)
+                .Include(c => c.WriterInfo)
                 .ExecuteCommandAsync();
 
         }
@@ -34,7 +34,7 @@ namespace MyBlog.Repository
 
 
             var list = await base.Context.Queryable<UserInfo>()
-                                .Includes(c => c.writerInfo)
+                                .Includes(c => c.WriterInfo)
                                 .Includes(c => c.Concerns)
                                 .Includes(c => c.Favorites)
                                 .Includes(c => c.MainPagePhoto)

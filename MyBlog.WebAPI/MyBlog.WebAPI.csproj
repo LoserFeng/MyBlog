@@ -14,7 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Blog\Creation.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="Views\Blog\Creation.cshtml" />
     <None Include="wwwroot\font\barbarahand-webfont.svg" />
     <None Include="wwwroot\font\barbarahand-webfont.woff2" />
     <None Include="wwwroot\font\lg.svg" />
@@ -27,6 +32,9 @@
     <None Include="wwwroot\layui\font\iconfont.svg" />
     <None Include="wwwroot\layui\font\iconfont.woff2" />
     <None Include="wwwroot\layui\layui.js" />
+    <None Include="wwwroot\lib\ayq\modules\labelGeneration\labelGeneration.js" />
+    <None Include="wwwroot\lib\ayq\modules\Sortable\Sortable.js" />
+    <None Include="wwwroot\lib\ayq\modules\Sortable\Sortable.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +58,14 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\photos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Blog\Creation.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Blog\Creation.cshtml" />
   </ItemGroup>
 
 </Project>

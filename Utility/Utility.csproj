@@ -21,4 +21,8 @@
     <ProjectReference Include="..\MyBlog.Model\MyBlog.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

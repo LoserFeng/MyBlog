@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Model
 {
-    internal class TopBlog
+    public class TopBlog
     {
     }
 }

@@ -26,5 +26,14 @@ namespace MyBlog.WebAPI.Controllers
 
             return View();
         }
+
+
+
+        [Route("~/Blog/Creation")]
+        public IActionResult Creation()
+        {
+
+            return View();
+        }
     }
 }

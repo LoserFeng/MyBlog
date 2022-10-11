@@ -133,12 +133,12 @@ namespace MyBlog.WebAPI.Controllers.Api
                     Name = registerInfo.Name,
                     UserName = registerInfo.UserName,
                     UserPwd = MD5Helper.MD5Encrypt32(registerInfo.UserPwd),
-                    writerInfo =new WriterInfo()
+                    WriterInfo =new WriterInfo()
                     {
                         Id=0,
                         WriterName=registerInfo.Name,
                     },
-                    motto = registerInfo.motto,
+                    Motto = registerInfo.motto,
                     MainPagePhoto = filePath!=null? new Photo()
                     {
                         Url=url,

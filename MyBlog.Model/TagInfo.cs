@@ -14,8 +14,8 @@ namespace MyBlog.Model
         public string Name { get; set; }
 
 
-        [Navigate(NavigateType.OneToMany, nameof(BlogNews.TypeId))]
-        public List<BlogNews> blogs { get; set; }
+        [Navigate(typeof(Classify), nameof(Classify.TagId), nameof(Classify.BlogId))]
+        public List<BlogNews> Blogs { get; set; }
         
 
     }

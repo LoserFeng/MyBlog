@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace MyBlog.Repository
     public class BlogNewsRepository:BaseRepository<BlogNews>,IBlogNewsRepository
     {
 
-        public async override Task<List<BlogNews>> QueryAllAsync()
+/*        public async override Task<List<BlogNews>> QueryAllAsync()
         {
             return await base.Context.Queryable<BlogNews>()
                 .Mapper(c => c.TypeInfo, c => c.TypeId, c => c.TypeInfo.Id)
@@ -31,7 +32,7 @@ namespace MyBlog.Repository
                 .Mapper(c => c.TypeInfo, c => c.TypeId, c => c.TypeInfo.Id)
                 .Mapper(c => c.WriterInfo, c => c.WriterId, c => c.WriterInfo.Id)
                 .ToListAsync();
-        }
+        }*/
 
         public async override Task<List<BlogNews>> QueryAsync(int page, int size, RefAsync<int> total)
         {
@@ -55,5 +56,59 @@ namespace MyBlog.Repository
                 .ToPageListAsync(page, size, total);
 
         }
+
+
+
+
+        public new async Task<bool> CreateAsync(BlogNews blogNews)
+        {
+
+            List<BlogNews> list = new List<BlogNews>() { blogNews };
+            return await base.Context.InsertNav(list)
+                .Include(c => c.CoverPhoto)
+                .Include(c => c.Tags)
+                .Include(c => c.Admirers)
+                .ExecuteCommandAsync();
+        }
+
+
+
+        public async Task<BlogNews?> QueryAsyncById(int id)
+        {
+
+            var list = await base.Context.Queryable<BlogNews>()
+                                .Includes(c => c.WriterInfo)
+                                .Includes(c => c.Tags)
+                                .Includes(c => c.CoverPhoto)
+                                .Includes(c => c.Admirers)
+                                .Where(c => c.Id == id).ToListAsync();
+
+
+
+            return list.FirstOrDefault();
+        }
+
+
+
+
+
+        public override async Task<List<BlogNews>> QueryAllAsync()
+        {
+
+            var list = await base.Context.Queryable<BlogNews>()
+                                .Includes(c => c.WriterInfo)
+                                .Includes(c => c.Tags)
+                                .Includes(c => c.CoverPhoto)
+                                .Includes(c => c.Admirers)
+                                .ToListAsync();
+
+
+
+            return list;
+        }
+
+
+
+
     }
 }

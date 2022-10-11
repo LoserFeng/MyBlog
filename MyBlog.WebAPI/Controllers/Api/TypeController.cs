@@ -13,11 +13,11 @@ namespace MyBlog.WebAPI.Controllers.Api
     {
 
 
-        private readonly ITypeInfoService _typeInfoService;
+        private readonly ITagService _tagService;
 
-        public TypeController(ITypeInfoService typeInfoService)
+        public TypeController(ITagService tagService)
         {
-            _typeInfoService = typeInfoService;
+            _tagService =tagService;
 
         }
 
@@ -31,7 +31,7 @@ namespace MyBlog.WebAPI.Controllers.Api
             {
                 Name = name
             };
-            bool b = await _typeInfoService.CreateAsync(typeInfo);
+            bool b = await _tagService.CreateAsync(typeInfo);
             if (!b) return ApiResponse.Error(Response,"添加失败:" + b);
             return ApiResponse.Ok(typeInfo);
 
@@ -41,7 +41,7 @@ namespace MyBlog.WebAPI.Controllers.Api
         [HttpGet("AllTypes")]
         public async Task<IApiResponse> GetAllTypes()
         {
-            var types = await _typeInfoService.QueryAllAsync();
+            var types = await _tagService.QueryAllAsync();
             //if (types.Count() == 0) return ApiResultHelper.Error("查询不到任何类型数据");  //这里我不想要返回500错误，我认为空集合也可以
             return ApiResponse.Ok(types);
 
@@ -53,7 +53,7 @@ namespace MyBlog.WebAPI.Controllers.Api
         public async Task<ApiResponse> DeleteType(int id)
         {
 
-            bool b = await _typeInfoService.DeleteByIdAsync(id);
+            bool b = await _tagService.DeleteByIdAsync(id);
 
             if (!b) return ApiResponse.Error(Response,"没有找到该文章类型");
             return ApiResponse.Ok(b);
@@ -65,12 +65,12 @@ namespace MyBlog.WebAPI.Controllers.Api
         public async Task<ApiResponse> EditType(int id, string name)
         {
 
-            var type = await _typeInfoService.FindByIdAsync(id);
+            var type = await _tagService.FindByIdAsync(id);
 
             if (type == null) return ApiResponse.Error(Response,"没有找到该文章类型");
 
             type.Name = name;
-            bool b = await _typeInfoService.UpdateAsync(type);
+            bool b = await _tagService.UpdateAsync(type);
             if (!b) return ApiResponse.Error(Response,"修改失败");
 
             return ApiResponse.Ok(type);

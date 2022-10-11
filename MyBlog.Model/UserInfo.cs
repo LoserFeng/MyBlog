@@ -21,7 +21,7 @@ namespace MyBlog.Model
         public int WriterId { get; set; }
 
         [Navigate(NavigateType.OneToOne, nameof(WriterId))]
-        public WriterInfo  writerInfo{ get; set; }
+        public WriterInfo  WriterInfo{ get; set; }
 
         [Navigate(typeof(Follow), nameof(Follow.UserId), nameof(Follow.WriterId))]
         public List<WriterInfo> Concerns { get; set; }
@@ -34,7 +34,7 @@ namespace MyBlog.Model
 
         //接下来是一些和自己主页主题相关的东西
 
-        public String motto { get; set; }
+        public String Motto { get; set; }
 
 
         public int MainPagePhoto_id { get; set; }
