@@ -12,6 +12,7 @@ using MyBlog.Model.DTO;
 using MyBlog.Model.ViewModels.Blog;
 using MyBlog.Model.ViewModels.Register;
 using MyBlog.Service;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Tls;
 using SqlSugar;
 using System.Data;
@@ -62,8 +63,24 @@ namespace MyBlog.WebAPI.Controllers.Api
 
             String Blog_GUID=Guid.NewGuid().ToString();
 
+            var tags = JsonConvert.DeserializeObject<List<String>>(creationInfo.Tags_JSON);
+            if (tags == null)
+            {
+                Console.WriteLine("tags为空");
+            }
+            //创建tag对象
+            var Tags = new List<TagInfo>();
+
+            foreach(var tag in tags)
+            {
+                Tags.Add(new TagInfo
+                {
+                    Name = tag
+                });
+            }
 
 
+            
 
 
 
@@ -116,7 +133,8 @@ namespace MyBlog.WebAPI.Controllers.Api
                     FilePath = CoverPhoto_filePath
                 },
                 WriterId = userInfo!.WriterId,
-                Admirers = new List<UserInfo>()
+                Admirers = new List<UserInfo>(),
+                Tags=Tags
             };
 
 

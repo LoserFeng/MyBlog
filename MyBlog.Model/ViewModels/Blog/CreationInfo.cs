@@ -51,7 +51,7 @@ namespace MyBlog.Model.ViewModels.Blog
 
 
         [Display(Name="标签")]
-        public List<String> Tags { get; set; }
+        public string Tags_JSON { get; set; }
 
     }
 }

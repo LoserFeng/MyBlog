@@ -308,7 +308,7 @@
                     return;
                 } 
                 var formData = new FormData(document.getElementById('blog_create_form'));
-                formData.append("Tags",JSON.stringify(tags_arr))
+                formData.append("Tags_JSON",JSON.stringify(tags_arr))
                 $.ajax({
                     type: "POST",
                     processData: false,//这个必须有，不然会报错
