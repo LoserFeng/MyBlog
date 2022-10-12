@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MyBlog.IService
 {
-    public interface IBlogNewsService:IBaseService<BlogNews>
+    public interface IBlogNewsService : IBaseService<BlogNews>
     {
+        Task<List<BlogNews>> QueryByTagAsync(int TagId);
     }
 }

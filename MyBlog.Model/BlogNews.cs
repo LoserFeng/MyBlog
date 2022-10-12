@@ -27,7 +27,7 @@ namespace MyBlog.Model
 
         [SugarColumn(ColumnDataType ="text")]
         public String ?Content { get; set; }
-        public DateTime? Time { get; set; }
+        public DateTime Time { get; set; }
         public int BrowseCount { get; set; }
         public int LikeCount { get; set; }
 

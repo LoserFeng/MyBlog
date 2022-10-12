@@ -45,7 +45,6 @@ namespace MyBlog.Repository
 
         }
         public async override Task<List<BlogNews>> QueryAsync(Expression<Func<BlogNews, bool>> func, int page, int size, RefAsync<int> total)
-
         {
 
             /* return await base.QueryAsync(page, size, total);*/
@@ -62,6 +61,8 @@ namespace MyBlog.Repository
 
         public new async Task<bool> CreateAsync(BlogNews blogNews)
         {
+
+
 
             List<BlogNews> list = new List<BlogNews>() { blogNews };
             return await base.Context.InsertNav(list)
@@ -101,6 +102,24 @@ namespace MyBlog.Repository
                                 .Includes(c => c.CoverPhoto)
                                 .Includes(c => c.Admirers)
                                 .ToListAsync();
+
+
+
+            return list;
+        }
+
+
+
+
+        public async Task<List<BlogNews>> QueryByTagAsync(int TagId)
+        {
+            var list = await base.Context.Queryable<BlogNews>()
+                    .Includes(c => c.WriterInfo)
+                    .Includes(c => c.Tags)
+                    .Includes(c => c.CoverPhoto)
+                    .Includes(c => c.Admirers)
+                    .Where(c=>c.Tags.Any(tag=>tag.Id==TagId))
+                    .ToListAsync();
 
 
 

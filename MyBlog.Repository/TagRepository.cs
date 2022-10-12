@@ -8,7 +8,16 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Repository
 {
-    public class TagRepository:BaseRepository<TagInfo>,ITagRepository
+    public class TagRepository : BaseRepository<TagInfo>, ITagRepository
     {
+        public async Task<TagInfo?> FindByNameAsync(string name)
+        {
+
+            var list = await base.Context.Queryable<TagInfo>()
+                    .Where(c => c.Name == name).ToListAsync();
+
+
+            return list.FirstOrDefault();
+        }
     }
 }

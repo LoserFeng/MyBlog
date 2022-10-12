@@ -9,5 +9,7 @@ namespace MyBlog.IRepository
 {
     public interface ITagRepository:IBaseRepository<TagInfo>
     {
+
+        Task<TagInfo?> FindByNameAsync(string name);
     }
 }

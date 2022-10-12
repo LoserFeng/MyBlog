@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MyBlog.IRepository
 {
-    public interface IBlogNewsRepository:IBaseRepository<BlogNews>
+    public interface IBlogNewsRepository : IBaseRepository<BlogNews>
     {
+        Task<List<BlogNews>> QueryByTagAsync(int TagId);
     }
 }

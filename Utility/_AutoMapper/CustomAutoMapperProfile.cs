@@ -8,6 +8,7 @@ using AutoMapper;
 using AutoMapper.Execution;
 using MyBlog.Model;
 using MyBlog.Model.DTO;
+using MyBlog.Model.ViewModels.Blog;
 
 namespace Utility._AutoMapper
 {
