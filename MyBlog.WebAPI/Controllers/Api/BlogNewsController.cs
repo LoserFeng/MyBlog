@@ -17,6 +17,7 @@ using Org.BouncyCastle.Crypto.Tls;
 using SqlSugar;
 using System.Data;
 using System.Security.Claims;
+using Utility._AutoMapper;
 using Utility.MarkDown;
 namespace MyBlog.WebAPI.Controllers.Api
 {
@@ -31,13 +32,17 @@ namespace MyBlog.WebAPI.Controllers.Api
         private readonly IUserInfoService _userInfoService;
 
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ITagService _tagService;
 
+        private readonly ViewModelMapper _viewModelMapper;
 
-        public BlogNewsController(IBlogNewsService blogNewsService,IUserInfoService userInfoService, IWebHostEnvironment webHostEnvironment)
+        public BlogNewsController(IBlogNewsService blogNewsService,IUserInfoService userInfoService, IWebHostEnvironment webHostEnvironment,ITagService tagService)
         {
             _blogNewsService = blogNewsService;
             _userInfoService = userInfoService;
+            _tagService=tagService;
             this.webHostEnvironment = webHostEnvironment;
+            _viewModelMapper = new ViewModelMapper();
         }
 
 
@@ -297,28 +302,9 @@ namespace MyBlog.WebAPI.Controllers.Api
 
 
 
-        /*  [HttpGet("BlogNews")]
-          public async Task<ActionResult<ApiResult>> GetBlogNews([FromServices] IMapper iMapper)
-          {
-              Claim? claim = User.FindFirst("Id");
-              int id = Convert.ToInt32(claim?.Value);
-              var data = await _blogNewsService.QueryAllAsync(c => c.WriterId == id);
-              //return Ok(data);  //code 200 404 之类的
-              if (data.Count == 0)
-              {
-                  return ApiResultHelper.Success(data);
-              }
-
-              List<BlogNewsDTO> BlogNewsDTOList = data.AsQueryable().Select(c => iMapper.Map<BlogNewsDTO>(c)).ToList();
 
 
-
-
-              return ApiResultHelper.Success(BlogNewsDTOList);
-          }
-
-
-
+        /*
 
           [HttpDelete("Delete")]
           public async Task<ActionResult<ApiResult>> Delete(int id)

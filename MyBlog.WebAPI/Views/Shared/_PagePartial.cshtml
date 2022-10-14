@@ -1,0 +1,87 @@
+    
+@model PageModel
+@{
+
+
+    int allpage = Model.PageTotal;//这里的mode是使用此局部页的页面传来的值
+    int nowpage = Model.CurrentPage;
+    int previous = nowpage - 1;
+    if (previous <= 0) previous = 1;
+    int next = nowpage + 1;
+    int showCount = 4; // 只显示5个数字分页链接
+    bool isShowFirstLast = (allpage > 10);//只有总数大于10页，才显示首页末页
+
+    bool isShowPrevious = (nowpage > (showCount / 2 + 1));
+    bool isShowNext = (nowpage < (allpage - showCount / 2));
+    //以下设置for循环的头尾位置。
+    int beginNum = nowpage - showCount / 2;
+    if (beginNum <= 0) beginNum = 1;
+    int endNum = nowpage + showCount / 2;
+    if (endNum >= allpage) endNum = allpage;
+    String SearchString = Model.SearchString;
+    int TagId = Model.TagId;
+    String PathName = "/Blog/BlogPage?" + "SearchString=" + SearchString + "&" + "TagId=" + TagId.ToString() + "&" + "Page=";
+
+
+
+    }
+
+
+
+
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <nav aria-label="Page navigation example">
+    <ul class="pagination  justify-content-center">
+            @if (isShowFirstLast)
+            {
+                <li class="page-item">
+                <a class="page-link link-dark" href="@(PathName+"1")">首页</a>
+                </li>
+            }
+
+
+            @if(isShowPrevious){
+                <li class="page-item">
+                <a class="page-link link-dark" href="@(PathName+previous)" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+            }else{
+                <li class="page-item disabled">
+                <a class="page-link link-dark" href="@(PathName+previous)" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+            }
+            @for (int i = beginNum; i <= endNum; i++)
+            {
+                <li class="page-item @(i==nowpage?"active":"")">
+                    <a class="page-link link-dark" href="@(PathName+i)">@i</a>
+                </li>
+            }
+            @if(isShowNext){
+                <li class="page-item">
+                <a class="page-link link-dark" href="@(PathName+next)" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+
+            }else{
+            <li class="page-item disabled">
+                <a class="page-link link-dark" href="@(PathName+next)" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                </a>
+            </li>
+            }
+            @if (isShowFirstLast)
+            {
+                <li class="page-item">
+                <a class="page-link link-dark" href="@(PathName+allpage)">末页</a>
+                </li>
+            }
+        </ul>
+    </nav>
+
+

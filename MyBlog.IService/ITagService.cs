@@ -1,4 +1,5 @@
 ﻿using MyBlog.Model;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.IService
 {
-    public interface ITagService:IBaseService<TagInfo>
+    public interface ITagService : IBaseService<TagInfo>
     {
         
     }

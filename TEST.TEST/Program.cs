@@ -1,4 +1,5 @@
 ﻿using MyBlog.Model;
+using System.Text.RegularExpressions;
 
 namespace TEST.TEST
 {
@@ -7,41 +8,21 @@ namespace TEST.TEST
         static void Main(string[] args)
         {
 
+            //"^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$"。
+            String s = "http://123.234.435.345/asd/asd/a=1&b=2";
+            /* String regular= @"^(http://)([\w-]+\.)+[\w-]+(/[\w-./%?=&]*)?$";*/
+            String regular = @"^(http://)([\w-]+\.)+[\w-]+(/[\w-./%?=&]*)?$";
 
-            DateTime date = new DateTime();
+            var res =getString(s, regular);
+            Console.WriteLine(res);
+        }
 
 
-            int Length = 3;
-            int[] arr = new int[5] {1,2,3,4,5};
-
-            Console.WriteLine("Hello, World!");
-            Console.WriteLine(Guid.NewGuid());
-            int TagId = 0;
-
-            TagInfo tagInfo = new TagInfo();
-            List<TagInfo> tags = new List<TagInfo>()
-            {
-                new TagInfo
-                {
-                    Name="Hello",
-                    Id=1
-                },
-                new TagInfo {
-
-                    Name="Where",
-                    Id=2
-                }
-
-            };
-            if (tags.Exists(tag => tag.Id == 1))
-            {
-                Console.WriteLine("true");
-            }
-            else
-            {
-                Console.WriteLine("false");
-
-            }
+        public static string getString(string str,string regular)
+        {
+            var res = Regex.Match(str, regular);
+            
+            return res.Groups[3].ToString();
         }
     }
 

@@ -13,12 +13,5 @@ namespace MyBlog.Model.ViewModels.Blog
 
         public List<TagInfo> Tags { get; set; }
 
-
-        public int Page;
-        public int Total;
-        public int PageSize;
-        public int PageCount;
-
-
     }
 }

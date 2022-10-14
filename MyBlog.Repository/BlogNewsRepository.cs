@@ -4,6 +4,7 @@ using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.DirectoryServices;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -126,8 +127,54 @@ namespace MyBlog.Repository
             return list;
         }
 
+        public async Task<List<BlogNews>> QueryByNameAsync(string SearchString)
+        {
+            var list = await base.Context.Queryable<BlogNews>()
+                .Includes(c => c.WriterInfo)
+                .Includes(c => c.Tags)
+                .Includes(c => c.CoverPhoto)
+                .Includes(c => c.Admirers)
+                .Where(c=>c.Title.Contains(SearchString))
+                .ToListAsync();
+
+            return list;
+        }
+
+        public async Task<List<BlogNews>> QueryByTagAsync(int TagId, int CurrentPage, int PageSize, RefAsync<int> total)
+        {
 
 
+
+
+            var list = await base.Context.Queryable<BlogNews>()
+                .Includes(c => c.WriterInfo)
+                .Includes(c => c.Tags)
+                .Includes(c => c.CoverPhoto)
+                .Includes(c => c.Admirers)
+                .Where(c => c.Tags.Any(tag => tag.Id == TagId))
+                .ToPageListAsync(CurrentPage,PageSize,total);
+
+
+
+            return list;
+        }
+
+
+
+        public async Task<List<BlogNews>> QueryByNameAsync(string SearchString, int CurrentPage, int PageSize, RefAsync<int> total)
+        {
+
+            var list = await base.Context.Queryable<BlogNews>()
+                .Includes(c => c.WriterInfo)
+                .Includes(c => c.Tags)
+                .Includes(c => c.CoverPhoto)
+                .Includes(c => c.Admirers)
+                .Where(c => c.Title.Contains(SearchString))
+                .ToPageListAsync(CurrentPage, PageSize, total);
+
+            return list;
+
+        }
 
     }
 }

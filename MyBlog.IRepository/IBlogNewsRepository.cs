@@ -1,4 +1,5 @@
 ﻿using MyBlog.Model;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,11 @@ namespace MyBlog.IRepository
 {
     public interface IBlogNewsRepository : IBaseRepository<BlogNews>
     {
+        Task<List<BlogNews>> QueryByNameAsync(string SearchString);
         Task<List<BlogNews>> QueryByTagAsync(int TagId);
+        Task<List<BlogNews>> QueryByNameAsync(string SearchString,int CurrentPage,int PageSize,RefAsync<int>total);
+        Task<List<BlogNews>> QueryByTagAsync(int TagId,int CurrentPage,int PageSize,RefAsync<int>total);
+
+
     }
 }

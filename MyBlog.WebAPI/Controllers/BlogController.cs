@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
 using MyBlog.Model;
 using MyBlog.Model.ViewModels.Blog;
+using SqlSugar;
 using Utility._AutoMapper;
 namespace MyBlog.WebAPI.Controllers
 {
@@ -31,46 +33,63 @@ namespace MyBlog.WebAPI.Controllers
         //规定一页只能放10篇文章
         [Route("~/Blog")]
         [Route("~/Blog/BlogPage")]
-        [Route("~/Blog/BlogPage/TagId={TagId}&Page={Page}")]
-        [Route("~/Blog/BlogPage/Page={Page}")]
+/*        [Route("~/Blog/BlogPage/Page={Page}&TagId={TagId}&SearchString={SearchString}")]
+        [Route("~/Blog/BlogPage/Page={Page}&SearchString={SearchString}")]
+        [Route("~/Blog/BlogPage/Page={Page}&&TagId={TagId}")]
+        [Route("~/Blog/BlogPage/TagId={TagId}&&SearchString={SearchString}")]
         [Route("~/Blog/BlogPage/TagId={TagId}")]
-        public async Task<IActionResult> BlogPageAsync(int TagId=0,int Page=1)
+        [Route("~/Blog/BlogPage/SearchString={SearchString}")]
+*/
+
+        public async Task<IActionResult> BlogPage(int Page=1,int TagId=0,string SearchString=null)
         {
 
 
-            List<BlogNews>blogNewsList = null;
-            if (TagId == 0)
+            Console.WriteLine(SearchString);
+            RefAsync<int> total=0;
+            List<BlogNews> blogNewsList = null;
+            if (TagId == 0 && SearchString == null)
             {
                 //不对Tag类别进行筛选
                 blogNewsList = await _blogNewsService.QueryAllAsync();
 
 
             }
-            else
+            else if (TagId != 0)
             {
-                blogNewsList = await _blogNewsService.QueryByTagAsync(TagId);
-
+                blogNewsList = await _blogNewsService.QueryByTagAsync(TagId,Page,PageSize,total);
             }
+            else if (SearchString != "")
+            {
+                blogNewsList = await _blogNewsService.QueryByNameAsync(SearchString,Page,PageSize,total);
+            }
+
             var tags = await _tagService.QueryAllAsync();
 
 
 
 
 
-            var Blog_Views=new List<BlogViewModel>();
-            foreach(var blog in blogNewsList)
+            var Blog_Views = new List<BlogViewModel>();
+            foreach (var blog in blogNewsList)
             {
                 Blog_Views.Add(_viewModelMapper.GetBlogViewModel(blog));
 
 
             }
 
-            BlogListViewModel model = new BlogListViewModel
+            String url = Request.GetDisplayUrl();
+            Console.WriteLine(url);
+
+            BlogPageModel model = new BlogPageModel
             {
                 Blogs = Blog_Views,
                 CurrentTag = await _tagService.FindByIdAsync(TagId),
-                Tags = tags
-
+                Tags = tags,
+                CurrentPage = Page,
+                SearchString = SearchString,
+                TagId=TagId,
+                TotalPage = blogNewsList.Count == 0 ? 0 : (blogNewsList.Count() - 1) / PageSize + 1
             };
 
 

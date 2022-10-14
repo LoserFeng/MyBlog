@@ -1,7 +1,7 @@
 ﻿using MyBlog.IRepository;
 using MyBlog.IService;
 using MyBlog.Model;
-
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,15 +59,19 @@ namespace MyBlog.Service
 
         }
 
+        public async Task<List<BlogNews>> QueryByNameAsync(string search)
+        {
+            return await _iBlogNewsRepository.QueryByNameAsync(search);
+        }
 
+        public async Task<List<BlogNews>> QueryByNameAsync(string SearchString, int CurrentPage, int PageSize, RefAsync<int> total)
+        {
+            return await _iBlogNewsRepository.QueryByNameAsync(SearchString, CurrentPage, PageSize, total);
+        }
 
-
-
-
-
-
-
-
-
+        public async Task<List<BlogNews>> QueryByTagAsync(int TagId, int CurrentPage, int PageSize, RefAsync<int> total)
+        {
+            return await _iBlogNewsRepository.QueryByTagAsync(TagId, CurrentPage, PageSize, total); 
+        }
     }
 }
