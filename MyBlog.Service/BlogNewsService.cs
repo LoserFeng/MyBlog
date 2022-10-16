@@ -73,5 +73,17 @@ namespace MyBlog.Service
         {
             return await _iBlogNewsRepository.QueryByTagAsync(TagId, CurrentPage, PageSize, total); 
         }
+
+        public async Task<BlogNews> QueryByGUIDAsync(string GUID)
+        {
+            return await _iBlogNewsRepository.QueryByGUIDAsync(GUID);
+        }
+
+        public async Task<List<BlogNews>> QueryTopByBrowseCountAsync()
+        {
+
+
+            return await _iBlogNewsRepository.QueryTopByBrowseCountAsync();
+        }
     }
 }

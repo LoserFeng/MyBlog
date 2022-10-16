@@ -49,7 +49,7 @@ namespace Utility.MarkDown
                 return String.Empty;
             }
 
-            var document = Markdown.Parse(_blog.Content);
+            var document = Markdig.Markdown.Parse(_blog.Content);
 
             foreach (var node in document.AsEnumerable())
             {
@@ -79,7 +79,7 @@ namespace Utility.MarkDown
                     }
 
                     // 替换图片链接
-                    linkInline.Url = imgFileName;    //这里是不是有问题？
+                    linkInline.Url = "/blogs/"+_blog.GUID+"/assets/"+imgFileName;    //这里是不是有问题？
 
                     // 复制图片
                     File.Copy(imgPath, destPath);
@@ -103,7 +103,7 @@ namespace Utility.MarkDown
             {
                 return String.Empty;
             }
-            String content = Markdown.ToPlainText(_blog.Content);
+            String content = Markdig.Markdown.ToPlainText(_blog.Content);
             if (content.Length <= length)
             {
                 return content;

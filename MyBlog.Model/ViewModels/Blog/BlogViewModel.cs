@@ -22,5 +22,10 @@ namespace MyBlog.Model.ViewModels.Blog
         public List<TagInfo> Tags { get; set; }
 
         public Photo CoverPhoto { get; set; }
+
+        public WriterInfo WriterInfo { get; set; }
+
+
+        public List<Comment> Comments { get; set; }
     }
 }

@@ -20,8 +20,11 @@ public class Photo:BaseId {
     public string FileName { get; set; }
 
 
-
+    [SugarColumn(ColumnDataType = "ntext")]
     public string Url { get; set; }
+
+
+    [SugarColumn(ColumnDataType = "ntext")]
     public string FilePath { get; set; }
 
     /// <summary>

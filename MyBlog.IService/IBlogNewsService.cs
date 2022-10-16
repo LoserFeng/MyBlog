@@ -16,5 +16,7 @@ namespace MyBlog.IService
 
         Task<List<BlogNews>> QueryByNameAsync(string SearchString, int CurrentPage, int PageSize, RefAsync<int> total);
         Task<List<BlogNews>> QueryByTagAsync(int TagId, int CurrentPage, int PageSize, RefAsync<int> total);
+        Task<BlogNews> QueryByGUIDAsync(String GUID);
+        Task<List<BlogNews>> QueryTopByBrowseCountAsync();
     }
 }

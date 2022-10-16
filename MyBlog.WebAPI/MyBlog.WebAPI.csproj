@@ -31,10 +31,51 @@
     <None Include="wwwroot\js\yss\gloable.js" />
     <None Include="wwwroot\layui\font\iconfont.svg" />
     <None Include="wwwroot\layui\font\iconfont.woff2" />
+    <None Include="wwwroot\layui\icon\font\iconfont.svg" />
+    <None Include="wwwroot\layui\icon\font\iconfont.woff2" />
     <None Include="wwwroot\layui\layui.js" />
     <None Include="wwwroot\lib\ayq\modules\labelGeneration\labelGeneration.js" />
     <None Include="wwwroot\lib\ayq\modules\Sortable\Sortable.js" />
     <None Include="wwwroot\lib\ayq\modules\Sortable\Sortable.min.js" />
+    <None Include="wwwroot\lib\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\lib\font-awesome\less\brands.less" />
+    <None Include="wwwroot\lib\font-awesome\less\fontawesome.less" />
+    <None Include="wwwroot\lib\font-awesome\less\regular.less" />
+    <None Include="wwwroot\lib\font-awesome\less\solid.less" />
+    <None Include="wwwroot\lib\font-awesome\less\v4-shims.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_animated.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_bordered-pulled.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_core.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_fixed-width.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_icons.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_list.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_mixins.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_rotated-flipped.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_screen-reader.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_shims.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_sizing.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_stacked.less" />
+    <None Include="wwwroot\lib\font-awesome\less\_variables.less" />
+    <None Include="wwwroot\lib\font-awesome\scss\brands.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\fontawesome.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\regular.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\solid.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\v4-shims.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_animated.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_bordered-pulled.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_core.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_fixed-width.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_functions.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_icons.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_list.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_mixins.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_rotated-flipped.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_screen-reader.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_shims.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_sizing.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_stacked.scss" />
+    <None Include="wwwroot\lib\font-awesome\scss\_variables.scss" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,6 +98,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Error\" />
+    <Folder Include="wwwroot\blogs\" />
     <Folder Include="wwwroot\photos\" />
   </ItemGroup>
 

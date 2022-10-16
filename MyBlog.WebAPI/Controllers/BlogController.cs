@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using MyBlog.IService;
 using MyBlog.Model;
 using MyBlog.Model.ViewModels.Blog;
+using MyBlog.Model.ViewModels.Error;
 using SqlSugar;
 using Utility._AutoMapper;
 namespace MyBlog.WebAPI.Controllers
@@ -18,6 +20,7 @@ namespace MyBlog.WebAPI.Controllers
         private readonly IBlogNewsService _blogNewsService;
         private readonly ITagService _tagService;
         private readonly ViewModelMapper _viewModelMapper;
+
         
         private readonly static int PageSize = 8;
 
@@ -33,13 +36,7 @@ namespace MyBlog.WebAPI.Controllers
         //规定一页只能放10篇文章
         [Route("~/Blog")]
         [Route("~/Blog/BlogPage")]
-/*        [Route("~/Blog/BlogPage/Page={Page}&TagId={TagId}&SearchString={SearchString}")]
-        [Route("~/Blog/BlogPage/Page={Page}&SearchString={SearchString}")]
-        [Route("~/Blog/BlogPage/Page={Page}&&TagId={TagId}")]
-        [Route("~/Blog/BlogPage/TagId={TagId}&&SearchString={SearchString}")]
-        [Route("~/Blog/BlogPage/TagId={TagId}")]
-        [Route("~/Blog/BlogPage/SearchString={SearchString}")]
-*/
+
 
         public async Task<IActionResult> BlogPage(int Page=1,int TagId=0,string SearchString=null)
         {
@@ -66,7 +63,7 @@ namespace MyBlog.WebAPI.Controllers
 
             var tags = await _tagService.QueryAllAsync();
 
-
+            var topList=await _blogNewsService.QueryTopByBrowseCountAsync();
 
 
 
@@ -88,8 +85,9 @@ namespace MyBlog.WebAPI.Controllers
                 Tags = tags,
                 CurrentPage = Page,
                 SearchString = SearchString,
-                TagId=TagId,
-                TotalPage = blogNewsList.Count == 0 ? 0 : (blogNewsList.Count() - 1) / PageSize + 1
+                TagId = TagId,
+                TotalPage = blogNewsList.Count == 0 ? 0 : (blogNewsList.Count() - 1) / PageSize + 1,
+                TopList = topList
             };
 
 
@@ -105,6 +103,37 @@ namespace MyBlog.WebAPI.Controllers
         {
 
             return View();
+        }
+
+
+
+
+        [Route("~/Blog/Details")]
+        public async Task<IActionResult> Details(string GUID="11-9")
+        {
+            var blog=await _blogNewsService.QueryByGUIDAsync(GUID);
+
+            if(blog == null)
+            {
+                BlogNotFound Error_model = new BlogNotFound
+                {
+                    GUID = GUID
+                };
+                return View("BlogNotFound",Error_model);
+            }
+            blog.BrowseCount = blog.BrowseCount + 1;
+
+           bool res= await _blogNewsService.UpdateAsync(blog);
+            if (res == false)
+            {
+                Console.WriteLine("更新失败");
+            }
+
+            BlogViewModel model = _viewModelMapper.GetBlogViewModel(blog);
+
+
+
+            return View(model);
         }
 
 

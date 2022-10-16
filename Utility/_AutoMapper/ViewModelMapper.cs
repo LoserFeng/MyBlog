@@ -1,4 +1,6 @@
-﻿using MyBlog.Model;
+﻿using Markdig;
+using Markdown.ColorCode;
+using MyBlog.Model;
 using MyBlog.Model.ViewModels.Blog;
 using System;
 using System.Collections.Generic;
@@ -13,13 +15,18 @@ namespace Utility._AutoMapper
 
         public BlogViewModel GetBlogViewModel(BlogNews blogNews)
         {
+            var pipeline = new MarkdownPipelineBuilder()
+            .UseAdvancedExtensions()
+            .UseColorCode()
+            .Build();
+
 
             return new BlogViewModel
             {
                 Id = blogNews.Id,
                 Title = blogNews.Title,
                 Content = blogNews.Content,
-                ContentHtml = Markdig.Markdown.ToHtml(blogNews.Content),
+                ContentHtml = Markdig.Markdown.ToHtml(blogNews.Content, pipeline),
                 CoverPhoto = blogNews.CoverPhoto,
                 CreationTime = blogNews.Time,
                 GUID = blogNews.GUID,
@@ -27,7 +34,10 @@ namespace Utility._AutoMapper
                 Path = blogNews.Path,
                 Summary = blogNews.Summary,
                 Tags = blogNews.Tags,
-                Url = "/" + Path.Combine("Blog", "Details", blogNews.GUID)
+                WriterInfo = blogNews.WriterInfo,
+                Url = "/" + Path.Combine("Blog", "Details", blogNews.GUID),
+                Comments = blogNews.Comments
+                
             };
 
         }

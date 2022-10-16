@@ -23,6 +23,12 @@
     <link rel="stylesheet" href="~/css/gloable.css" />
     <link rel="stylesheet" href="~/css/nprogress.css" />
     <link rel="stylesheet" href="~/css/blog.css" />
+    <link rel="stylesheet" href="~/css/message.css" />
+
+
+
+
+
 
 
 </head>
@@ -41,7 +47,7 @@
                     <li id="li_main_page" class="layui-nav-item" style="margin-left:80px">
                         <div>
 
-                            <div type="button" onclick="login_register_click()" style="font-size:20px">
+                            <div type="button" onclick="window.location.href='/Home/Index'" style="font-size:20px">
                                 首页
                             </div>
                         </div>
@@ -50,7 +56,7 @@
                     <li id="li_blog" class="layui-nav-item " style="margin-left:50px">
                         <div>
 
-                            <div type="button" onclick="login_register_click()" style="font-size:20px">
+                            <div type="button" onclick="window.location.href='/Blog/BlogPage'" style="font-size:20px">
                                 博客
                             </div>
                         </div>
@@ -58,7 +64,7 @@
                     <li id="li_society" class="layui-nav-item  "  style="margin-left:50px">
                         <div>
 
-                            <div type="button" onclick="login_register_click()" style="font-size:20px">
+                            <div type="button" onclick="window.location.href='/Society/Message'" style="font-size:20px">
                                 社区
                             </div>
                         </div>
@@ -66,7 +72,7 @@
                     <li id="li_me" class="layui-nav-item " style="margin-left:50px">
                         <div>
 
-                            <div type="button" onclick="login_register_click()" style="font-size:20px">
+                            <div type="button" onclick="window.location.href='/Me/Index'" style="font-size:20px">
                                 我
                             </div>
                         </div>
@@ -161,7 +167,18 @@
     <script src="~/js/yss/gloable.js"></script>
     <script src="~/js/plugins/nprogress.js"></script>
     <script src="~/js/yss/article.js"></script>
+    <script src="~/js/pagecomment.js"></script>
+    <script src="~/js/pagemessage.js"></script>
+
+
+
+
+
     <script>NProgress.start();</script>
+
+
+
+
 
     <script>
         window.onload = function () {

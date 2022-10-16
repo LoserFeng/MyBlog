@@ -31,6 +31,10 @@ namespace MyBlog.WebAPI.Extensions
             services.AddScoped<IUserInfoRepository, UserInfoRepository>();
             services.AddScoped<IUserInfoService, UserInfoService>();
 
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICommentService, CommentService>();
+
+
 
             return services;
         }

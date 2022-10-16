@@ -176,5 +176,33 @@ namespace MyBlog.Repository
 
         }
 
+        public async Task<BlogNews> QueryByGUIDAsync(String GUID)
+        {
+            var list = await base.Context.Queryable<BlogNews>()
+                    .Includes(c => c.WriterInfo)
+                    .Includes(c => c.Tags)
+                    .Includes(c => c.CoverPhoto)
+                    .Includes(c => c.Admirers)
+                    .Includes(c=>c.Comments,c=>c.UserInfo,c=>c.MainPagePhoto)
+                    .Includes(c=>c.Comments,c=>c.Comments,c=>c.UserInfo,c=>c.MainPagePhoto)
+
+                    .Where(c=>c.GUID==GUID).ToListAsync();
+
+
+
+            return list.FirstOrDefault();
+        }
+
+        public async Task<List<BlogNews>> QueryTopByBrowseCountAsync()
+        {
+
+            var list = await base.Context.Queryable<BlogNews>()
+                .Includes(c => c.WriterInfo)
+                .OrderBy(c=>c.BrowseCount,OrderByType.Desc)
+                .Take(10)
+                .ToListAsync();
+
+            return list;
+        }
     }
 }

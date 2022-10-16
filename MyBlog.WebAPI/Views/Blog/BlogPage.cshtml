@@ -1,5 +1,12 @@
 ﻿
 @model BlogPageModel
+
+
+
+
+@{
+	int tag_idx = 1;
+}
 <body>
 
 	<div class="doc-container" id="doc-container">
@@ -7,12 +14,21 @@
 			<div class="col-content">
 				<div class="inner">
 					<article class="article-list bloglist" id="LAY_bloglist">
+						@if(Model.Blogs.Count==0){
+							<section class=" zoomIn tip" >
+								<div>
+									没有找到任何关于'@(Model.SearchString)'的博客
+								</div>
+							</section>
+						}
+
+
  						@foreach (var Blog in Model.Blogs){
 							<section class="article-item zoomIn article">
 								<div class="fc-flag">@* 这里用于表示是否置顶的信息 *@ </div>
 								<h5 class="title">
 									<span class="fc-blue">【原创】</span>
-									<a href="/Blog/Details/@Blog.Id">@Blog.Title</a>
+									<a href="/Blog/Details?GUID=@Blog.GUID">@Blog.Title</a>
 								</h5>
 								<div class="time">
 									<span class="day">@Blog.CreationTime.Day</span>
@@ -20,7 +36,7 @@
 									<span class="year fs-18 ml10">@Blog.CreationTime.Year</span>
 								</div>
 								<div class="content">
-									<a href="read.html" class="cover img-light">
+									<a href="/Blog/Details?GUID=@Blog.GUID" class="cover img-light">
 										<img src="@Blog.CoverPhoto.Url">
 									</a>
 									@Blog.Summary
@@ -30,7 +46,7 @@
 								</div>
 								<aside class="f-oh footer">
 									<div class="f-fl tags">
-										<span class="fa fa-tags fs-16"></span>
+										<span class="fa fa-tags fs-16">标签：</span>
 										@foreach (var Tag in Blog.Tags)
 										{
 											<a class="tag">@Tag.Name</a>
@@ -38,11 +54,11 @@
 									</div>
 									<div class="f-fr">
 										<span class="read">
-											<i class="fa fa-eye fs-16"></i>
+											<i class="fa fa-eye fs-16">浏览人数</i>
 											<i class="num">@Blog.BrowseCount</i>
 										</span>
 										<span class="ml20">
-											<i class="fa fa-comments fs-16"></i>
+											<i class="fa fa-comments fs-16">评论数</i>
 											<a href="javascript:void(0)" class="num fc-grey">@*评论数*@0</a>
 										</span>
 									</div>
@@ -53,302 +69,6 @@
 						}
 
 
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
-						<section class="article-item zoomIn article">
-							<div class="fc-flag">置顶</div>
-							<h5 class="title">
-								<span class="fc-blue">【原创】</span>
-								<a href="read.html">Java学习路线推荐</a>
-							</h5>
-							<div class="time">
-								<span class="day">1</span>
-								<span class="month fs-18">7<span class="fs-14">月</span></span>
-								<span class="year fs-18 ml10">2020</span>
-							</div>
-							<div class="content">
-								<a href="read.html" class="cover img-light">
-									<img src="http://www.lzqcode.com/images/java.jpg">
-								</a>
-								这篇文章是为了介绍自己自学用过的Java视频资料。本套整合教程总共180+G，共450+小时。考虑到绝大部分视频至少要看两遍，而且视频总时长并不代表学习时长，所以零基础初学者总学习时间大约为：600小时视频时长 + 100小时理解 + 100小时练习，至少需要800小时。你可能觉得自己能一天学习8小时，实际上平均下来每天能学4小时都算厉害了。总会有各种原因，比如当天内容太难，公司聚会，要出差等等。如果周末你也是坚持学习，那么最理想状况下，6个半月就可以学完，达到工作后能被人带的水平。但我知道那其实基本不可能。
-							</div>
-							<div class="read-more">
-								<a href="read.html" class="fc-black f-fwb">继续阅读</a>
-							</div>
-							<aside class="f-oh footer">
-								<div class="f-fl tags">
-									<span class="fa fa-tags fs-16"></span>
-									<a class="tag">java路线</a>
-								</div>
-								<div class="f-fr">
-									<span class="read">
-										<i class="fa fa-eye fs-16"></i>
-										<i class="num">213</i>
-									</span>
-									<span class="ml20">
-										<i class="fa fa-comments fs-16"></i>
-										<a href="javascript:void(0)" class="num fc-grey">1</a>
-									</span>
-								</div>
-							</aside>
-						</section>
 					</article>
 				</div>
 			</div>
@@ -358,25 +78,30 @@
 						<div class="search">
 							<label class="search-wrap">
 								<input type="text" id="searchtxt" placeholder="输入关键字搜索" />
-								<span class="search-icon">
-									<i class="fa fa-search"></i>
+								<span class="search-icon" style="margin-right:20px">
+									<button type="button" onclick="search()" class="layui-btn layui-btn-sm layui-btn-radius">搜索</button>
 								</span>
 							</label>
 							<ul class="search-result"></ul>
 						</div>
 						<ul class="category mt20" id="category">
 							<li data-index="0" class="slider"></li>
-							<li data-index="1"><a href="/Blog/Article">全部文章</a></li>
-							<li data-index="2"><a href="/Blog/Article/1/">Java</a></li>
-							<li data-index="3"><a href="/Blog/Article/2/">前端</a></li>
-							<li data-index="4"><a href="/Blog/Article/3/">Python</a></li>
-							<li data-index="5"><a href="/Blog/Article/4/">PHP</a></li>
-							<li data-index="6"><a href="/Blog/Article/5/">其它</a></li>
+							<li data-index="@(tag_idx++)"><a href="/Blog/BlogPage">全部文章</a></li>
+							@foreach (var tag in Model.Tags)
+							{
+								
+								@if(Model.TagId==tag.Id){
+									<li data-index="@(tag_idx++)"><a href="/Blog/BlogPage?TagId=@(tag.Id)" class="current">@(tag.Name)</a></li>
+								}else{
+									<li data-index="@(tag_idx++)"><a href="/Blog/BlogPage?TagId=@(tag.Id)">@(tag.Name)</a></li>
+								}
+							}
 						</ul>
 					</div>
 					<!--右边悬浮 平板或手机设备显示-->
 					<div class="category-toggle"><i class="layui-icon">&#xe603;</i></div>
 					<div class="article-category">
+
 						<div class="article-category-title">分类导航</div>
 						<a href="/Blog/Article/1/">Java</a>
 						<a href="/Blog/Article/2/">前端</a>
@@ -391,18 +116,15 @@
 						<h5 class="other-item-title">热门文章</h5>
 						<div class="inner">
 							<ul class="hot-list-article">
-								<li> <a href="/Blog/Read/9">SpringBoot 入门爬虫项目实战</a></li>
-								<li> <a href="/Blog/Read/12">SpringBoot 2.x 教你快速入门</a></li>
-								<li> <a href="/Blog/Read/13">java学习路线</a></li>
-								<li> <a href="/Blog/Read/4">基于SpringBoot+JWT+Redis跨域单点登录的实现</a></li>
-								<li> <a href="/Blog/Read/7">SpringBoot 中如何使用SwaggerAPI接口文档？</a></li>
-								<li> <a href="/Blog/Read/11">小白轻松入门Redis</a></li>
-								<li> <a href="/Blog/Read/14">微信一键登录功能的实现</a></li>
-								<li> <a href="/Blog/Read/8">NPOI导入导出Excel</a></li>
+								@foreach(var blog in Model.TopList){
+									<li> <a href="/Blog/Details/@blog.GUID">@blog.Title</a></li>
+
+								}
+
 							</ul>
 						</div>
 					</div>
-					<div class="other-item">
+@*					<div class="other-item">
 						<h5 class="other-item-title">置顶推荐</h5>
 						<div class="inner">
 							<ul class="hot-list-article">
@@ -430,7 +152,7 @@
 								<dd><a href="javasript:;"><img src="https://thirdqq.qlogo.cn/qqapp/101465933/28B021E0F5AF0A4B9B781A24329FE897/100"><cite>如初</cite></a></dd>
 							</dl>
 						</div>
-					</div>
+					</div>*@
 				</div>
 			</div>
 		</div>
@@ -468,12 +190,16 @@
 	</footer>
  @section Scripts{
 
-
+	 
 
 
 //分页
 	<script>
+		function search(){
+			var searchString=$("#searchtxt").val();
+			window.location.href="/Blog/BlogPage?SearchString="+searchString;
 
+		}
 
 
 
@@ -481,5 +207,17 @@
 
 
  }
+
+
+ <style>
+	 .tip{
+		 margin-top:200px;
+		 text-align:center;
+		 font-size:30px;
+		 font-weight:500;
+
+	 }
+
+ </style>
 </body>
 

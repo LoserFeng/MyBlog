@@ -17,15 +17,15 @@ namespace MyBlog.Model
         [SugarColumn(ColumnDataType ="nvarchar(30)")]
         public string Title { get; set; }
 
-        [SugarColumn(ColumnDataType = "text")]
+        [SugarColumn(ColumnDataType = "ntext")]
         public string Introduction { get; set; }
 
 
-        [SugarColumn(ColumnDataType = "text")]
+        [SugarColumn(ColumnDataType = "ntext")]
         public string Summary { get; set; }
 
 
-        [SugarColumn(ColumnDataType ="text")]
+        [SugarColumn(ColumnDataType ="ntext")]
         public String ?Content { get; set; }
         public DateTime Time { get; set; }
         public int BrowseCount { get; set; }
@@ -69,6 +69,11 @@ namespace MyBlog.Model
         //算了，这个估计用不到，但是还是先加上好了。。。。
         [Navigate(typeof(Favorite), nameof(Favorite.BlogId), nameof(Favorite.UserId))]
         public List<UserInfo> Admirers { get; set; }
+
+
+        [Navigate(NavigateType.OneToMany, nameof(Comment.BlogId))]
+        public List<Comment> Comments { get; set; }
+
 
 
     }

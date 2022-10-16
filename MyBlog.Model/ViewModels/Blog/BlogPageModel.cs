@@ -25,5 +25,8 @@ namespace MyBlog.Model.ViewModels.Blog
         public string Url { get; set; }
         public int TagId { get; set; }
 
+
+        public List<BlogNews> TopList { get; set; }
+
     }
 }
