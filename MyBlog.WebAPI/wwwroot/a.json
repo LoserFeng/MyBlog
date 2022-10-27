@@ -1,0 +1,16 @@
+{
+    "msg": "Ok",
+    "code": 200,
+    "count": 2,
+    "data": [
+        {
+            "id": 1,
+            "name": "LOSERFENG",
+            "userName": "LOSERFENG",
+            "userPwd": " 9D64D9452EB9F9C1C463DA281CEC86",
+            "motto": "不知道多少回了",
+            "mainPagePhoto": null
+            
+        }
+    ]
+}

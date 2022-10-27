@@ -83,6 +83,7 @@ namespace MyBlog.WebAPI.Controllers.Api
             {
                 GUID = Guid.NewGuid().ToString(),
                 FatherId = commentInfo.FatherId,
+                BlogId= commentInfo.BlogId,
                 UserId = id,
                 TargetName = commentInfo.TargetName,
                 SupportCount = 0,

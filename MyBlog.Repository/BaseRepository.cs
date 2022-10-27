@@ -43,7 +43,7 @@ namespace MyBlog.Repository
 
         }
 
-        public async Task<bool> CreateAsync(TEntity entity)
+        public virtual async Task<bool> CreateAsync(TEntity entity)
         {
             return await base.InsertAsync(entity);
         }

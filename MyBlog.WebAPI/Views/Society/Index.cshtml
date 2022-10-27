@@ -1,0 +1,291 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@model SocietyViewModel
+
+<body>
+
+
+    <div class="doc-container" id="doc-container">
+        <div class="container-fixed">
+            <div class="container-inner">
+                <section class="msg-remark">
+                    <h1>留言板</h1>
+                    <p>
+                        沟通交流，拉近你我！
+                    </p>
+                </section>
+                <div class="textarea-wrap message" id="textarea-wrap">
+                    <form id="create_comment_form" class="layui-form">
+                        <div class="form-group" style="text-align:center;">
+                            <label class="layui-form-label" style="font-weight:600;font-size:20px">评论</label>
+                            <textarea name="Content" class="form-control" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" name="BlogId" value="0">
+                        <div class="layui-form-item">
+                            <button type="button" class="layui-btn" onclick="comment()">提交留言</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="f-cb"></div>
+            <div class="mt20">
+                <ul class="message-list" id="message-list">
+
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <li class="zoomIn article" id="comment_@comment.Id">
+                            <div class="comment-parent">
+                                <a name="remark-1"></a>
+                                <img src="@(comment.UserInfo.MainPagePhoto.Url)" />
+                                <div class="info">
+                                    <span class="username">@comment.UserInfo.Name</span>
+                                </div>
+                                <div class="comment-content">
+                                    @comment.Content
+                                </div>
+                                <p class="info info-footer">
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+
+                                    <span class="comment-time">@comment.Time</span>
+                                    <a href="javascript:;" id="reply_@comment.Id" class="btn-reply" data-targetid="1" data-targetname="@comment.UserInfo.Name">回复</a>
+                                </p>
+                            </div>
+                            <hr />
+                            @foreach (var subcomment in comment.Comments)
+                            {
+                                <div class="comment-child">
+                                    <a name="reply-1"></a>
+                                    <img src="@subcomment.UserInfo.MainPagePhoto.Url">
+                                    <div class="info">
+                                        <span class="username">@subcomment.UserInfo.Name</span>
+                                        <span class="username">@comment.UserInfo.Name</span>
+                                        <span>@subcomment.Content</span>
+                                    </div>
+                                    <p class="info">
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        <span class="comment-time">@subcomment.Time</span>
+                                    </p>
+                                </div>
+
+                            }
+
+                            <div class="replycontainer layui-hide" id="comment_reply_box_@(comment.Id)">
+                                <form class="layui-form" id="comment_reply_form_@(comment.Id)">
+                                    <div class="layui-form-item">
+                                        <textarea name="Content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
+                                    </div>
+                                    <input type="hidden" name="TargetName" value="@comment.UserInfo.Name">
+                                    <input type="hidden" name="FatherId" value="@comment.Id">
+                                    <div class="layui-form-item">
+                                        <button type="button" class="layui-btn layui-btn-xs" onclick="comment_reply(@comment.Id)">提交</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+
+
+
+                    }
+
+
+
+
+
+
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+    <footer class="grid-footer">
+        <div class="footer-fixed">
+            <div class="copyright">
+                <div class="info">
+                    <div class="contact">
+                        <a href="javascript:void(0)" class="github" target="_blank"><i class="fa fa-github"></i></a>
+                        <a href="#" class="qq" target="_blank"><i class="fa fa-qq"></i></a>
+                        <a href="#" class="email" target="_blank"><i class="fa fa-envelope"></i></a>
+                        <a href="javascript:void(0)" class="weixin"><i class="fa fa-weixin"></i></a>
+                    </div>
+                    <p class="mt05">
+                        Copyright &copy; 2019-2020 ZQ博客 All Rights Reserved V.3.1.3 Power by ZQ博客
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    @section Scripts{
+
+        <script>
+
+            function comment() {
+
+
+
+                var formData = new FormData(document.getElementById('create_comment_form'));
+
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    url: "/api/Comment/Create",
+                    data: formData,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statusCode == 200) {
+                            alert("comment成功!");
+                            var data = result.data;
+                            var comment = `
+                                        <li class="zoomIn article">
+                                            <div class="comment-parent">
+                                                <a name="remark-1"></a>
+                                                <img src="${data.userInfo.mainPagePhoto.url}" />
+                                                <div class="info">
+                                                    <span class="username">${data.userInfo.name}</span>
+                                                </div>
+                                                <div class="comment-content">
+                                                    ${data.content}
+                                                </div>
+                                                <p class="info info-footer">
+                                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="comment-time">${data.time}</span>
+                                                    <a href="javascript:;" id="reply_${data.id}" class="btn-reply" data-targetid="1" data-targetname="${data.userInfo.name}">回复</a>
+                                                </p>
+                                            </div>
+
+                                            <hr />
+                                            <div class="replycontainer layui-hide" id="comment_reply_box_${data.id}">
+                                                <form class="layui-form" id="comment_reply_form_${data.id}">
+                                                    <div class="layui-form-item">
+                                                        <textarea name="Content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
+                                                    </div>
+                                                    <input type="hidden" name="FatherId" value="${data.id}">
+                                                    <input type="hidden" name="TargetName" value="${data.userInfo.name}">
+                                                    <div class="layui-form-item">
+                                                        <button type="button" class="layui-btn layui-btn-xs" onclick="comment_reply(${data.id})">提交</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </li>`
+
+
+                            $("#message-list").prepend(comment)
+
+                            $("textarea").val("");
+
+
+
+
+
+
+
+
+                        } else {
+
+                            alert(result.message);
+                        }
+                    },
+                    error: function () {
+                        alert("什么鬼！");
+                    }
+
+
+                });
+
+
+
+
+            }
+
+            function comment_reply(id_num) {
+                var id = id_num;
+                var form_id = "comment_reply_form_" + id;
+                alert(form_id);
+
+                var formData = new FormData(document.getElementById(form_id));
+
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    url: "/api/Comment/CreateReply",
+                    data: formData,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statusCode == 200) {
+                            alert("comment回复成功!");
+                            var data = result.data;
+                            var comment = `
+                                        <div class="comment-child">
+                                            <a name="reply-1"></a>
+                                            <img src="${data.userInfo.mainPagePhoto.url}">
+                                            <div class="info">
+                                                <span class="username">${data.userInfo.name}</span>
+                                                <span id="reply_${data.id}" style="padding-right:0;margin-left:-5px;">回复</span>
+                                                <span class="username">${data.targetName}</span>
+                                                <span>${data.content}</span>
+                                            </div>
+                                            <p class="info">
+                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                <span class="comment-time">${data.time}</span>
+                                            </p>
+                                        </div>
+
+                                        `
+
+
+                            $("#comment_reply_box_" + id).before(comment)
+
+                            $("textarea").val("");
+                            $("#reply_" + id).html("回复");
+                            $("#comment_reply_box_" + id).addClass("layui-hide");
+
+
+                        } else {
+
+                            alert(result.message);
+                        }
+                    },
+                    error: function () {
+                        alert("什么鬼！");
+                    }
+
+
+                });
+
+
+
+            }
+
+
+        </script>
+
+    }
+
+
+
+    </body>
+

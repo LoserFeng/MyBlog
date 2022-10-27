@@ -1,4 +1,5 @@
 ﻿using MyBlog.Model;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,6 @@ namespace MyBlog.IService
 
 
         Task<bool> CheckInfoAsync( String name,String userName);
-
+        Task<List<UserInfo>> QueryAllAsync(int page, int limit, RefAsync<int> total);
     }
 }

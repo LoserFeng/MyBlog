@@ -4,6 +4,7 @@ using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -24,6 +25,16 @@ namespace MyBlog.Repository
                 .Include(c => c.Concerns)
                 .Include(c => c.WriterInfo)
                 .ExecuteCommandAsync();
+
+        }
+
+
+        public override async  Task<List<UserInfo>> QueryAsync(int page, int size, RefAsync<int> total)
+        {
+            var list = await base.Context.Queryable<UserInfo>()
+                    .Includes(c => c.MainPagePhoto)
+                    .ToPageListAsync(page,size,total);
+            return list;
 
         }
 

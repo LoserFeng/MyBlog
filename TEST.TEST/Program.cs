@@ -1,21 +1,75 @@
 ﻿using MyBlog.Model;
+using SqlSugar;
 using System.Text.RegularExpressions;
 
 namespace TEST.TEST
 {
+
+    public class Base
+    {
+        public string name;
+        public Base(string name)
+        {
+            this.name = name;
+        }
+
+
+        public string a()
+        {
+
+            return "123";
+        }
+
+
+        public virtual string b()
+        {
+            return "234";
+        }
+
+
+
+    }
+
+
+    public class high : Base
+    {
+        public high(string name) : base(name)
+        {
+            this.name = name;
+        }
+
+
+        public new string a()
+        {
+            b();
+            return "2222";
+        }
+
+
+        public override string b()
+        {
+            return "33333";
+        }
+
+
+
+    }
+
     internal class Program
     {
         static void Main(string[] args)
         {
 
-            //"^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$"。
-            String s = "http://123.234.435.345/asd/asd/a=1&b=2";
-            /* String regular= @"^(http://)([\w-]+\.)+[\w-]+(/[\w-./%?=&]*)?$";*/
-            String regular = @"^(http://)([\w-]+\.)+[\w-]+(/[\w-./%?=&]*)?$";
+            Base b = new high("234");
 
-            var res =getString(s, regular);
-            Console.WriteLine(res);
+
+            Console.WriteLine(b.b());
+
+            
         }
+
+
+
 
 
         public static string getString(string str,string regular)

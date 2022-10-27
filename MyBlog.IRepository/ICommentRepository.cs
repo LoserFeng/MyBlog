@@ -10,7 +10,9 @@ namespace MyBlog.IRepository
 	public interface ICommentRepository : IBaseRepository<Comment>
 	{
 		Task<bool> DeleteByGUIDAsync(string GUID);
-		Task<Comment> QueryByGUIDAsync(string GUID);
+        Task<List<Comment>> GetCommentsByBlogId(int BlogId);
+
+        Task<Comment> QueryByGUIDAsync(string GUID);
 
 
     }

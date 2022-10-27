@@ -12,5 +12,9 @@ namespace MyBlog.IService
         Task<bool> DeleteByGUIDAsync(string GUID);
 
         Task<Comment>QueryByGUIDAsync(String GUID);
+
+
+        Task<List<Comment>> GetSocietyAsync();
+
     }
 }

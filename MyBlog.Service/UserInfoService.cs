@@ -1,6 +1,7 @@
 ﻿using MyBlog.IRepository;
 using MyBlog.IService;
 using MyBlog.Model;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,13 @@ namespace MyBlog.Service
                 return true;
             }
             return false;
+        }
+
+        public async Task<List<UserInfo>> QueryAllAsync(int page, int limit, RefAsync<int> total)
+        {
+
+            return await _userInfoRepository.QueryAsync(page, limit, total);
+
         }
     }
 }

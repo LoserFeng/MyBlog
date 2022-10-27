@@ -9,6 +9,7 @@ using MyBlog.Model.ViewModels.Auth;
 using MyBlog.Model.ViewModels.Register;
 using MyBlog.Service;
 using MyBlog.Utility._MD5;
+using MyBlog.WebAPI.Controllers.Api.ApiResult;
 using SqlSugar;
 using System.DirectoryServices;
 using System.Security.Claims;
@@ -30,6 +31,22 @@ namespace MyBlog.WebAPI.Controllers.Api
             _userInfoService = userInfoService;
             this.webHostEnvironment = webHostEnvironment;
         }
+
+        [HttpGet("UserInfoList")]
+        [Authorize]
+        public async Task<ActionResult<LayUIResponse>> GetUserInfoList(int page=1,int limit=8)
+        {
+            RefAsync<int> total = 0;
+
+            var data = await _userInfoService.QueryAllAsync(page,limit,total);
+
+
+            return LayUIResponse.Ok(count: total, data: data);
+        }
+
+
+
+
 
         [HttpGet("GetById")]
         public async Task<ActionResult<ApiResponse>> GetById([FromServices] IMapper iMapper, int id)

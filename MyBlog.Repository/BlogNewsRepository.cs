@@ -60,7 +60,7 @@ namespace MyBlog.Repository
 
 
 
-        public new async Task<bool> CreateAsync(BlogNews blogNews)
+        public override async Task<bool> CreateAsync(BlogNews blogNews)
         {
 
 

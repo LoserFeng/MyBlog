@@ -139,6 +139,7 @@
                                     <textarea name="Content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
                                 </div>
                                 <input type="hidden" name="TargetName" value="@comment.UserInfo.Name">
+                                <input type="hidden" name="BlogId" value="@comment.BlogId">
                                 <input type="hidden" name="FatherId" value="@comment.Id">
                                 <div class="layui-form-item">
                                     <button type="button" class="layui-btn layui-btn-xs" onclick="comment_reply(@comment.Id)">提交</button>
@@ -237,6 +238,7 @@
                                             <textarea name="Content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
                                         </div>
                                         <input type="hidden" name="FatherId" value="${data.id}">
+                                        <input type="hidden" name="BlogId" value="${data.blogId}">
                                         <input type="hidden" name="TargetName" value="${data.userInfo.name}">
                                         <div class="layui-form-item">
                                             <button type="button" class="layui-btn layui-btn-xs" onclick="comment_reply(${data.id})">提交</button>

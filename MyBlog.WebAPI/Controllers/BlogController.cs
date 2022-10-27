@@ -112,7 +112,6 @@ namespace MyBlog.WebAPI.Controllers
         public async Task<IActionResult> Details(string GUID="11-9")
         {
             var blog=await _blogNewsService.QueryByGUIDAsync(GUID);
-
             if(blog == null)
             {
                 BlogNotFound Error_model = new BlogNotFound
@@ -123,7 +122,7 @@ namespace MyBlog.WebAPI.Controllers
             }
             blog.BrowseCount = blog.BrowseCount + 1;
 
-           bool res= await _blogNewsService.UpdateAsync(blog);
+            bool res= await _blogNewsService.UpdateAsync(blog);
             if (res == false)
             {
                 Console.WriteLine("更新失败");

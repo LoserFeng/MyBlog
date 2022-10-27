@@ -27,6 +27,19 @@ namespace MyBlog.Repository
             return true;
         }
 
+        public async Task<List<Comment>> GetCommentsByBlogId(int BlogId)
+        {
+            var list = await base.Context.Queryable<Comment>()
+                .Includes(c => c.UserInfo, c => c.MainPagePhoto)
+                .Includes(c => c.Comments, c => c.UserInfo, c => c.MainPagePhoto)
+                .Where(c => c.BlogId == BlogId)
+                .ToListAsync();
+
+
+
+            return list;
+        }
+
         public async Task<Comment> QueryByGUIDAsync(string GUID)
         {
             var list = await base.Context.Queryable<Comment>()

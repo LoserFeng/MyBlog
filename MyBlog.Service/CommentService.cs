@@ -24,9 +24,17 @@ namespace MyBlog.Service
             return await _iCommentRepository.DeleteByGUIDAsync(GUID);
         }
 
+        public async Task<List<Comment>> GetSocietyAsync()
+        {
+
+
+            return await _iCommentRepository.GetCommentsByBlogId(0);
+        }
+
         public async Task<Comment> QueryByGUIDAsync(string GUID)
         {
             return await _iCommentRepository.QueryByGUIDAsync(GUID);
         }
+
     }
 }
