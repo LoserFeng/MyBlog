@@ -12,11 +12,15 @@ namespace MyBlog.IService
     {
 
         Task<bool> register(UserInfo userInfo);
-
-        Task<UserInfo?> FindAsync(int id);
+        new Task<UserInfo?> FindByIdAsync(int id);
 
 
         Task<bool> CheckInfoAsync( String name,String userName);
         Task<List<UserInfo>> QueryAllAsync(int page, int limit, RefAsync<int> total);
+
+
+
+
+
     }
 }

@@ -59,7 +59,7 @@ namespace MyBlog.Repository
         }
 
         //导航查询
-        public virtual async Task<TEntity> FindByIdAsync(int id)
+        public virtual async Task<TEntity?> FindByIdAsync(int id)
         {
             return await base.GetByIdAsync(id);
         }

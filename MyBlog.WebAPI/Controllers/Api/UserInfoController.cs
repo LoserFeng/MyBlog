@@ -6,6 +6,7 @@ using MyBlog.IService;
 using MyBlog.Model;
 using MyBlog.Model.DTO;
 using MyBlog.Model.ViewModels.Auth;
+using MyBlog.Model.ViewModels.CMS.UserInfo;
 using MyBlog.Model.ViewModels.Register;
 using MyBlog.Service;
 using MyBlog.Utility._MD5;
@@ -52,7 +53,7 @@ namespace MyBlog.WebAPI.Controllers.Api
         public async Task<ActionResult<ApiResponse>> GetById([FromServices] IMapper iMapper, int id)
         {
 
-            var data = await _userInfoService.FindAsync(id);
+            var data = await _userInfoService.FindByIdAsync(id);
             //return Ok(data);  //code 200 404 之类的
             if (data == null)
             {
@@ -83,7 +84,7 @@ namespace MyBlog.WebAPI.Controllers.Api
 
             int id = Convert.ToInt32(claim?.Value);
 
-            var data = await _userInfoService.FindAsync(id);
+            var data = await _userInfoService.FindByIdAsync(id);
             //return Ok(data);  //code 200 404 之类的
             if (data == null)
             {
@@ -98,22 +99,7 @@ namespace MyBlog.WebAPI.Controllers.Api
             return ApiResponse.Ok(data);
         }
 
-        [HttpPut("Edit")]
-        public async Task<ApiResponse> Edit([FromServices] IMapper iMapper, string name)
-        {
 
-            Claim? claim = User.FindFirst("Id");
-            int id = Convert.ToInt32(claim?.Value);  //JWT授权。。 
-            var user = await _userInfoService.FindByIdAsync(id);
-            user.Name = name;
-            bool b = await _userInfoService.UpdateAsync(user);
-
-            if (!b) return ApiResponse.Error(Response, "修改失败");
-            /*            var writerDTO = iMapper.Map<UserDTO>(user);*/
-            return ApiResponse.Ok(user);
-
-
-        }
 
 
 
@@ -191,6 +177,81 @@ namespace MyBlog.WebAPI.Controllers.Api
 
 
             return ApiResponse.BadRequest("用户数据插入失败!");
+
+        }
+
+
+
+
+
+
+
+        [HttpPost("Edit")]
+        public async Task<ApiResponse> Edit([FromServices] IMapper iMapper, [FromForm] UserInfoEdit userInfoEdit)
+        {
+
+
+
+            if (ModelState.IsValid)
+            {
+
+
+                string filePath = null;
+                string url = null;
+                if (userInfoEdit.MainPagePhoto != null)
+                {
+
+                    string uploadFolder = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot", "photos");
+
+
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + userInfoEdit.MainPagePhoto.FileName;
+                    filePath = Path.Combine(uploadFolder, uniqueFileName);
+                    await userInfoEdit.MainPagePhoto.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    url = "/photos" + "/" + uniqueFileName;
+
+                }
+
+
+
+
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+                UserInfo user = new UserInfo
+                {
+                    Id=userInfoEdit.Id,
+                    Name = userInfoEdit.Name,
+                    UserName = userInfoEdit.UserName,
+                    UserPwd = userInfoEdit.UserPwd!=null? MD5Helper.MD5Encrypt32(userInfoEdit.UserPwd):null,
+                    Motto = userInfoEdit.Motto,
+                    MainPagePhoto = userInfoEdit.MainPagePhoto != null? new Photo()
+                    {
+                        Url = url,
+                        FileName = userInfoEdit.MainPagePhoto.FileName,
+                        CreateTime = DateTime.Now,
+                        FilePath = filePath,
+
+                    } :null
+
+                };
+#pragma warning restore CS8601 // 引用类型赋值可能为 null。
+
+
+
+                if (!await _userInfoService.CheckInfoAsync(user.Name, user.UserName))
+                {
+                    return ApiResponse.BadRequest("名字或用户名已存在");
+                }
+
+                bool res = await _userInfoService.UpdateAsync(user);
+
+                if (res == true)
+                {
+                    return ApiResponse.Ok(true, message: "更新用户数据成功！");
+                }
+            }
+
+
+            return ApiResponse.BadRequest("用户数据更新失败!");
 
         }
 

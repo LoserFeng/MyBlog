@@ -79,6 +79,16 @@ namespace MyBlog.Repository
         }
 
 
+        public override async Task<bool> UpdateAsync(UserInfo userInfo)
+        {
+
+
+            var res = await base.Context.UpdateNav<UserInfo>(userInfo)
+                .Include(c => c.MainPagePhoto).ExecuteCommandAsync();
+
+            return res;
+        }
+
 
 
 

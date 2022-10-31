@@ -23,5 +23,8 @@ namespace MyBlog.IRepository
 
 
 
+
+
+
     }
 }

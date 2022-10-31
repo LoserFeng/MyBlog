@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Common\" />
     <Folder Include="ViewModels\Home\Detail\" />
     <Folder Include="ViewModels\Response\" />
   </ItemGroup>

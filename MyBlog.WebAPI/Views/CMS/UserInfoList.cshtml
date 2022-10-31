@@ -15,9 +15,9 @@
  
 <script type="text/html" id="toolbarDemo">
   <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="getCheckData">检索</button>
+    <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    <button class="layui-btn layui-btn-danger layui-btn-sm " lay-event="delete">删除</button>
   </div>
 </script>
  
@@ -30,8 +30,10 @@
 
 @section Scripts{
 <script>
-    layui.use('table', function () {
+    layui.use(['table','layer'], function () {
         var table = layui.table;
+        var layer=layui.layer;
+
 
         table.render({
             elem: '#test'
@@ -51,11 +53,14 @@
             ,cols: [[ //表头
                 { type: 'checkbox' }
                 , { field: 'id', title: 'ID', width: 80, sort: true }
-                , { field: 'name', title: '昵称', width: 160 }
+                , { field: 'name', title: '昵称', width: 171 }
                 , { field: 'userName', title: '用户名', width: 160 }
-                , { field: 'userPwd', title: '密码', width: 160 }
-                , { field: 'motto', title: '座右铭', width: 160 }
+                , { field: 'userPwd', title: '密码', width: 250 }
+                , { field: 'motto', title: '座右铭', width: 200 }
                 , { field: 'mainPagePhoto', title: '主页图片', width: 200,templet: function(res){
+                        if(res.mainPagePhoto==null){
+                            return "<div >null</div>"
+                        }
                         return "<img  src="+res.mainPagePhoto.url+"></img>"
                  }}
                 , {  width: 150, align: 'center', toolbar: '#barDemo' }
@@ -71,11 +76,11 @@
                     var data = checkStatus.data;
                     layer.alert(JSON.stringify(data));
                     break;
-                case 'getCheckLength':
+                case 'add':
                     var data = checkStatus.data;
                     layer.msg('选中了：' + data.length + ' 个');
                     break;
-                case 'isAll':
+                case 'delete':
                     layer.msg(checkStatus.isAll ? '全选' : '未全选');
                     break;
 
@@ -96,17 +101,30 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
-                layer.prompt({
-                    formType: 2
-                    , value: data.email
-                }, function (value, index) {
-                    obj.update({
-                        email: value
-                    });
-                    layer.close(index);
-                });
+                edit_info(obj.data.id)
+
             }
         });
+
+
+
+
+
+        function edit_info(id) {
+            layer.open({
+                type: 2,
+                title: '更改用户信息',
+                area: ['450px', '500px'],
+                fixed: false, //不固定
+                maxmin: true,
+                content: '/CMS/EditUserInfo?id='+id
+            });
+
+
+        }
+
+
+        
     });
 </script>
 

@@ -43,7 +43,7 @@
                         <li class="zoomIn article" id="comment_@comment.Id">
                             <div class="comment-parent">
                                 <a name="remark-1"></a>
-                                <img src="@(comment.UserInfo.MainPagePhoto.Url)" />
+                                <img src="@(comment.UserInfo.MainPagePhoto==null?null:comment.UserInfo.MainPagePhoto.Url)" />
                                 <div class="info">
                                     <span class="username">@comment.UserInfo.Name</span>
                                 </div>
@@ -62,7 +62,7 @@
                             {
                                 <div class="comment-child">
                                     <a name="reply-1"></a>
-                                    <img src="@subcomment.UserInfo.MainPagePhoto.Url">
+                                    <img src="@(subcomment.UserInfo.MainPagePhoto==null?null:subcomment.UserInfo.MainPagePhoto.Url)">
                                     <div class="info">
                                         <span class="username">@subcomment.UserInfo.Name</span>
                                         <span class="username">@comment.UserInfo.Name</span>

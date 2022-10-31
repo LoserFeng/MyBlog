@@ -45,7 +45,7 @@ namespace MyBlog.Service
 
 
 
-        public async Task<UserInfo?> FindAsync(int id)
+        public override  async Task<UserInfo?> FindByIdAsync(int id)
         {
 
 
@@ -71,6 +71,32 @@ namespace MyBlog.Service
         {
 
             return await _userInfoRepository.QueryAsync(page, limit, total);
+
+        }
+
+
+        public override async Task<bool> UpdateAsync(UserInfo userInfo)
+        {
+
+            var pre_userInfo=await _userInfoRepository.FindByIdAsync(userInfo.Id);
+            var update_userInfo = new UserInfo
+            {
+                Id = userInfo.Id,
+                MainPagePhoto_id = userInfo.MainPagePhoto == null ? pre_userInfo!.MainPagePhoto_id : 0,
+                MainPagePhoto = userInfo.MainPagePhoto,
+                Name = userInfo.Name == null ? pre_userInfo!.Name : userInfo.Name,
+                UserName = userInfo.UserName == null ? pre_userInfo.UserName : userInfo.UserName,
+                UserPwd = userInfo.UserPwd == null ? pre_userInfo!.UserPwd : userInfo.UserPwd,
+                Motto = userInfo.Motto == null ? pre_userInfo!.Motto : userInfo.Motto,
+
+                WriterId = pre_userInfo!.WriterId
+
+
+            };
+
+
+
+            return await _userInfoRepository.UpdateAsync(update_userInfo);
 
         }
     }

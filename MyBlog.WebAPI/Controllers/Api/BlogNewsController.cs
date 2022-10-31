@@ -114,7 +114,7 @@ namespace MyBlog.WebAPI.Controllers.Api
             //数据验证
             Claim? claim = User.FindFirst("Id");
             int id = Convert.ToInt32(claim?.Value);
-            var userInfo = await _userInfoService.FindAsync(id);
+            var userInfo = await _userInfoService.FindByIdAsync(id);
             if (userInfo == null)
             {
                 return ApiResponse.Error(Response, "没有找到对应的用户身份！");

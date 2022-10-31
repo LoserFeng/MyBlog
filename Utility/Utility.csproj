@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="CommonMark.NET" Version="0.15.1" />
     <PackageReference Include="Markdig" Version="0.30.4" />
     <PackageReference Include="Markdown.ColorCode" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />

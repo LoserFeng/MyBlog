@@ -303,8 +303,10 @@
 
 
         function exit_login() {
+            localStorage.removeItem("JWTtoken");
             document.cookie = "is_login" + "=" + "false" + "; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
-            localStorage.remove("JWTtoken");
+            
+
             window.location.href = 'Home/Index';
 
 
