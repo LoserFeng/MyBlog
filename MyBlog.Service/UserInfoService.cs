@@ -99,5 +99,12 @@ namespace MyBlog.Service
             return await _userInfoRepository.UpdateAsync(update_userInfo);
 
         }
+
+
+/*        public override async Task<bool> DeleteByIdAsync (int id)
+        {
+
+            return await _userInfoRepository.DeleteByIdAsync(id);
+        }*/
     }
 }

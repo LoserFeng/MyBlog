@@ -141,7 +141,7 @@ namespace MyBlog.WebAPI.Controllers.Api
                         Id=0,
                         WriterName=registerInfo.Name,
                     },
-                    Motto = registerInfo.motto,
+                    Motto = registerInfo.Motto,
                     MainPagePhoto = filePath!=null? new Photo()
                     {
                         Url=url,
@@ -255,7 +255,22 @@ namespace MyBlog.WebAPI.Controllers.Api
 
         }
 
+        [HttpDelete("Delete")]
+        public async Task<ApiResponse> Delete(int id)
+        {
+           var res=await _userInfoService.DeleteByIdAsync(id);
 
+            if (res)
+            {
+                return ApiResponse.Ok("删除成功");
+            }
+
+            return ApiResponse.Error(Response, "删除失败");
+
+        }
 
     }
+
+
+
 }

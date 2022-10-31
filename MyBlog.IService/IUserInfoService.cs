@@ -19,6 +19,7 @@ namespace MyBlog.IService
         Task<List<UserInfo>> QueryAllAsync(int page, int limit, RefAsync<int> total);
 
 
+        
 
 
 

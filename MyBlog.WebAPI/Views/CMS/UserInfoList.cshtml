@@ -77,11 +77,22 @@
                     layer.alert(JSON.stringify(data));
                     break;
                 case 'add':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
+                    add_info();
                     break;
                 case 'delete':
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    layer.confirm('真的删除行么', function (index) {
+                        var data = checkStatus.data;
+                        del_selected_info(data);
+                        table.reload('test', {
+                            page: {
+                                curr: 1
+                            }, where: {
+                                @* badge: $('#badge').val() *@
+                            }
+                        });
+
+                        layer.close(index);
+                    });
                     break;
 
                 //自定义头工具栏右侧图标 - 提示
@@ -97,7 +108,10 @@
             //console.log(obj)
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
+                    var data=obj.data;
+                    del_info(data);
                     obj.del();
+                    
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
@@ -111,14 +125,114 @@
 
 
         function edit_info(id) {
-            layer.open({
+            var index=layer.open({
                 type: 2,
                 title: '更改用户信息',
                 area: ['450px', '500px'],
                 fixed: false, //不固定
                 maxmin: true,
-                content: '/CMS/EditUserInfo?id='+id
+                content: '/CMS/EditUserInfo?id=' + id,
+                end: function (){
+                    table.reload('test', {
+                        page: {
+                            curr: 1
+                        }, where: {
+                                @* badge: $('#badge').val() *@
+                            }
+                    });
+                }
             });
+
+
+
+        }
+
+
+
+        function add_info() {
+            var index=layer.open({
+                type: 2,
+                title: '新增用户信息',
+                area: ['450px', '500px'],
+                fixed: false, //不固定
+                maxmin: true,
+                content: '/CMS/AddUserInfo',
+                end: function (){
+                    table.reload('test', {
+                        page: {
+                            curr: 1
+                        }
+                    });
+                }
+            });
+
+
+
+        }
+
+        function del_selected_info(data) {
+            var flag=true;
+            for(var i=0;i<data.length;i++){
+                $.ajax({
+                    type: "DELETE",
+                    async:false,
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+
+                    url: "/api/UserInfo/Delete?id="+data[i].id,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statusCode == 200) {
+
+                        } else {
+
+                            alert(result.message);
+                            flag=false;
+                        }
+                    },
+                    error: function () {
+                        alert("删除失败！");
+                    }
+
+
+                });
+
+            }
+
+            return flag;
+
+
+        }
+         function del_info(data) {
+            var flag=true;
+           
+             $.ajax({
+                 type: "DELETE",
+                 async: false,
+                 processData: false,//这个必须有，不然会报错
+                 contentType: false,//这个必须有，不然会报错
+
+                 url: "/api/UserInfo/Delete?id=" + data.id,
+                 success: function (result) {
+                     console.log(result);
+                     if (result.statusCode == 200) {
+
+                     } else {
+
+                         alert(result.message);
+                         flag = false;
+                     }
+                 },
+                 error: function () {
+                     alert("删除失败！");
+                 }
+
+
+             });
+
+   
+
+            return flag;
 
 
         }

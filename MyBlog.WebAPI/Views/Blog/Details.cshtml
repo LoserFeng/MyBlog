@@ -101,9 +101,9 @@
                     <li class="zoomIn article" id="comment_@comment.Id">
                         <div class="comment-parent">
                             <a name="remark-1"></a>
-                            <img src="@(comment.UserInfo.MainPagePhoto.Url)" />
+                                <img src="@(comment.UserInfo==null?null:comment.UserInfo.MainPagePhoto.Url)" />
                             <div class="info">
-                                <span class="username">@comment.UserInfo.Name</span>
+                                    <span class="username">@(comment.UserInfo==null?"该用户已注销":comment.UserInfo.Name)</span>
                             </div>
                             <div class="comment-content">
                                 @comment.Content
@@ -112,17 +112,17 @@
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
 
                                 <span class="comment-time">@comment.Time</span>
-                                <a href="javascript:;" id="reply_@comment.Id" class="btn-reply" data-targetid="1" data-targetname="@comment.UserInfo.Name">回复</a>
+                                    <a href="javascript:;" id="reply_@comment.Id" class="btn-reply" data-targetid="1" data-targetname="@(comment.UserInfo==null?"该用户已注销":comment.UserInfo.Name)">回复</a>
                             </p>
                         </div>
                         <hr />
                         @foreach(var subcomment in comment.Comments){
                             <div class="comment-child">
                                 <a name="reply-1"></a>
-                                <img src="@subcomment.UserInfo.MainPagePhoto.Url">
+                                    <img src="@(subcomment.UserInfo==null?null:subcomment.UserInfo.MainPagePhoto.Url)">
                                 <div class="info">
-                                    <span class="username">@subcomment.UserInfo.Name</span>
-                                    <span class="username">@comment.UserInfo.Name</span>
+                                        <span class="username">@(subcomment.UserInfo==null?"该用户已注销":subcomment.UserInfo.Name)</span>
+                                        <span class="username">@(comment.UserInfo==null?"该用户已注销":comment.UserInfo.Name)</span>
                                     <span>@subcomment.Content</span>
                                 </div>
                                 <p class="info">
@@ -138,7 +138,7 @@
                                 <div class="layui-form-item">
                                     <textarea name="Content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
                                 </div>
-                                <input type="hidden" name="TargetName" value="@comment.UserInfo.Name">
+                                    <input type="hidden" name="TargetName" value="@(comment.UserInfo==null?"该用户已注销":comment.UserInfo.Name)">
                                 <input type="hidden" name="BlogId" value="@comment.BlogId">
                                 <input type="hidden" name="FatherId" value="@comment.Id">
                                 <div class="layui-form-item">

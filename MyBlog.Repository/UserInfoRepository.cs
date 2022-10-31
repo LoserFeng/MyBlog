@@ -89,7 +89,23 @@ namespace MyBlog.Repository
             return res;
         }
 
+        public override  async Task<bool> DeleteByIdAsync(int id)
+        {
+        
+            var res = await base.Context.DeleteNav<UserInfo>(u => u.Id == id)
+                .Include(c => c.MainPagePhoto)
+                .Include(c=>c.Favorites,new DeleteNavOptions()
+                {
+                    ManyToManyIsDeleteA= true
+                })
+                .Include(c=>c.Concerns,new DeleteNavOptions()
+                {
+                    ManyToManyIsDeleteA=true
+                })
+                .ExecuteCommandAsync();
+            return res;
 
+        }
 
 
 

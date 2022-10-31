@@ -7,7 +7,7 @@
     Layout = "_Layout_common";
 }
 
-@model UserInfoModel
+
 
 
 
@@ -19,15 +19,14 @@
 
 
 
-<form enctype="multipart/form-data" id="edit_form" lay-filter="edit_form" asp-controller="UserInfo" asp-action="Create"
+<form enctype="multipart/form-data" id="register_form" lay-filter="edit_form" asp-controller="UserInfo" asp-action="Create"
     class="layui-form" method="post">
 
 
-    <input class="layui-hide" data-val="true" type="number" id="id" name="id" value="@Model.Id">
     <div class="layui-form-item">
         <label  class="layui-form-label">昵称</label>
         <div class="layui-input-block">
-            <input id="Name" name="Name" data-val="true"     type="text" placeholder="@Model.Name" autocomplete="off"
+            <input id="Name" name="Name" data-val="true"  lay-verify="Name"    type="text" placeholder="请输入账号名称" autocomplete="off"
                 class="layui-input">
         </div>
     </div>
@@ -35,7 +34,7 @@
     <div class="layui-form-item">
         <label  class="layui-form-label">用户名</label>
         <div class="layui-input-block">
-            <input id="UserName" name="UserName" data-val="true"    type="text" placeholder="@Model.UserName" autocomplete="off"
+            <input id="UserName" name="UserName" data-val="true" lay-verify="UserName"    type="text" placeholder="请输入用户名" autocomplete="off"
                 class="layui-input">
         </div>
     </div>
@@ -46,7 +45,7 @@
     <div class="layui-form-item">
         <label  class="layui-form-label">密码</label>
         <div class="layui-input-block">
-            <input id="UserPwd" name="UserPwd" data-val="true"   type="password" placeholder="************"
+            <input id="UserPwd" name="UserPwd" data-val="true" lay-verify="UserPwd"   type="password" placeholder="请输入密码"
                 autocomplete="off" class="layui-input">
         </div>
     </div>
@@ -56,7 +55,7 @@
     <div class="layui-form-item">
         <label  class="layui-form-label">座右铭</label>
         <div class="layui-input-block">
-            <input id="Motto" name="Motto" data-val="true"  type="text"  placeholder="@Model.Motto" autocomplete="off"
+            <input id="Motto" name="Motto" lay-verify="Motto" data-val="true"  type="text"  placeholder="请输入座右铭" autocomplete="off"
                 class="layui-input">
         </div>
     </div>
@@ -67,8 +66,8 @@
         <div class="layui-input-block">
             <div class="custom-file">
 
-                <input class="form-control custom-file-input" type="file" data-val="true"  id="MainPagePhoto" name="MainPagePhoto" >
-                <label class="custom-file-label">@(Model.MainPagePhoto!=null?Model.MainPagePhoto.FileName:"null")</label>
+                <input class="form-control custom-file-input" type="file" data-val="true"  id="photo" name="photo" >
+                <label class="custom-file-label">请上传一张图片</label>
             </div>
         </div>
 
@@ -80,7 +79,7 @@
     <div>
         <div style="text-align:center"></div>
         <button type="button" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius"
-            onClick="edit()">Edit</button>
+            onClick="add()">Add</button>
 
     </div>
 
@@ -94,12 +93,11 @@
         <script>
 
 
-            layui.use(['form', 'layedit', 'laydate','table'], function () {
+            layui.use(['form', 'layedit', 'laydate'], function () {
                 var form = layui.form
                     , layer = layui.layer
                     , layedit = layui.layedit
-                    , laydate = layui.laydate,
-                    table=layui.table
+                    , laydate = layui.laydate
 
 
 
@@ -107,21 +105,21 @@
                 var editIndex = layedit.build('LAY_demo_editor');
 
                 //自定义验证规则
-                form.verify({
+           form.verify({
 
 
                     Name: function (value) {
                         if (value.length > 15) {
                             return '名字至多只能15个字符啊';
                         }
+                        if(value.length==0){
+                            return '名字不能为空！'
+                        }
                     }
                     ,
 
 
                     UserName: function (value) {
-                        if(value.length==0){
-                            return;
-                        }
                         if (value.length >15) {
                             return '用户名字至多只能15个字符啊';
                         }
@@ -130,12 +128,12 @@
                         }
                     }
 
-                    , UserPwd: [
-                        /^([\S]{6,12}|)$/
-                        , '密码必须6到12位,或者为空'
+                    , 
+                    UserPwd: [
+                        /^[\S]{6,12}$/
+                        , '密码必须6到12位，且不能出现空格'
                     ]
                 });
-
 
                 
                 
@@ -167,26 +165,23 @@
 
 */
 
-            function edit(){
+            function add(){
 
-                var formData=new FormData(document.getElementById('edit_form'))
+                var formData=new FormData(document.getElementById('register_form'))
 
                 $.ajax({
                     type: "POST",
                     processData: false,//这个必须有，不然会报错
                     contentType: false,//这个必须有，不然会报错
-                    async:false,
-                    url:"/api/UserInfo/Edit",
+
+                    url:"/api/UserInfo/Create",
                     data: formData,
                     success: function(result){
                         console.log(result);
                         if(result.statusCode==200){
-                            alert("用户信息修改成功!");
+                            alert("用户创建成功!");
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
-
-
-
 
                         }else{
 
@@ -201,6 +196,7 @@
                 });
                 
             }
+
 
 
 

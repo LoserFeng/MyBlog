@@ -86,5 +86,18 @@ namespace MyBlog.WebAPI.Controllers
 
         }
 
+
+
+        [Route("~/CMS/AddUserInfo")]
+        public async Task<IActionResult> AddUserInfo(int id)
+        {
+          
+            return View();
+
+
+
+
+        }
+
     }
 }
