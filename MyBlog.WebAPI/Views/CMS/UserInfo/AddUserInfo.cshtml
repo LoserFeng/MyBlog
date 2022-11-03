@@ -173,7 +173,9 @@
                     type: "POST",
                     processData: false,//这个必须有，不然会报错
                     contentType: false,//这个必须有，不然会报错
-
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
                     url:"/api/UserInfo/Create",
                     data: formData,
                     success: function(result){

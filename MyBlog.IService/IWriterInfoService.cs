@@ -1,4 +1,6 @@
 ﻿using MyBlog.Model;
+using MyBlog.Model.ViewModels.Common;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,7 @@ namespace MyBlog.IService
 {
     public interface IWriterInfoService:IBaseService<WriterInfo>
     {
+        Task<List<WriterInfoModel>> GetWriterInfoList(int page, int limit,RefAsync<int>total);
 
     }
 }

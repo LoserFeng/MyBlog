@@ -1,0 +1,353 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+
+    Layout = "_Layout_common";
+       
+        String part1 = "{'ngColor':'','value': '";
+        String part2="'},";
+
+}
+
+@model BlogNews
+
+
+
+
+<body>
+
+
+
+
+
+
+    <form enctype="multipart/form-data" id="edit_form" lay-filter="edit_form"
+          class="layui-form" method="post">
+
+
+
+        <input class="layui-hide" data-val="true" type="number" id="Id" name="Id" value="@Model.Id">
+
+        <div class="layui-form-item" style="margin-top:30px">
+            <label class="layui-form-label">Title</label>
+            <div class="layui-input-block">
+                <input id="Title" name="Title" lay-verify="Title" data-val="true" type="text" placeholder="@Model.Title" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style=" text-overflow:initial">封面图</label>
+            <div class="layui-input-block">
+                <div class="custom-file">
+
+                    <input class="form-control custom-file-input" type="file" data-val="true" id="CoverPhoto"
+                           name="CoverPhoto">
+                    <label class="custom-file-label">@(Model.CoverPhoto==null?null:Model.CoverPhoto.FileName)</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item" style="margin-top:30px">
+            <label class="layui-form-label">Introduction</label>
+            <div class="layui-input-block">
+                <input id="Introduction" name="Introduction" lay-verify="Title" data-val="true" type="text" placeholder="@Model.Introduction"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-top:30px">
+            <label class="layui-form-label">浏览人数</label>
+            <div class="layui-input-block">
+                <input id="BrowseCount" name="BrowseCount" lay-verify="BrowseCount"  data-val="true" type="number"  placeholder="@Model.BrowseCount"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="margin-top:30px">
+            <label class="layui-form-label">喜欢人数</label>
+            <div class="layui-input-block">
+                <input id="LikeCount" name="LikeCount" lay-verify="LikeCount"  data-val="true" type="number" placeholder="@Model.LikeCount"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <div id="TagsDiv">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上传博客类型 </label>
+            <div class="layui-input-block">
+                <input name="Type" lay-filter="null" value="null" type="radio" checked="" id="null_select" title="不修改">
+                <input name="Type" lay-filter="markdown" value="markdown" type="radio" id="markdown_select" title="markdown">
+                <input name="Type" lay-filter="text" value="text" type="radio" id="text_select" title="text">
+            </div>
+        </div>
+
+
+
+        <div id="markdown_input" style="display:none;">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style=" text-overflow:initial">Markdown文件</label>
+                <div class="layui-input-block">
+                    <div class="custom-file">
+
+                        <input class="form-control custom-file-input" type="file" data-val="true" id="MarkDownFile" name="MarkDownFile">
+                        <label class="custom-file-label"></label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item" style="">
+                <label class="layui-form-label" style=" text-overflow:initial">Markdown组件</label>
+                <div class="layui-input-block">
+                    <div class="custom-file">
+                        <input class="form-control custom-file-input" accept="image/*" multiple="multiple" type="file" data-val="true" id="Assets" name="Assets">
+
+                        <label class="custom-file-label">请选择Markdown所需的assets组件</label>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div id="text_input" style="display:none;">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <textarea id="Content" name="Content" placeholder="@Model.Content" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div>
+            <div style="text-align:center"></div>
+            <button type="button" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius"
+                    onClick="edit()">
+                Edit
+            </button>
+
+        </div>
+
+
+    </form>
+
+
+
+    @section Scripts{
+
+        <script>
+
+
+
+        layui.config(
+            { base: '../lib/ayq/modules/labelGeneration/', version: true }).use(['layer', 'labelGeneration'], function () {
+                var labelGeneration = layui.labelGeneration;
+                var render = labelGeneration.render({
+                    elem: '#TagsDiv',
+                    data: [
+
+                        @foreach(var tag in Model.Tags){
+                            @Html.Raw(part1+tag.Name+part2)
+                        }
+
+                    ],
+                    isEnter: true
+                });
+
+                window.getTags = function () {
+                    var tags = render.getData();
+                    return tags;
+                }
+
+                $(function () {
+                    getTags();
+                })
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+            layui.use(['form', 'layedit', 'laydate', 'table'], function () {
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate,
+                    table = layui.table
+
+
+
+                //创建一个编辑器
+                var editIndex = layedit.build('LAY_demo_editor');
+
+                //自定义验证规则
+                form.verify({
+
+
+                    WriterName: function (value) {
+                        if (value.length > 15) {
+                            return '名字至多只能15个字符啊';
+                        }
+                    }
+
+                });
+
+
+                form.on('radio(markdown)', function (data) {
+                    // console.log(data.elem);
+                    // alert(data.value);//判断单选框的选中值
+                    //alert(data.othis);
+                    // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+
+                    $("#markdown_select").attr("checked", "checked");
+                    $("#null_select").attr("checked", "false");
+                    $("#text_select").attr("checked", "false");
+                    $("#markdown_input").css("display", "block");
+                    $("#text_input").css("display", "none");
+
+
+                });
+                form.on('radio(text)', function (data) {
+                    $("#text_select").attr("checked", "checked");
+                    $("#null_select").attr("checked", "false");
+                    $("#markdown_select").attr("checked", "false");
+                    $("#markdown_input").css("display", "none");
+                    $("#text_input").css("display", "block");
+                });
+
+
+                form.on('radio(null)', function (data) {
+                    $("#null_select").attr("checked", "checked");
+                    $("#markdown_select").attr("checked", "false");
+                    $("#text_select").attr("checked", "false");
+                    $("#markdown_input").css("display", "none");
+                    $("#text_input").css("display", "none");
+                });
+
+
+
+
+
+
+
+
+
+
+            });
+
+
+
+
+            function edit() {
+            if($("#BrowseCount").val()==''){
+                $("#BrowseCount").val(@(Model.BrowseCount))
+            }
+            if($("#LikeCount").val()==''){
+                $("#LikeCount").val(@(Model.LikeCount))
+            }
+
+            var tags_arr=[];
+                var tags = getTags();
+                var len=tags.length;
+                for(var i=0;i<len;i++){
+                    tags_arr.push(tags[i].value)
+                }
+                var formData = new FormData(document.getElementById('edit_form'))
+                formData.append("Tags_JSON",JSON.stringify(tags_arr))
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    async: false,
+                    url: "/api/BlogNews/Edit",
+                    data: formData,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statusCode == 200) {
+                            alert("博客信息修改成功!");
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+
+                        } else {
+
+                            alert(result.message);
+                        }
+                    },
+                    error: function () {
+                        alert("博客修改失败！");
+                    }
+
+
+                });
+
+            }
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    console.log($(this).val());
+                    var fileLabel=$(this).next('.custom-file-label');
+                    var files=$(this)[0].files;
+                    if(files.length>1){
+                        fileLabel.html('您已经选择了:'+files.length+'个文件');
+
+                    }else if(files.length==1){
+                        fileLabel.html(files[0].name);
+                    }
+                });
+
+            });
+
+
+        </script>
+
+
+
+        <style>
+
+
+
+
+            .layui-input, .layui-textarea {
+                width: 90%;
+            }
+
+            .layui-btn-fluid {
+                width: 95%;
+            }
+
+        </style>
+    }
+
+
+
+    </body>

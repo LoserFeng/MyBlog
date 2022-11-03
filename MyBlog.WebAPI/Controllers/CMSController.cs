@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
+using MyBlog.Model;
 using MyBlog.Model.ViewModels.CMS.UserInfo;
 using MyBlog.Model.ViewModels.Common;
+using MyBlog.Model.ViewModels.Error;
 
 namespace MyBlog.WebAPI.Controllers
 {
@@ -16,11 +18,16 @@ namespace MyBlog.WebAPI.Controllers
 
         private readonly ILogger<HomeController> _logger;
         private readonly IUserInfoService _userInfoService;
+        private readonly IWriterInfoService _writerInfoService;
+
+        private readonly IBlogNewsService _blogNewsService;
 
 
-        public CMSController(IUserInfoService userInfoService, ILogger<HomeController> logger)
+        public CMSController(IUserInfoService userInfoService,IWriterInfoService writerInfoService,IBlogNewsService blogNewsService ,ILogger<HomeController> logger)
         {
             _userInfoService = userInfoService;
+            _writerInfoService = writerInfoService;
+            _blogNewsService = blogNewsService;
             _logger = logger;
         }
 
@@ -79,7 +86,7 @@ namespace MyBlog.WebAPI.Controllers
             };
 
 
-            return View(model);
+            return View( "UserInfo/EditUserInfo",model);
 
 
 
@@ -89,15 +96,75 @@ namespace MyBlog.WebAPI.Controllers
 
 
         [Route("~/CMS/AddUserInfo")]
-        public async Task<IActionResult> AddUserInfo(int id)
+        public IActionResult AddUserInfo()
         {
           
-            return View();
+            return View("UserInfo/AddUserInfo");
+        }
+
+
+        public async Task<IActionResult> EditWriterInfo(int id)
+        {
+            var writerInfo = await _writerInfoService.FindByIdAsync(id);
+            if(writerInfo == null)
+            {
+
+                var E_model = new ErrorInfo
+                {
+                    Message = "出错了",
+                    Error = "没有找到ID所对应的WriterInfo信息"
+                };
+                return View("/Views/Error/Index",E_model);
+
+            }
+            var model = new WriterInfoModel
+            {
+                Id = id,
+                WriterName=writerInfo.WriterName
+            };
+
+
+            return View("WriterInfo/EditWriterInfo", model);
 
 
 
 
         }
+
+
+        public async Task<IActionResult> EditBlogNews(int id)
+        {
+            var blogNews = await _blogNewsService.FindByIdAsync(id);
+            if (blogNews == null)
+            {
+
+                var E_model = new ErrorInfo
+                {
+                    Message = "出错了",
+                    Error = "没有找到ID所对应的WriterInfo信息"
+                };
+                return View("/Views/Error/Index", E_model);
+
+            }
+            
+
+
+            return View("BlogNews/EditBlogNews", blogNews);
+
+
+
+
+        }
+
+
+
+        [Route("~/CMS/AddBlogNews")]
+        public IActionResult AddBlogNews()
+        {
+
+            return View("BlogNews/AddBlogNews");
+        }
+
 
     }
 }

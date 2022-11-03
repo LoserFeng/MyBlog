@@ -267,6 +267,10 @@
                         $("#login_register").remove();
                         $("#usermodule").css("display", "inline-block");
                         $("#publish_module").css("display","inline-block");
+                        if(res.data.writerInfo==null){
+                            alert("true");
+                            $("#creation_btn").addClass("layui-btn-disabled").attr("disabled",true);
+                        }
                         $("#head_img").attr("src", url);
 
                         $("#logo").text(res.data.name + " のBlog");

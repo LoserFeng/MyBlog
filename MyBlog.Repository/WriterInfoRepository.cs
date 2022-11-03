@@ -15,6 +15,31 @@ namespace MyBlog.Repository
     public class WriterInfoRepository : BaseRepository<WriterInfo>,IWriterInfoRepository
     {
         
+
+        public override async Task<List<WriterInfo>>QueryAsync(int page,int limit, RefAsync<int> total)
+        {
+
+            var list = await base.Context.Queryable<WriterInfo>()
+                .Includes(w => w.Blogs)
+                .Includes(w=>w.Fans)
+                .ToPageListAsync(page, limit, total);
+
+
+            return list;
+        }
+
+
+        public override async Task<bool>DeleteByIdAsync(int id)
+        {
+
+            var res = await base.Context.DeleteNav<WriterInfo>(w => w.Id == id)
+                .Include(w => w.Blogs)
+                .Include(w => w.Fans)
+                .ExecuteCommandAsync();
+
+            return res;
+
+        }
      
     }
 }

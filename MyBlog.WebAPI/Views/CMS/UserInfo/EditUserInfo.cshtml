@@ -24,7 +24,7 @@
 
 
     <input class="layui-hide" data-val="true" type="number" id="id" name="id" value="@Model.Id">
-    <div class="layui-form-item">
+    <div class="layui-form-item" style="margin-top:40px">
         <label  class="layui-form-label">昵称</label>
         <div class="layui-input-block">
             <input id="Name" name="Name" data-val="true"     type="text" placeholder="@Model.Name" autocomplete="off"
@@ -176,6 +176,9 @@
                     processData: false,//这个必须有，不然会报错
                     contentType: false,//这个必须有，不然会报错
                     async:false,
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
                     url:"/api/UserInfo/Edit",
                     data: formData,
                     success: function(result){

@@ -12,6 +12,11 @@ namespace MyBlog.Model.ViewModels.Blog
 {
     public class CreationInfo
     {
+
+
+
+
+
         [Required]
         [Display(Name = "标题")]
         public string Title { get; set; }
@@ -42,7 +47,7 @@ namespace MyBlog.Model.ViewModels.Blog
 
 
         [Display(Name = "文章组件")]
-        public List<IFormFile> Assets { get; set; }
+        public List<IFormFile>? Assets { get; set; }
 
 
         [Display(Name = "文章(Text)")]

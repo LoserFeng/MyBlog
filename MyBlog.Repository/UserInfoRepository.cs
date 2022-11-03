@@ -94,6 +94,12 @@ namespace MyBlog.Repository
         
             var res = await base.Context.DeleteNav<UserInfo>(u => u.Id == id)
                 .Include(c => c.MainPagePhoto)
+                .Include(c=>c.WriterInfo)
+                .Include(c=>c.WriterInfo)
+                .ThenInclude(c=>c.Fans,new DeleteNavOptions()
+                {
+                    ManyToManyIsDeleteA=true
+                })
                 .Include(c=>c.Favorites,new DeleteNavOptions()
                 {
                     ManyToManyIsDeleteA= true
