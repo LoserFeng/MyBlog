@@ -35,11 +35,11 @@ namespace MyBlog.WebAPI.Controllers.Api
         private readonly IPhotoService _photoService;
 
         private readonly IWebHostEnvironment webHostEnvironment;
-        private readonly ITagService _tagService;
+        private readonly ITagInfoService _tagService;
 
         private readonly ViewModelMapper _viewModelMapper;
 
-        public BlogNewsController(IBlogNewsService blogNewsService,IUserInfoService userInfoService, IWebHostEnvironment webHostEnvironment, ITagService tagService, IPhotoService photoService)
+        public BlogNewsController(IBlogNewsService blogNewsService,IUserInfoService userInfoService, IWebHostEnvironment webHostEnvironment, ITagInfoService tagService, IPhotoService photoService)
         {
             _blogNewsService = blogNewsService;
             _userInfoService = userInfoService;

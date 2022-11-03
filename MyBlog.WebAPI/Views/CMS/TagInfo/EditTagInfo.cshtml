@@ -1,0 +1,172 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+
+    Layout = "_Layout_common";
+}
+
+@model TagInfoModel
+
+
+
+
+<body>
+
+
+
+
+
+
+<form enctype="multipart/form-data" id="edit_form" lay-filter="edit_form"  
+    class="layui-form" method="post">
+
+
+    <input class="layui-hide" data-val="true" type="number" id="Id" name="Id" value="@Model.Id">
+    <div class="layui-form-item" style="margin-top:20px">
+        <label  class="layui-form-label">Tag名称</label>
+        <div class="layui-input-block">
+            <input id="Name" name="Name" lay-verify="Name" data-val="true"     type="text" placeholder="@Model.Name" autocomplete="off"
+                class="layui-input">
+        </div>
+    </div>
+
+
+
+
+    <div>
+        <div style="text-align:center"></div>
+        <button type="button" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius"
+            onClick="edit()">Edit</button>
+
+    </div>
+
+
+</form>
+
+
+
+    @section Scripts{
+
+        <script>
+
+
+            layui.use(['form', 'layedit', 'laydate','table'], function () {
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate,
+                    table=layui.table
+
+
+
+                //创建一个编辑器
+                var editIndex = layedit.build('LAY_demo_editor');
+
+                //自定义验证规则
+                form.verify({
+                    Name: function (value) {
+                        if (value.length > 10) {
+                            return 'Tag名称至多只能10个字符啊';
+                        }
+                    }
+                    ,
+                  
+                });
+
+
+                
+                
+
+
+
+
+            });
+
+            //图形加载之后的变化
+
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    console.log($(this).val());
+                    var filename = $(this).val().split("\\").pop();
+                    $(this).next(".custom-file-label").html(filename);
+                });
+
+            });
+
+
+
+
+/*
+
+
+
+
+
+*/
+
+            function edit(){
+
+                var formData=new FormData(document.getElementById('edit_form'))
+
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    async:false,
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    url:"/api/TagInfo/Edit",
+                    data: formData,
+                    success: function(result){
+                        console.log(result);
+                        if(result.statusCode==200){
+                            alert("作者信息修改成功!");
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+
+
+
+
+                        }else{
+
+                            alert(result.message);
+                        }
+                    },
+                    error:function(){
+                        alert("修改失败！");
+                    }
+
+                    
+                });
+                
+            }
+
+
+
+        </script>
+
+
+
+        <style>
+
+
+
+
+            .layui-input, .layui-textarea{
+                width:90%;
+
+            }
+
+            .layui-btn-fluid{
+                width:95%;
+            }
+
+        </style>
+    }
+
+
+
+    </body>

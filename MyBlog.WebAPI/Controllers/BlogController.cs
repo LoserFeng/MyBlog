@@ -18,13 +18,13 @@ namespace MyBlog.WebAPI.Controllers
     {
 
         private readonly IBlogNewsService _blogNewsService;
-        private readonly ITagService _tagService;
+        private readonly ITagInfoService _tagService;
         private readonly ViewModelMapper _viewModelMapper;
 
         
         private readonly static int PageSize = 8;
 
-        public BlogController(IBlogNewsService blogNewsService,ITagService tagService)
+        public BlogController(IBlogNewsService blogNewsService,ITagInfoService tagService)
         {
             _blogNewsService = blogNewsService;
             _viewModelMapper = new ViewModelMapper();

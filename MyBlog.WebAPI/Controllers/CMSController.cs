@@ -22,12 +22,15 @@ namespace MyBlog.WebAPI.Controllers
 
         private readonly IBlogNewsService _blogNewsService;
 
+        private readonly ITagInfoService _tagInfoService;
 
-        public CMSController(IUserInfoService userInfoService,IWriterInfoService writerInfoService,IBlogNewsService blogNewsService ,ILogger<HomeController> logger)
+
+        public CMSController(IUserInfoService userInfoService,IWriterInfoService writerInfoService,IBlogNewsService blogNewsService,ITagInfoService tagInfoService ,ILogger<HomeController> logger)
         {
             _userInfoService = userInfoService;
             _writerInfoService = writerInfoService;
             _blogNewsService = blogNewsService;
+            _tagInfoService = tagInfoService;
             _logger = logger;
         }
 
@@ -163,6 +166,45 @@ namespace MyBlog.WebAPI.Controllers
         {
 
             return View("BlogNews/AddBlogNews");
+        }
+
+
+        public async Task<IActionResult> EditTagInfo(int id)
+        {
+            var tagInfo = await _tagInfoService.FindByIdAsync(id);
+            if (tagInfo == null)
+            {
+
+                var E_model = new ErrorInfo
+                {
+                    Message = "出错了",
+                    Error = "没有找到ID所对应的WriterInfo信息"
+                };
+                return View("/Views/Error/Index", E_model);
+
+            }
+            var model = new TagInfoModel
+            {
+                Id = id,
+                Name = tagInfo.Name
+            };
+
+
+
+            return View("TagInfo/EditTagInfo",model );
+
+
+
+
+        }
+
+
+
+        [Route("~/CMS/AddTagInfo")]
+        public IActionResult AddTagInfo()
+        {
+
+            return View("TagInfo/AddTagInfo");
         }
 
 

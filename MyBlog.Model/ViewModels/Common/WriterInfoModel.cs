@@ -12,7 +12,7 @@ namespace MyBlog.Model.ViewModels.Common
     {
 
         public int Id { get; set; }
-        public String WriterName { get; set; }
+        public String? WriterName { get; set; }
 
         public int Fan_Total { get; set; }
         

@@ -15,6 +15,9 @@ namespace MyBlog.IRepository
         Task<bool> DeleteByIdAsync(int id); 
         Task<bool>UpdateAsync(TEntity entity);
 
+
+
+
         Task<TEntity?>FindByIdAsync(int id);
 
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func);

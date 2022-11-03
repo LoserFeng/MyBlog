@@ -23,7 +23,7 @@
                                 <h4>@Model.Title</h4>
                                 <p class="fc-grey fs-14">x
                                     <small>
-                                        作者：<a href="javascript:void(0)" target="_blank" class="fc-link">@Model.WriterInfo.WriterName</a>
+                                        作者：<a href="javascript:void(0)" target="_blank" class="fc-link">@(Model.WriterInfo==null?null:Model.WriterInfo.WriterName)</a>
                                     </small>
                                     <small class="ml10">围观群众：<i class="readcount">@Model.BrowseCount</i></small>
                                     <small class="ml10">更新于 <label>@Model.CreationTime.ToString()</label> </small>
@@ -40,7 +40,7 @@
                                   </div>
                                 <div class="copyright mt20">
                                     <p class="f-toe fc-black">
-                                        非特殊说明，本文版权归 @(Model.WriterInfo.WriterName) 所有，转载请注明出处.
+                                        非特殊说明，本文版权归 @(Model.WriterInfo == null ? null : Model.WriterInfo.WriterName) 所有，转载请注明出处.
                                     </p>
                                     <p class="f-toe">
                                         本文标题：

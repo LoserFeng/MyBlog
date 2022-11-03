@@ -18,9 +18,9 @@ namespace MyBlog.Service
     public class BlogNewsService:BaseService<BlogNews>,IBlogNewsService
     {
         private readonly IBlogNewsRepository _iBlogNewsRepository;   //readonly的值只能在构造方法内修改，但是不能在别的地方进行修改
-        private readonly ITagRepository _tagRepository;
+        private readonly ITagInfoRepository _tagRepository;
 
-        public BlogNewsService(IBlogNewsRepository iBlogNewsRepository,ITagRepository tagRepository)
+        public BlogNewsService(IBlogNewsRepository iBlogNewsRepository,ITagInfoRepository tagRepository)
         {
             base._iBaseRepository = iBlogNewsRepository;
             _iBlogNewsRepository = iBlogNewsRepository;

@@ -1,4 +1,5 @@
 ﻿using MyBlog.Model;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace MyBlog.IRepository
 {
-    public interface ITagRepository:IBaseRepository<TagInfo>
+    public interface ITagInfoRepository:IBaseRepository<TagInfo>
     {
 
         Task<TagInfo?> FindByNameAsync(string name);
+      
+
     }
 }
