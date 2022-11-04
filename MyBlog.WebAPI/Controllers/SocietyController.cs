@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
 using MyBlog.Model.ViewModels.Blog;
 using MyBlog.Model.ViewModels.Society;
 using MyBlog.Service;
+using MyBlog.WebAPI.Controllers.Api.ApiResult;
+using SqlSugar;
 using System.Reflection.Metadata;
 using Utility._AutoMapper;
 
@@ -34,17 +37,12 @@ namespace MyBlog.WebAPI.Controllers
             {
                 Comments = comments
             };
-
-
-
-           
-
-
-
-
-
-
             return View(model);
         }
+
+
+
+
+
     }
 }

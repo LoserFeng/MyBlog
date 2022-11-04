@@ -1,0 +1,181 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+
+    Layout = "_Layout_common";
+}
+
+@model CommentModel
+
+
+
+
+<body>
+
+
+
+
+
+
+<form enctype="multipart/form-data" id="edit_form" lay-filter="edit_form"  
+    class="layui-form" method="post">
+
+
+    <input class="layui-hide" data-val="true" type="number" id="Id" name="Id" value="@Model.Id">
+    <div class="layui-form-item layui-form-text" style="margin-top:50px">
+        <label class="layui-form-label">评论内容</label>
+        <div class="layui-input-block">
+            <textarea id="Content" name="Content" placeholder="@Model.Content" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item" style="margin-top:30px">
+        <label class="layui-form-label">点赞人数</label>
+        <div class="layui-input-block">
+            <input id="SupportCount" name="SupportCount" lay-verify="SupportCount"  data-val="true" type="number" placeholder="@Model.SupportCount"
+                    autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+    <div>
+        <div style="text-align:center"></div>
+        <button type="button" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius"
+            onClick="edit()">Edit</button>
+
+    </div>
+
+
+</form>
+
+
+
+    @section Scripts{
+
+        <script>
+
+
+            layui.use(['form', 'layedit', 'laydate','table'], function () {
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate,
+                    table=layui.table
+
+
+
+                //创建一个编辑器
+                var editIndex = layedit.build('LAY_demo_editor');
+
+                //自定义验证规则
+                form.verify({
+
+
+                    Content: function (value) {
+                        if (value.length > 100) {
+                            return '评论内容不能多余100字';
+                        }
+                    }
+                  
+                });
+
+
+                
+                
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+
+*/
+
+            function edit(){
+                if($("#SupportCount").val()==''){
+                    $("#SupportCount").val(@(Model.SupportCount))
+                }
+                var formData=new FormData(document.getElementById('edit_form'))
+
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    async:false,
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    url:"/api/Comment/Edit",
+                    data: formData,
+                    success: function(result){
+                        console.log(result);
+                        if(result.statusCode==200){
+                            alert("评论信息篡改成功!");
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+
+
+
+
+                        }else{
+
+                            alert(result.message);
+                        }
+                    },
+                    error:function(){
+                        alert("修改失败！");
+                    }
+
+                    
+                });
+                
+            }
+
+
+
+        </script>
+
+
+
+        <style>
+
+
+
+
+            .layui-input, .layui-textarea{
+                width:90%;
+
+            }
+
+            .layui-btn-fluid{
+                width:95%;
+            }
+
+        </style>
+    }
+
+
+
+    </body>

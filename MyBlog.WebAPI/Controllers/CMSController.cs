@@ -2,6 +2,8 @@
 using MyBlog.IService;
 using MyBlog.Model;
 using MyBlog.Model.ViewModels.CMS.UserInfo;
+
+using MyBlog.Model.ViewModels.Comment_ViewModel;
 using MyBlog.Model.ViewModels.Common;
 using MyBlog.Model.ViewModels.Error;
 
@@ -24,13 +26,15 @@ namespace MyBlog.WebAPI.Controllers
 
         private readonly ITagInfoService _tagInfoService;
 
+        private readonly ICommentService _commentService;   
 
-        public CMSController(IUserInfoService userInfoService,IWriterInfoService writerInfoService,IBlogNewsService blogNewsService,ITagInfoService tagInfoService ,ILogger<HomeController> logger)
+        public CMSController(IUserInfoService userInfoService,IWriterInfoService writerInfoService,IBlogNewsService blogNewsService,ITagInfoService tagInfoService ,ICommentService commentService,ILogger<HomeController> logger)
         {
             _userInfoService = userInfoService;
             _writerInfoService = writerInfoService;
             _blogNewsService = blogNewsService;
             _tagInfoService = tagInfoService;
+            _commentService = commentService;
             _logger = logger;
         }
 
@@ -207,6 +211,46 @@ namespace MyBlog.WebAPI.Controllers
             return View("TagInfo/AddTagInfo");
         }
 
+
+
+        public async Task<IActionResult> EditComment(int id)
+        {
+            var comment= await _commentService.FindByIdAsync(id);
+            if (comment == null)
+            {
+
+                var E_model = new ErrorInfo
+                {
+                    Message = "出错了",
+                    Error = "没有找到ID所对应的WriterInfo信息"
+                };
+                return View("/Views/Error/Index", E_model);
+
+            }
+            var model = new CommentModel
+            {
+                Id = id,
+                Content = comment.Content,
+                SupportCount=comment.SupportCount
+               
+            };
+
+
+            return View("Comment/EditComment", model);
+
+
+
+
+        }
+
+
+
+        [Route("~/CMS/AddComment")]
+        public IActionResult AddComment()
+        {
+
+            return View("Comment/AddComment");
+        }
 
     }
 }

@@ -52,11 +52,11 @@
                     , title: '作者信息数据表'
                     , cols: [[ //表头
                         { type: 'checkbox' }
-                        , { field: 'id', title: 'ID', width: 80, sort: true }
+                        , { field: 'id', title: 'ID', width: 100, sort: true }
                         , { field: 'name', title: 'Tag名称', width: 200 }
-                        , { field: 'blog_Total', title: '博客数量', width: 220 }
-                        , { field:'browse_Total', title:'总浏览数量',width:200 }
-                        , { field: 'like_Total', title: '喜欢数量', width: 220 }
+                        , { field: 'blog_Total', title: '博客数量', width: 165 }
+                        , { field:'browse_Total', title:'总浏览数量',width:165 }
+                        , { field: 'like_Total', title: '喜欢数量', width: 165 }
                         , { width: 150, align: 'center', toolbar: '#barDemo' }
                     ]]
                     , page: true
@@ -185,7 +185,7 @@
                     headers: {
                         'Authorization': localStorage.getItem("JWTtoken")
                     },
-                    url: "/api/WriterInfo/Delete?id=" + data.id,
+                    url: "/api/TagInfo/Delete?id=" + data.id,
                     success: function (result) {
                         console.log(result);
                         if (result.statusCode == 200) {

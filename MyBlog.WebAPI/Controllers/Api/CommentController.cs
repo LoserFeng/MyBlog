@@ -3,8 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
 using MyBlog.Model;
 using MyBlog.Model.ViewModels.Blog;
+
+using MyBlog.Model.ViewModels.Comment_ViewModel;
+using MyBlog.Model.ViewModels.Common;
 using MyBlog.Service;
 using MyBlog.WebAPI.Controllers.Api.ApiResult;
+using SqlSugar;
 using System.Security.Claims;
 
 namespace MyBlog.WebAPI.Controllers.Api
@@ -106,7 +110,7 @@ namespace MyBlog.WebAPI.Controllers.Api
         }
 
 
-        [HttpPost("Delete")]
+        [HttpPost("DeleteByGUID")]
         [Authorize]
         public async Task<ActionResult<ApiResponse>> DeleteComment(String GUID)
         {
@@ -125,6 +129,76 @@ namespace MyBlog.WebAPI.Controllers.Api
 
 
             return ApiResponse.Ok("删除成功");
+        }
+
+        [HttpDelete("Delete")]
+        public async Task<ApiResponse> Delete(int id)
+        {
+            var res = await _commentService.DeleteByIdAsync(id);
+
+            if (res)
+            {
+                return ApiResponse.Ok("删除成功");
+            }
+
+            return ApiResponse.Error(Response, "删除失败");
+
+        }
+
+
+
+        [HttpGet("CommentList")]
+        [Authorize]
+        public async Task<ActionResult<LayUIResponse>> GetCommentList(int page = 1, int limit = 8)
+        {
+            RefAsync<int> total = 0;
+
+            var data = await _commentService.GetCommentList(page, limit, total);
+
+
+            return LayUIResponse.Ok(count: total, data: data);
+        }
+
+
+
+
+
+        [Authorize]
+        [HttpPost("Edit")]
+        public async Task<ActionResult<ApiResponse>> Edit([FromForm] EditComment editComment)
+        {
+
+            var comment = new Comment
+            {
+                Id = editComment.Id,
+                Content = editComment.Content==""||editComment.Content==null?null:editComment.Content,
+                SupportCount = editComment.SupportCount
+            };
+
+
+
+            var res = await _commentService.UpdateAsync(comment);
+
+            if (res)
+            {
+                return ApiResponse.Ok("更新成功");
+
+            }
+
+            return ApiResponse.Error(Response, "更新失败");
+        }
+
+
+        [HttpGet("SocietyList")]
+        [Authorize]
+        public async Task<ActionResult<LayUIResponse>> GetSocietyList(int page = 1, int limit = 8)
+        {
+            RefAsync<int> total = 0;
+
+            var data = await _commentService.GetSocietyList(page, limit, total);
+
+
+            return LayUIResponse.Ok(count: total, data: data);
         }
 
 

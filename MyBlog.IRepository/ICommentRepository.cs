@@ -1,4 +1,5 @@
 ﻿using MyBlog.Model;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace MyBlog.IRepository
         Task<List<Comment>> GetCommentsByBlogId(int BlogId);
 
         Task<Comment> QueryByGUIDAsync(string GUID);
+
+        Task<List<Comment>> QueryAsync(int blogId,int page, int size, RefAsync<int> total);
 
 
     }
