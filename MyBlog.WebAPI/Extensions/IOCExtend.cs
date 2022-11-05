@@ -34,7 +34,8 @@ namespace MyBlog.WebAPI.Extensions
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
 
-
+            services.AddScoped<IEventInfoRepository, EventInfoRepository>();
+            services.AddScoped<IEventInfoService, EventInfoService>();
 
             return services;
         }

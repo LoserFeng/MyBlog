@@ -13,6 +13,7 @@ namespace MyBlog.Model
 
 
 
+        public int UserId { get; set; }
 
 
 
@@ -27,6 +28,13 @@ namespace MyBlog.Model
 
 
         public DateTime Time { get; set; }
+
+        public int Year { get; set; }
+
+        public int Month { get;set; }
+        public int Day { get; set; }
+
+
 
 
 

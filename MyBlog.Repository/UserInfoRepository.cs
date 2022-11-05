@@ -24,6 +24,7 @@ namespace MyBlog.Repository
                 .Include(c => c.Favorites)
                 .Include(c => c.Concerns)
                 .Include(c => c.WriterInfo)
+                .Include(c=>c.Events)
                 .ExecuteCommandAsync();
 
         }
@@ -49,11 +50,17 @@ namespace MyBlog.Repository
                                 .Includes(c => c.Concerns)
                                 .Includes(c => c.Favorites)
                                 .Includes(c => c.MainPagePhoto)
+                                .Includes(c=>c.Events)
                                 .Where(c => c.Id == id).ToListAsync();
 
+            var userInfo = list.FirstOrDefault();
+            if (userInfo == null)
+            {
+                return null;
+            }
+            userInfo.Events = userInfo.Events.OrderByDescending(e => e.Time).ToList();
 
-
-            return list.FirstOrDefault();
+            return userInfo;
 
 
 
@@ -108,6 +115,7 @@ namespace MyBlog.Repository
                 {
                     ManyToManyIsDeleteA=true
                 })
+                .Include(c=>c.Events)
                 .ExecuteCommandAsync();
             return res;
 

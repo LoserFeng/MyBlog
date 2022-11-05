@@ -9,6 +9,6 @@ namespace MyBlog.IRepository
 {
     public interface IEventInfoRepository: IBaseRepository<EventInfo>
     {
-        
+        Task<int> CreateReturnIdAsync(EventInfo eventInfo);
     }
 }

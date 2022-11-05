@@ -151,7 +151,8 @@ namespace MyBlog.WebAPI.Controllers.Api
 
                     }:null,
                     Concerns = new List<WriterInfo>(),
-                    Favorites = new List<BlogNews>()
+                    Favorites = new List<BlogNews>(),
+                    Events=new List<EventInfo>()
 
                 };
 #pragma warning restore CS8601 // 引用类型赋值可能为 null。

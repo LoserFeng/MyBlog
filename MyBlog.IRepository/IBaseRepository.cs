@@ -18,7 +18,7 @@ namespace MyBlog.IRepository
 
 
 
-        Task<TEntity?>FindByIdAsync(int id);
+        Task<TEntity>FindByIdAsync(int id);
 
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func);
 

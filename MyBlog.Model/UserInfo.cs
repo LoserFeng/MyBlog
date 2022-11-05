@@ -43,5 +43,12 @@ namespace MyBlog.Model
         public Photo MainPagePhoto { get; set; }
 
 
+
+
+        [Navigate(NavigateType.OneToMany, nameof(EventInfo.UserId))]
+        public List<EventInfo> Events { get; set; }
+
+
+
     }
 }

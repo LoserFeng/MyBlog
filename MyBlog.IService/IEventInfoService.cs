@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MyBlog.IService
 {
-    internal interface IEventInfoService:IBaseService<EventInfo>
+    public interface IEventInfoService:IBaseService<EventInfo>
     {
+        Task<int>CreateReturnIdAsync(EventInfo eventInfo);   
     }
 }

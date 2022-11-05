@@ -10,5 +10,15 @@ namespace MyBlog.Repository
 {
     public class EventInfoRepository:BaseRepository<EventInfo>, IEventInfoRepository
     {
+
+
+        public async Task<int> CreateReturnIdAsync(EventInfo eventInfo)
+        {
+
+            return await base.Context
+                .Insertable<EventInfo>(eventInfo)
+                .ExecuteReturnIdentityAsync();
+
+        }
     }
 }

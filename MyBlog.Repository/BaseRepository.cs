@@ -35,8 +35,8 @@ namespace MyBlog.Repository
                 typeof(Photo),
                 typeof(Favorite),
                 typeof(Follow),
-                typeof(Classify),
-                typeof(Comment)
+                typeof(Comment),
+                typeof(EventInfo)
                 );
 
 
