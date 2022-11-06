@@ -169,7 +169,7 @@ namespace MyBlog.WebAPI.Controllers.Api
                 }
 
                 bool res=await _userInfoService.register(user);
-
+                
                 if (res == true)
                 {
                     return ApiResponse.Ok(true, message: "注册成功！");

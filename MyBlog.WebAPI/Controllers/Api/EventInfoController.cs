@@ -111,13 +111,19 @@ namespace MyBlog.WebAPI.Controllers.Api
                 EventContent = eventInfoEdit.EventContent,
                 UserId = pre_Event.UserId,
                 Time = pre_Event.Time,
+                Year=pre_Event.Year,
+                Day=pre_Event.Day,
+                Month=pre_Event.Month
             };
 
 
             bool b = await _eventInfoService.UpdateAsync(update_Event);
             if (!b) return ApiResponse.Error(Response, "修改失败");
 
-            return ApiResponse.Ok("修改成功");
+            var data =await _eventInfoService.FindByIdAsync(update_Event.Id);
+
+
+            return ApiResponse.Ok(data,"修改成功");
 
 
 
