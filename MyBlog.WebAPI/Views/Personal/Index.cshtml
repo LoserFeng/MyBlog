@@ -1,0 +1,344 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model PersonalViewModel
+
+<body>
+ <div class="doc-container" id="doc-container">
+        <div class="about-banner banner_cls" id="container">
+		    <div class="about-title">
+                <img id="head_img" src="@(Model.MainPagePhoto.Url)"  class="head_img">
+		        <h1 id="UserName_header">@(Model.Name)</h1>
+		        <p id="Motto_header" style="margin-top:10px">@(Model.Motto)</p>
+		    </div>
+		</div>
+		<div class="container-fixed">
+		    <div class="container-inner">
+		        <article>
+		            <section>
+		
+                        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this">文章</li>
+                                <li>收藏</li>
+                                <li>关注</li>
+                                <li>粉丝</li>
+                            </ul>
+                            <div class="layui-tab-content" style="min-height: 300px;">
+                                <div class="layui-tab-item layui-show">
+                                    <ul id="blog_list" class="list-unstyled">
+                                        @foreach(var blog in Model.WriterInfo.Blogs )
+                                        {
+                                            <li class="media">
+                                                <a href="/Blog/Details?GUID=@(blog.GUID)">
+                                                <img src="@(blog.CoverPhoto.Url)" class="mr-3 small-item">
+                                                </a>
+                                                <div class="media-body">
+                                                     <a href="/Blog/Details?GUID=@(blog.GUID)">
+                                                    <h4 class="mt-0 mb-1 blog_title">@(blog.Title)</h4>
+                                                    </a>
+                                                    <div class="f-fr blog_info">
+                                                        <span class="read">
+                                                            <i class="fa fa-eye fs-16">浏览人数</i>
+                                                            <i class="num">@(blog.BrowseCount)</i>
+                                                        </span>
+                                                        <span class="ml20">
+                                                            <i class="fa fa-comments fs-16">评论数</i>
+                                                            <a href="javascript:void(0)" class="num fc-grey">@(blog.Comments.Count())</a>
+                                                        </span>
+                                                    </div>
+                                                    <p>@(blog.Summary)...</p>
+                                                </div>
+                                            </li>
+                                        }
+                               
+                                    </ul>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <ul id="favorite_list" class="list-unstyled">
+                                        @foreach (var blog in Model.Favorites)
+                                        {
+                                            <li class="media">
+                                                <a href="/Blog/Details?GUID=@(blog.GUID)">
+                                                <img src="@(blog.CoverPhoto.Url)" class="mr-3 small-item">
+                                                </a>
+                                                <div class="media-body">
+                                                    <a href="/Blog/Details?GUID=@(blog.GUID)">
+                                                    <h4 class="mt-0 mb-1 blog_title">@(blog.Title)</h4>
+                                                    </a>
+                                                    <div class="f-fr blog_info">
+                                                        <span class="read">
+                                                            <i class="fa fa-eye fs-16">浏览人数</i>
+                                                            <i class="num">@(blog.BrowseCount)</i>
+                                                        </span>
+                                                        <span class="ml20">
+                                                            <i class="fa fa-comments fs-16">评论数</i>
+                                                            <a href="javascript:void(0)" class="num fc-grey">@(blog.Comments.Count())</a>
+                                                        </span>
+                                                    </div>
+                                                    <p>@(blog.Summary)...</p>
+                                                </div>
+                                            </li>
+                                        }
+
+
+                                    </ul>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div id="concern_list" class="list-group">
+
+                                        @foreach(var userInfo in Model.Concerns){
+                                            <div class="list-group-item list-group-item-action ">
+                                                <button id="follow_btn" value="@(userInfo.WriterId)" class="c_btn_cls layui-btn layui-btn-radius layui-btn-sm layui-btn-primary"
+                                                    style="margin-top: 10px;">
+                                                    已关注
+                                                </button>
+                                                <a href="/Personal/Index?Id=@(userInfo.Id)" >
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <img src="@(userInfo.MainPagePhoto.Url)" class="follow_head_img">
+                                                        <h4 class="follow_writername">@(userInfo.WriterInfo.WriterName)</h4>
+                                                        <h5 class="follow_motto">@(userInfo.Motto)</h5>
+
+                                                    </div>
+
+                                                </a>
+
+                                            </div>
+
+                                        }
+
+                                    </div>
+
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div id="fan_list" class="list-group">
+                                        @foreach (var userInfo in Model.WriterInfo.Fans)
+                                        {
+                                            <div  class="list-group-item list-group-item-action ">
+                                                
+                                                @if(Model.Concerns.Any(c=>c.WriterInfo.Id==userInfo.WriterInfo.Id)){
+                                                        <button id="follow_btn" value="@(userInfo.WriterId)" class="c_btn_cls layui-btn layui-btn-radius layui-btn-sm layui-btn-primary"
+                                                    style="margin-top: 10px;">
+                                                        已关注
+                                                        </button>
+                                                }
+                                                else{
+                                                    <button id="follow_btn" value="@(userInfo.WriterId)" class="c_btn_cls layui-btn layui-btn-radius layui-btn-sm layui-btn-warm" style="margin-top: 10px;">
+                                                        关注
+                                                    </button>
+                                                }
+                                                <a href="/Personal/Index?Id=@(userInfo.Id)">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <img src="@(userInfo.MainPagePhoto.Url)" class="follow_head_img">
+                                                        <h4 class="follow_writername">@(userInfo.UserName)</h4>
+                                                        <h5 class="follow_motto">@(userInfo.Motto)</h5>
+                                                    
+
+                                                            
+                                                    
+                                                    </div>
+                                                </a>
+
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+		            </section>
+		        </article>
+
+		    </div>
+		</div>
+    </div>
+
+
+
+    @section Scripts{
+		<script>
+
+            $("button[id^='follow_btn']").each(function () {
+                $(this).click(function () {
+                    if($(this).is('.layui-btn-primary')){
+                        unfollow($(this));
+                    }
+                    if($(this).is('.layui-btn-warm')){
+                        follow($(this));
+                    }
+                })
+            })
+
+
+
+           function follow(target){
+
+
+
+                var is_login = getCookie("is_login");
+
+                if (is_login == "true") {
+                    $.ajax({
+                        type: "POST",
+                        processData: false,//这个必须有，不然会报错
+                        contentType: false,//这个必须有，不然会报错
+                        headers: {
+                            'Authorization': localStorage.getItem("JWTtoken")
+                        },
+                        url:`/api/UserInfo/Follow?WriterId=${target.val()}`,
+                        success: function(result){
+                            console.log(result);
+                            if(result.statusCode==200){ 
+                                target.toggleClass('layui-btn-primary');
+                                target.toggleClass('layui-btn-warm');
+                                target.html("已关注");
+
+                            }else{
+
+                                alert(result.message);
+                            }
+                        },
+                        error:function(){
+                            alert("关注失败！");
+                        }
+
+                        
+                    });
+                }else{
+                    alert("请先登录");
+                    login_register_click();
+
+                }
+            }
+
+            function unfollow(target){
+
+
+               var is_login = getCookie("is_login");
+
+                if (is_login == "true") {
+                    $.ajax({
+                        type: "DELETE",
+                        processData: false,//这个必须有，不然会报错
+                        contentType: false,//这个必须有，不然会报错
+                        headers: {
+                            'Authorization': localStorage.getItem("JWTtoken")
+                        },
+                        url:`/api/UserInfo/Unfollow?WriterId=${target.val()}`,
+                        success: function(result){
+                            console.log(result);
+                            if(result.statusCode==200){ 
+                                target.toggleClass('layui-btn-primary');
+                                target.toggleClass('layui-btn-warm');
+                                target.html("关注");
+                            }else{
+
+                                alert(result.message);
+                            }
+                        },
+                        error:function(){
+                            alert("取消关注失败！");
+                        }
+
+                        
+                    });
+                }else{
+                    alert("请先登录");
+                    login_register_click();
+
+                }
+
+            }
+
+
+
+
+
+
+
+		</script>
+
+
+
+
+	}
+
+
+
+
+
+
+
+<style>
+    .head_img {
+        width: 80px;
+        height: 80px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+
+    .follow_head_img {
+        width: 60px;
+        height: 60px;
+        margin-left: 30px;
+        border-radius: 50%;
+    }
+
+    .follow_writername{
+        position: absolute;
+        margin-left: 130px;
+        margin-top: 5px;
+        color: rgb(251, 114, 153);
+
+    }
+    .follow_motto{
+        position: absolute;
+        margin-left: 130px;
+        margin-top: 35px;
+    }
+
+    .small-item{
+        border-radius: 4px;
+        display: block;
+        width: 160px;
+        height: 100px;
+    }
+
+    .blog_info{
+
+        position: relative;
+        right: 170px;
+        top: 85px;
+    }
+
+    .blog_title{
+        font-weight:bold;
+    }
+
+    .banner_cls{
+        background-image: url('/photos/default_personalpage.jpeg');
+        background-position: center center;
+        /* 背景图不平铺 */
+        background-repeat: no-repeat;
+        /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
+        background-attachment: fixed;
+        /* 让背景图基于容器大小伸缩 */
+        background-size: cover;
+        /* 设置背景颜色，背景图加载过程中会显示背景色 */
+        background-color: #FFFFFF;
+
+    }
+    .c_btn_cls{
+        position: absolute;
+        right: 30px;
+        top: 15px;
+    }
+    
+</style>
+
+</body>

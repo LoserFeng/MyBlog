@@ -213,7 +213,7 @@
                  async: false,
                  processData: false,//这个必须有，不然会报错
                  contentType: false,//这个必须有，不然会报错
-
+                 headers: {Authorization: localStorage.getItem("JWTtoken")},
                  url: "/api/UserInfo/Delete?id=" + data.id,
                  success: function (result) {
                      console.log(result);

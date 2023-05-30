@@ -30,7 +30,7 @@ namespace MyBlog.Service
 
         }
 
-        public  async Task<List<BlogNews>?> QueryByTagAsync(int TagId)
+        public  async Task<List<BlogNews>> QueryByTagAsync(int TagId)
         {
             return await _iBlogNewsRepository.QueryByTagAsync(TagId);
         }
@@ -120,7 +120,7 @@ namespace MyBlog.Service
                     CoverPhoto = blogNews.CoverPhoto,
                     Content = blogNews.Content,
                     Introduction = blogNews.Introduction,
-                    LikeCount = blogNews.LikeCount,
+                    LikeCount = blogNews.Likers.Count(),
                     Path = blogNews.Path,
                     Tags=String.Join(",", tagList),
                     Time=blogNews.Time,
@@ -182,6 +182,7 @@ namespace MyBlog.Service
             return await _iBlogNewsRepository.UpdateAsync(update_blogNews);
 
         }
+
 
     }
 }

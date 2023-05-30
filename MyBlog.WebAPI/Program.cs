@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.WebEncoders;
 using Microsoft.OpenApi.Models;
 using MyBlog.WebAPI.Extensions;
+using MyBlog.WebAPI.Filters;
 using SqlSugar;
 using SqlSugar.IOC;
 using System.Text.Encodings.Web;
@@ -21,12 +22,39 @@ builder.Services.Configure<WebEncoderOptions>(options =>
 /*
  * 配置json中文乱码问题
  */
+
+
+builder.Services.AddSession();
+
 builder.Services.AddControllersWithViews().AddJsonOptions((options =>
 {
     // 配置System.Text.Json 全局Json非英文字符
     //options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);//此配置部分字符无法原封显示
     options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 }));
+
+
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions
+        .AddPageApplicationModelConvention("/StreamedSingleFileUploadDb",
+            model =>
+            {
+                model.Filters.Add(
+                    new GenerateAntiforgeryTokenCookieAttribute());
+                model.Filters.Add(
+                    new DisableFormValueModelBindingAttribute());
+            });
+    options.Conventions
+        .AddPageApplicationModelConvention("/StreamedSingleFileUploadPhysical",
+            model =>
+            {
+                model.Filters.Add(
+                    new GenerateAntiforgeryTokenCookieAttribute());
+                model.Filters.Add(
+                    new DisableFormValueModelBindingAttribute());
+            });
+});
 
 
 #endregion
@@ -143,6 +171,7 @@ app.UseAuthentication();  //用于鉴权 身份认证
 
 app.UseAuthorization();  //用于授权 使用授权
 
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseDefaultFiles();

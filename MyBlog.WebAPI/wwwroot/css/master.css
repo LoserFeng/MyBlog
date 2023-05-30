@@ -1,10 +1,10 @@
-.header{margin:0 auto;width:100%;height:100%; background:url(/photos/default_homepage.jpeg);  opacity:0.5 ;position:fixed!important;background-size:100% 100%}
+.header{margin: 1;width:100%;height: 0;background:url(/photos/default_homepage.jpeg);opacity:0.5;position:fixed!important;background-size:100% 100%}
 *{margin:0;padding:0}
 a,img{text-decoration:none;border:none}
 button,input,textarea{outline:0;border:none;font:14px/1.5 "Microsoft YaHei","微软雅黑","Helvetica Neue","Hiragino Sans GB",Helvetica,Tahoma,sans-serif;color:#515250}
 h4{font-size:20px}
 li{list-style:none}
-body,html{background-color:rgba(255,255,255,.5);font:14px/1.5 "Helvetica neue",Helvetica,Tahoma,"lantinghei sc","Microsoft Yahei",sans-serif;/* color:#515250; */-webkit-font-smoothing:antialiased;-webkit-backface-visibility:hidden;overflow-x:hidden}
+body,html{background-color:rgba(255,255,255,.5);font:14px/1.5 "Helvetica neue",Helvetica,Tahoma,"lantinghei sc","Microsoft Yahei",sans-serif;color:#515250;-webkit-font-smoothing:antialiased;-webkit-backface-visibility:hidden;overflow-x:hidden}
 .gird-header{width:100%;min-height:62px;position:fixed;background-color:black;z-index:11002;top:0;left:0;border-bottom:1px solid black;font-size:14px}
 .container-fixed,.footer-fixed,.header-fixed,.body-fixed{width:1280px;margin-left:auto;margin-right:auto;position:relative}
 .header-inner{margin-left:10px;margin-right:10px;position:relative}

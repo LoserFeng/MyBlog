@@ -1,0 +1,265 @@
+{
+    "statusCode": 200,
+    "successful": true,
+    "message": "Ok",
+    "data": {
+        "name": "LOSERFENG",
+        "userName": "LOSERFENG",
+        "userPwd": " 9D64D9452EB9F9C1C463DA281CEC86",
+        "writerId": 1,
+        "writerInfo": {
+            "writerName": "LOSERFENG",
+            "fans": null,
+            "blogs": [
+                {
+                    "guid": "330f1e4f-66f7-4c92-bebc-76e60f8a9f6c",
+                    "title": "新的世界",
+                    "introduction": "阿瓦达无大无大无多哇多无",
+                    "summary": "哒哒哒哒哒哒多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多\n",
+                    "content": "哒哒哒哒哒哒多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多",
+                    "time": "2022-11-07T14:57:42.137",
+                    "browseCount": 74,
+                    "likeCount": 0,
+                    "type": "text",
+                    "path": "blogs\\330f1e4f-66f7-4c92-bebc-76e60f8a9f6c",
+                    "coverPhotoId": 2,
+                    "coverPhoto": {
+                        "fileName": "100857791_p0.png",
+                        "url": "/photos/330f1e4f-66f7-4c92-bebc-76e60f8a9f6c_CoverPhoto_100857791_p0.png",
+                        "filePath": "E:\\develop\\VS_Workspace\\CSharp\\MyBlog\\MyBlog.WebAPI\\wwwroot\\photos\\330f1e4f-66f7-4c92-bebc-76e60f8a9f6c_CoverPhoto_100857791_p0.png",
+                        "createTime": "2022-11-07T14:57:42.137",
+                        "id": 2
+                    },
+                    "writerId": 1,
+                    "tags": null,
+                    "writerInfo": null,
+                    "admirers": null,
+                    "comments": null,
+                    "likers": null,
+                    "id": 1
+                }
+            ],
+            "id": 1
+        },
+        "concerns": [
+            {
+                "writerName": "LOSERFENG",
+                "fans": null,
+                "blogs": null,
+                "id": 1
+            }
+        ],
+        "favorites": [
+            {
+                "guid": "330f1e4f-66f7-4c92-bebc-76e60f8a9f6c",
+                "title": "新的世界",
+                "introduction": "阿瓦达无大无大无多哇多无",
+                "summary": "哒哒哒哒哒哒多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多\n",
+                "content": "哒哒哒哒哒哒多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多",
+                "time": "2022-11-07T14:57:42.137",
+                "browseCount": 74,
+                "likeCount": 0,
+                "type": "text",
+                "path": "blogs\\330f1e4f-66f7-4c92-bebc-76e60f8a9f6c",
+                "coverPhotoId": 2,
+                "coverPhoto": null,
+                "writerId": 1,
+                "tags": null,
+                "writerInfo": null,
+                "admirers": null,
+                "comments": null,
+                "likers": null,
+                "id": 1
+            }
+        ],
+        "motto": "HelloWorld",
+        "mainPagePhoto_id": 1,
+        "mainPagePhoto": {
+            "fileName": "86800103_p0.png",
+            "url": "/photos/4edb9e00-9fdf-48b1-a50b-e1cb650e6ff3_86800103_p0.png",
+            "filePath": "E:\\develop\\VS_Workspace\\CSharp\\MyBlog\\MyBlog.WebAPI\\wwwroot\\photos\\4edb9e00-9fdf-48b1-a50b-e1cb650e6ff3_86800103_p0.png",
+            "createTime": "2022-11-04T12:19:36.3",
+            "id": 1
+        },
+        "events": [
+            {
+                "userId": 1,
+                "eventContent": "阿达瓦单位",
+                "time": "2022-11-06T20:02:39.07",
+                "year": 2022,
+                "month": 11,
+                "day": 6,
+                "id": 29
+            },
+            {
+                "userId": 1,
+                "eventContent": "adwadwadwa",
+                "time": "2022-11-06T09:28:43.35",
+                "year": 2022,
+                "month": 11,
+                "day": 6,
+                "id": 28
+            },
+            {
+                "userId": 1,
+                "eventContent": "瓦达瓦达哇为单",
+                "time": "2022-11-05T22:52:25.36",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 27
+            },
+            {
+                "userId": 1,
+                "eventContent": "撒大奖是第三代是的角度讲使得使得就打死的",
+                "time": "2022-11-05T22:49:30.153",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 25
+            },
+            {
+                "userId": 1,
+                "eventContent": "撒大奖是第三代是的角度讲使得使得",
+                "time": "2022-11-05T22:49:26.82",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 24
+            },
+            {
+                "userId": 1,
+                "eventContent": "撒大奖是第三代",
+                "time": "2022-11-05T22:49:18.193",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 23
+            },
+            {
+                "userId": 1,
+                "eventContent": "阿达瓦大无多无的哇打我多我的瓦达娃多我的为单位为单位单位单位单位达瓦大瓦达瓦多无多无多无多无多哇打我多无",
+                "time": "2022-11-05T22:48:26.56",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 22
+            },
+            {
+                "userId": 1,
+                "eventContent": "萨达萨达撒大萨达",
+                "time": "2022-11-05T22:47:57.873",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 21
+            },
+            {
+                "userId": 1,
+                "eventContent": "萨达萨达撒",
+                "time": "2022-11-05T22:47:53.793",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 20
+            },
+            {
+                "userId": 1,
+                "eventContent": "萨达萨达撒",
+                "time": "2022-11-05T22:47:46.227",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 19
+            },
+            {
+                "userId": 1,
+                "eventContent": "Hi好ID\r\n",
+                "time": "2022-11-05T22:46:39.973",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 18
+            },
+            {
+                "userId": 1,
+                "eventContent": "安稳的哇多为单位瓦达瓦达瓦达",
+                "time": "2022-11-05T22:42:38.423",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 17
+            },
+            {
+                "userId": 1,
+                "eventContent": "萨达萨达撒多撒多撒多撒大大撒大所多萨达萨达使得使得使得使得是多少使得",
+                "time": "2022-11-05T22:40:05.423",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 16
+            },
+            {
+                "userId": 1,
+                "eventContent": "啊大大说阿斯达四大萨达萨达萨达萨达撒阿萨德",
+                "time": "2022-11-05T22:38:05.28",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 15
+            },
+            {
+                "userId": 1,
+                "eventContent": "达瓦大哇阿瓦达无达瓦大瓦达瓦达瓦大瓦达瓦达安慰的hi啊呜的海外地黄丸达瓦大瓦达瓦达为单位达瓦大哇多为单位达瓦大哇厚度为好的亢弧度武汉杜匤我的",
+                "time": "2022-11-05T22:36:52.177",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 14
+            },
+            {
+                "userId": 1,
+                "eventContent": "阿达瓦单位瓦达加我的我为我都叫我第五代瓦达加我的我的为单位的文档我为单位第五代我的瓦达瓦达瓦达瓦达瓦达瓦达为单位单位第五代为单位单位",
+                "time": "2022-11-05T22:33:36.027",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 13
+            },
+            {
+                "userId": 1,
+                "eventContent": "asdawda",
+                "time": "2022-11-05T17:45:03.427",
+                "year": 2022,
+                "month": 11,
+                "day": 5,
+                "id": 5
+            }
+        ],
+        "likes": [
+            {
+                "guid": "330f1e4f-66f7-4c92-bebc-76e60f8a9f6c",
+                "title": "新的世界",
+                "introduction": "阿瓦达无大无大无多哇多无",
+                "summary": "哒哒哒哒哒哒多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多\n",
+                "content": "哒哒哒哒哒哒多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多多",
+                "time": "2022-11-07T14:57:42.137",
+                "browseCount": 74,
+                "likeCount": 0,
+                "type": "text",
+                "path": "blogs\\330f1e4f-66f7-4c92-bebc-76e60f8a9f6c",
+                "coverPhotoId": 2,
+                "coverPhoto": null,
+                "writerId": 1,
+                "tags": null,
+                "writerInfo": null,
+                "admirers": null,
+                "comments": null,
+                "likers": null,
+                "id": 1
+            }
+        ],
+        "id": 1
+    },
+    "errorData": null
+}

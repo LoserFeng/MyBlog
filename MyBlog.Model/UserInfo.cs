@@ -49,6 +49,10 @@ namespace MyBlog.Model
         public List<EventInfo> Events { get; set; }
 
 
+        [Navigate(typeof(Like), nameof(Like.UserId), nameof(Like.BlogId))]
+        public List<BlogNews> Likes { get; set; }
+
+
 
     }
 }

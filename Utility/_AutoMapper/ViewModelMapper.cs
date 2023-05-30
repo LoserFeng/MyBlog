@@ -35,7 +35,7 @@ namespace Utility._AutoMapper
                 Summary = blogNews.Summary,
                 Tags = blogNews.Tags,
                 WriterInfo = blogNews.WriterInfo,
-                Url = "/" + Path.Combine("Blog", "Details", blogNews.GUID),
+                Url = "/" + Path.Combine("Blog", "Details? GUID ="+blogNews.GUID),
                 Comments = blogNews.Comments
                 
             };

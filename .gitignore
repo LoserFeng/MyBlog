@@ -361,3 +361,21 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+# python 
+*.klm
+
+
+# others
+*.mp4
+
+*.jpg
+*.png
+*.jpeg
+
+
+*.bin
+
+#*.exe
+#*.dll

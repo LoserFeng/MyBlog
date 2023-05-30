@@ -76,5 +76,9 @@ namespace MyBlog.Model
 
 
 
+        [Navigate(typeof(Like), nameof(Like.BlogId), nameof(Like.UserId))]
+        public List<UserInfo> Likers { get; set; }
+
+
     }
 }

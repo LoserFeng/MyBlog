@@ -8,7 +8,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resource\tmp\test2.mp4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resource\tmp\test2.mp4">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MyBlog.Model\MyBlog.Model.csproj" />
+    <ProjectReference Include="..\Utility\Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resource\blog\" />
+    <Folder Include="Resource\tmp\assets\" />
   </ItemGroup>
 
 </Project>

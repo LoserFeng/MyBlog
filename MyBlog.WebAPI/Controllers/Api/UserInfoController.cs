@@ -68,11 +68,40 @@ namespace MyBlog.WebAPI.Controllers.Api
         }
 
 
+        [HttpGet("GetUserInfoByWriterId")]
+        public async Task<ActionResult<ApiResponse>> GetUserInfoByWriterId(int WriterId)
+        {
+
+
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                return ApiResponse.Error(Response, "找不到此对应Claim的Id");
+            }
+
+            int id = Convert.ToInt32(claim?.Value);
+
+            var data = await _userInfoService.FindByWriterIdAsync(WriterId);
+            //return Ok(data);  //code 200 404 之类的
+            if (data == null)
+            {
+                return ApiResponse.Error(Response, "没有找到相关的用户数据");
+
+            }
+            Console.WriteLine(data.MainPagePhoto.FilePath.ToString());
+
+
+
+
+            return ApiResponse.Ok(data);
+        }
+
+
+
 
 
         [HttpGet("GetUserInfo")]
-        [Authorize]
-        public async Task<ActionResult<ApiResponse>> GetUserInfo([FromServices] IMapper iMapper)
+        public async Task<ActionResult<ApiResponse>> GetUserInfo()
         {
 
 
@@ -186,7 +215,7 @@ namespace MyBlog.WebAPI.Controllers.Api
 
 
 
-
+        [Authorize]
         [HttpPost("Edit")]
         public async Task<ApiResponse> Edit([FromServices] IMapper iMapper, [FromForm] UserInfoEdit userInfoEdit)
         {
@@ -255,7 +284,7 @@ namespace MyBlog.WebAPI.Controllers.Api
             return ApiResponse.BadRequest("用户数据更新失败!");
 
         }
-
+        [Authorize]
         [HttpDelete("Delete")]
         public async Task<ApiResponse> Delete(int id)
         {
@@ -268,6 +297,153 @@ namespace MyBlog.WebAPI.Controllers.Api
 
             return ApiResponse.Error(Response, "删除失败");
 
+        }
+
+        [Authorize]
+        [HttpPost("Follow")]
+        public async Task<ApiResponse>Follow(int WriterId)
+        {
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                return ApiResponse.Error(Response, "找不到此对应Claim的Id");
+            }
+
+            int userId = Convert.ToInt32(claim?.Value);
+
+
+            var res = await _userInfoService.CreateFollowAsync(userId, WriterId);
+            if (res)
+            {
+                return ApiResponse.Ok("关注成功");
+            }
+
+            return ApiResponse.Error(Response, "关注失败");
+
+        }
+
+
+        [Authorize]
+        [HttpDelete("Unfollow")]
+        public async Task<ApiResponse> Unfollow(int WriterId)
+        {
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                return ApiResponse.Error(Response, "找不到此对应Claim的Id");
+            }
+
+            int userId = Convert.ToInt32(claim?.Value);
+
+
+            var res = await _userInfoService.DeleteFollowAsync(userId, WriterId);
+
+            if (res)
+            {
+                return ApiResponse.Ok("取消关注成功");
+            }
+
+            return ApiResponse.Error(Response, "取消关注失败");
+        }
+
+
+
+
+        [Authorize]
+        [HttpPost("Like")]
+        public async Task<ApiResponse> Like(int BlogId)
+        {
+
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                return ApiResponse.Error(Response, "找不到此对应Claim的Id");
+            }
+
+            int userId = Convert.ToInt32(claim?.Value);
+            var res = await _userInfoService.CreateLikeAsync(userId,BlogId);
+
+
+            if (res)
+            {
+                return ApiResponse.Ok(res);
+            }
+            return ApiResponse.Error(Response, "点赞失败");
+        }
+
+
+        [Authorize]
+        [HttpDelete("Unlike")]
+        public async Task<ApiResponse> Unlike(int BlogId)
+        {
+
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                return ApiResponse.Error(Response, "找不到此对应Claim的Id");
+            }
+
+            int userId = Convert.ToInt32(claim?.Value);
+            var res = await _userInfoService.DeleteLikeAsync(userId,BlogId);
+
+
+            if (res)
+            {
+                return ApiResponse.Ok(res);
+            }
+            return ApiResponse.Error(Response, "取消点赞失败");
+        }
+
+
+
+
+
+        [Authorize]
+        [HttpPost("Favorite")]
+        public async Task<ApiResponse> Favorite(int BlogId)
+        {
+
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                return ApiResponse.Error(Response, "找不到此对应Claim的Id");
+            }
+
+            int userId = Convert.ToInt32(claim?.Value);
+
+            var res = await _userInfoService.CreateFavoriteAsync(userId, BlogId);
+
+            if (res)
+            {
+                return ApiResponse.Ok("收藏成功");
+            }
+
+            return ApiResponse.Error(Response, "收藏失败");
+        }
+
+
+        [Authorize]
+        [HttpDelete("Unfavorite")]
+        public async Task<ApiResponse> Unfavorite(int BlogId)
+        {
+
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                return ApiResponse.Error(Response, "找不到此对应Claim的Id");
+            }
+
+            int userId = Convert.ToInt32(claim?.Value);
+
+            var res = await _userInfoService.DeleteFavoriteAsync(userId,BlogId);
+
+
+            if (res)
+            {
+                return ApiResponse.Ok("取消收藏成功");
+            }
+
+            return ApiResponse.Error(Response, "取消收藏失败");
         }
 
     }

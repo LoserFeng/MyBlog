@@ -19,6 +19,6 @@ namespace MyBlog.IRepository
 
         Task<List<BlogNews>> QueryTopByBrowseCountAsync();
 
-
+        Task<bool> UpdateLikeCountAsync(BlogNews update_blogNews);
     }
 }

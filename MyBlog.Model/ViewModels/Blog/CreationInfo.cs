@@ -14,7 +14,8 @@ namespace MyBlog.Model.ViewModels.Blog
     {
 
 
-
+        [Display(Name = "文章(GUID)")]
+        public String? Id { get; set; }
 
 
         [Required]
@@ -57,6 +58,10 @@ namespace MyBlog.Model.ViewModels.Blog
 
         [Display(Name="标签")]
         public string Tags_JSON { get; set; }
+
+
+        [Display(Name = "视频")]
+        public String? VideoName { get; set; }
 
     }
 }

@@ -37,6 +37,14 @@ namespace MyBlog.WebAPI.Extensions
             services.AddScoped<IEventInfoRepository, EventInfoRepository>();
             services.AddScoped<IEventInfoService, EventInfoService>();
 
+
+            //三个中间表
+            services.AddScoped<IFollowRepository, FollowRepository>();
+            services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+            services.AddScoped<IClassifyRepository, ClassifyRepository>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
+
+
             return services;
         }
 

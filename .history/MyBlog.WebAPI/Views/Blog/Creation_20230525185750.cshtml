@@ -1,0 +1,560 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout_common";
+}
+
+@model CreationInfo
+
+
+<body>
+
+    <h1 style="text-align:center;">发表属于自己的文章</h1>
+    <form enctype="multipart/form-data" id="blog_create_form" lay-filter="blog_create_form" asp-controller="BlogNews" asp-action="Create" class="layui-form" method="post">
+
+        <div asp-validation-summary="All"></div>
+        <div  class="layui-form-item">
+            <label asp-for="@Model.Title"   class="layui-form-label"></label>
+            <div  class="layui-input-block">
+                <input asp-for="@Model.Title" lay-verify="Title" type="text" lay-reqtext="文章标题是必填项" placeholder="请输入文章标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label asp-for="@Model.CoverPhoto" class="layui-form-label" style=" text-overflow:initial"></label>
+            <div class="layui-input-block">
+                <div class="custom-file">
+                    <input asp-for="@Model.CoverPhoto" lay-verify="CoverPhoto" class="form-control custom-file-input" />
+                    <label class="custom-file-label">请选择照片....</label>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div class="layui-form-item layui-form-text">
+            <label asp-for="@Model.Introduction" class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <textarea asp-for="@Model.Introduction" lay-verify="Introduction" placeholder="文字不多于100字" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div id="TagsDiv">
+            </div>
+        </div>
+
+
+
+
+        <div class="layui-form-item">
+            <label asp-for="@Model.Type" class="layui-form-label"> </label>
+            <div class="layui-input-block">
+                <input id="Type" name="Type" lay-filter="markdown" value="markdown" type="radio" id="markdown_select" checked="" title="markdown">
+                <input id="Type" name="Type" lay-filter="text" value="text" type="radio" id="text_select" title="text">
+                <input id="Type" name="Type" lay-filter="video" value="video" type="radio" id="video_select" title="video">
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div id="markdown_input" style="">
+
+            <div class="layui-form-item">
+                <label asp-for="@Model.MarkDownFile" class="layui-form-label" style=" text-overflow:initial"></label>
+                <div class="layui-input-block">
+                    <div class="custom-file">
+                        <input asp-for="@Model.MarkDownFile" accept=".md" class="form-control custom-file-input" />
+                        <label class="custom-file-label">请选择文件....</label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="layui-form-item" style="">
+                <label asp-for="@Model.Assets" class="layui-form-label" style=" text-overflow:initial">Markdown组件</label>
+                <div class="layui-input-block">
+                    <div class="custom-file">
+                        <input asp-for="@Model.Assets" accept="image/*" class="form-control custom-file-input" />
+                        <label class="custom-file-label">请选择Markdown所需的assets组件</label>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div id="text_input" style="display:none;">
+            <div class="layui-form-item layui-form-text">
+                <label asp-for="@Model.Content" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <textarea asp-for="@Model.Content" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        @* <form id="uploadForm" action="/api/BlogNews/Create" method="post" 
+            enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;">
+            <label asp-for="@Model.Video" class="layui-form-label" style=" text-overflow:initial"></label>
+
+            <input id="file" type="file" name="file" /> 
+            <input id="video_file" type="file" name="video_file"accept=".mp4" class="form-control custom-file-input" />
+
+            <label class="custom-file-label">请选择文件....</label>
+            
+
+            <div style="margin-top:15px">
+                <output form="uploadForm" name="result"></output>
+            </div>
+
+            <input class="btn" type="submit" value="Upload" />
+        </form> *@
+
+
+
+
+        <label asp-for="@Model.Id"   class="layui-form-label" style="display: none;" ></label>
+
+
+
+
+
+
+
+
+    </form>
+
+
+    <div id="video_input" style="display:none;">
+
+        <div>
+            <input type="file" id="file1" value="" />
+            <input type="button" id="btnUplaod" value="Upload" multiple="multiple" />
+        </div>
+        <div id="completedChunks"></div>
+        <div id="percent">0%</div>
+        <div id="progress" style="width:200px;height:10px;background:linear-gradient(45deg, #ff0084  0%, #e8c5d7 0%);">
+
+        </div>
+    </div>
+
+
+    <div>
+        <div style="text-align:center"></div>
+        <button type="button" id="public_btn" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius" onClick="publish()">发表文章</button>
+
+    </div>
+
+
+
+    @section Scripts{
+
+        <script>
+
+
+
+            var blogId=null;
+
+
+            
+
+            layui.config(
+            { base: '../lib/ayq/modules/labelGeneration/', version: true }).use(['layer', 'labelGeneration'], function () {
+                var labelGeneration = layui.labelGeneration;
+                var render = labelGeneration.render({
+                    elem: '#TagsDiv',
+                    data: [
+                    {
+                        "ngColor": "",
+                        "value": "原创"
+                    }
+                    ],
+                    isEnter: true
+                });
+
+                window.getTags=function (){
+                    var tags= render.getData();
+                    return tags;
+                }
+
+                $(function(){
+                    getTags();
+                })
+                
+
+
+            });
+
+
+   
+
+
+
+
+            @* $(function () {
+
+                $("#Type1").attr("checked", "checked");
+                $('input:radio[name="TypeBox"]').change(function () {
+                    alert("where");
+
+                });
+
+            }) *@
+
+
+            var type="markdown"
+
+
+            layui.use('form', function () {
+                var form = layui.form;
+                form.on('radio(markdown)', function (data) {
+                    // console.log(data.elem);
+                    // alert(data.value);//判断单选框的选中值
+                    //alert(data.othis);
+                    // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+                   
+                   $("#markdown_select").attr("checked","checked");
+                   $("#text_select").attr("checked","false");
+                    $("#video_select").attr("checked", "false");
+                    $("#markdown_input").css("display","block");
+
+                    $("#text_input").css("display","none");
+                    $("#video_input").css("display", "none");
+                    type="markdown"
+
+
+                });
+                form.on('radio(text)',function(data){
+                    $("#text_select").attr("checked","checked");
+                    $("#video_select").attr("checked", "false");
+                    $("#markdown_select").attr("checked","false");
+                    $("#markdown_input").css("display","none");
+                    $("#text_input").css("display","block");
+                    $("#video_input").css("display", "none");
+                    type="text"
+                });
+
+
+                form.on('radio(video)', function (data) {
+                    $("#text_select").attr("checked", "false");
+                    $("#markdown_select").attr("checked", "false");
+                    $("#video_select").attr("checked", "checked");
+                    $("#markdown_input").css("display", "none");
+                    $("#text_input").css("display", "none");
+                    $("#video_input").css("display", "block");
+                    type="video"
+                });
+
+
+            })
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+            function text_input_show(){
+                alert("where");
+                $("#markdown_input").css("display","none");
+                $("#text_input").css("display","block");
+
+
+
+            }
+            
+            function markdown_input_show(){
+                alert("where");
+                $("#markdown_input").css("display","block");
+                $("#text_input").css("display","none")
+                                
+
+            }
+
+
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    console.log($(this).val());
+                    var fileLabel=$(this).next('.custom-file-label');
+                    var files=$(this)[0].files;
+                    if(files.length>1){
+                        fileLabel.html('您已经选择了:'+files.length+'个文件');
+
+                    }else if(files.length==1){
+                        fileLabel.html(files[0].name);
+                    }
+                });
+
+            });
+            
+
+
+
+            layui.use(['form', 'layedit', 'laydate'], function () {
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate;
+
+
+
+                //创建一个编辑器
+                var editIndex = layedit.build('LAY_demo_editor');
+
+                //自定义验证规则
+                form.verify({
+
+
+                    Title: function (value) {
+                        if (value.length > 20) {
+                            return '标题至多只能20个字符啊';
+                        }
+                        if (value.length == 0) {
+                            return '标题不能为空！'
+                        }
+                    }
+                    ,
+
+
+                    Introduction: function (value) {
+                        if (value.length > 100) {
+                            return '简介至多只能200个字符啊';
+                        }
+                    }
+
+                    , CoverPhoto: function (value) {
+                        if(value==null){
+                            return '请上传一张博客的封面';
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+
+            });
+
+
+            function publish() {
+                var tags_arr=[];
+                var tags = getTags();
+                var len=tags.length;
+                for(var i=0;i<len;i++){
+                    tags_arr.push(tags[i].value)
+                }
+                 if(tags.length==0){
+                    alert("你写一点tags呀。。。。");
+                    return;
+                } 
+                var formData = new FormData(document.getElementById('blog_create_form'));
+                formData.append("Tags_JSON",JSON.stringify(tags_arr))
+
+
+                if(type=="video"&&blogId==null){
+                    alert('请上传视频文件！')
+                    return;
+                }
+
+
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    url: "/api/BlogNews/Create",
+                    data: formData,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statusCode == 200) {
+                            alert("publish成功!");
+                            window.location.href = "/Home/Index";
+
+                        } else {
+
+                            alert(result.message);
+                        }
+                    },
+                    error: function () {
+                        alert("什么鬼！");
+                    }
+
+
+                });
+            }
+
+
+
+
+        $(function () {
+            {
+                var pause = false;//是否暂停
+                var $file;
+                var $fileInput;//file input
+                var $completedChunks = $('#completedChunks');//上传完成块数
+                var $progress = $('#progress');//上传进度条
+                var $percent = $('#percent');//上传百分比
+                var MiB = 1024 * 1024;
+                var chunkSize = 8.56 * MiB;//xx MiB
+                var chunkIndex = 0;//上传到的块
+                var $btnUpload = $('#btnUplaod');
+                var totalSize;//文件总大小
+                var totalSizeH;//文件总大小M
+                var chunkCount;//分块数
+                var fileName;//文件名
+
+                $btnUpload.click(function () {
+
+                    var val = $.trim($(this).val());
+                    if (val === 'Upload') {
+                        $fileInput = $('#file1');
+                        $file = $fileInput[0].files[0];
+
+                        if ($file === undefined) {
+                            $completedChunks.html('please select a file !');
+                            return false;
+                        }
+
+                        totalSize = $file.size;
+                        chunkCount = Math.ceil(totalSize / chunkSize * 1.0);
+                        totalSizeH = (totalSize / MiB).toFixed(2);
+                        fileName = $file.name;
+
+                        val = 'Pause';
+                        pause = false;
+                        chunkIndex = 0;
+                    }
+                    else if (val === 'Pause') {
+                        val = 'Resume';
+                        pause = true;
+                    }
+                    else if (val === 'Resume') {
+                        val = 'Pause';
+                        pause = false;
+                    }
+                    else {
+                        val = '-';
+                    }
+
+                    $(this).val(val);
+                    postChunk();
+                });
+
+                function postChunk() {
+
+                    if (pause)
+                        return false;
+
+                    var isLastChunk = chunkIndex === chunkCount - 1;
+                    var fromSize = chunkIndex * chunkSize;
+                    var chunk = !isLastChunk ? $file.slice(fromSize, fromSize + chunkSize) : $file.slice(fromSize, totalSize);
+
+                    var fd = new FormData();
+                    fd.append('chunk', chunk);
+                    fd.append('fileName', fileName);
+                    fd.append('chunkIndex', chunkIndex);
+                    fd.append('chunkCount', chunkCount);
+
+
+                    
+                    console.log(fd.getData('fileName'))
+                    
+
+                    $.ajax({
+
+                        headers: {
+                            'Authorization': localStorage.getItem("JWTtoken")
+                        },
+                        url: '/api/BlogNews/SaveChunkFile',
+                        type: 'POST',
+                        data: fd,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (d) {
+                            if (!d.success) {
+                                $completedChunks.html(d.msg);
+                                return false;
+                            }
+
+                            chunkIndex = d.nextIndex;
+
+                            blogId=d.blogId;
+
+                            if (isLastChunk) {
+                                $completedChunks.html('combining .. ');
+                                $btnUpload.val('Upload').prop('disabled', true);
+
+                                $completedChunks.append('destFile: ' + fileName);
+                                $btnUpload.val('Upload').prop('disabled', false);
+                                $fileInput.val('');//清除文件
+
+                                //合并文件
+                                @* $.post('/UpLoadFiles/CombineChunkFile', { fileName: fileName }, function (d) {
+                                    $completedChunks.html(d.msg);
+                                    $completedChunks.append('destFile: ' + d.destFile);
+                                    $btnUpload.val('Upload').prop('disabled', false);
+                                    $fileInput.val('');//清除文件
+                                }); *@
+                            }
+                            else {
+                                postChunk();//递归上传文件块
+                                //$completedChunks.html(chunkIndex + '/' + chunkCount );
+                                $completedChunks.html((chunkIndex * chunkSize / MiB).toFixed(2) + 'M/' + totalSizeH + 'M');
+                            }
+
+                            var completed = chunkIndex / chunkCount * 100;
+                            $percent.html(completed.toFixed(2) + '%').css('margin-left', parseInt(completed / 100 * $progress.width()) + 'px');
+                            $progress.css('background', 'linear-gradient(to right, #ff0084 ' + completed + '%, #e8c5d7 ' + completed + '%)');
+                        },
+                        error: function (ex) {
+                            $completedChunks.html('ex:' + ex.responseText);
+                        }
+                    });
+                }
+            }
+        });
+
+
+            
+
+
+            
+
+
+        </script>
+
+    }
+
+
+</body>
+
+

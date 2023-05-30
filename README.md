@@ -326,7 +326,12 @@ c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 
 
 
-
+# TODO
+* 后台管理系统审核功能
+* 人脸识别功能
+* 音乐功能
+* 过渡动画功能
+* 图片功能
 
 
 

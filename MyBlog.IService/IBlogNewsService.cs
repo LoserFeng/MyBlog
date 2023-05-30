@@ -20,5 +20,6 @@ namespace MyBlog.IService
         Task<BlogNews> QueryByGUIDAsync(String GUID);
         Task<List<BlogNews>> QueryTopByBrowseCountAsync();
         Task <List<BlogNewsModel>> GetBlogNewsList(int page, int limit, RefAsync<int> total);
+
     }
 }

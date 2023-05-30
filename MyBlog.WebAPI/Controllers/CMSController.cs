@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
 using MyBlog.Model;
 using MyBlog.Model.ViewModels.CMS.UserInfo;
@@ -6,6 +7,7 @@ using MyBlog.Model.ViewModels.CMS.UserInfo;
 using MyBlog.Model.ViewModels.Comment_ViewModel;
 using MyBlog.Model.ViewModels.Common;
 using MyBlog.Model.ViewModels.Error;
+using System.Security.Claims;
 
 namespace MyBlog.WebAPI.Controllers
 {
@@ -94,6 +96,44 @@ namespace MyBlog.WebAPI.Controllers
 
 
             return View( "UserInfo/EditUserInfo",model);
+
+
+
+
+        }
+
+
+        [Route("~/CMS/EditSelfUserInfo")]
+        [Authorize]
+        public async Task<IActionResult> EditSelfUserInfo()
+        {
+
+            Claim? claim = User.FindFirst("Id");
+            if (claim == null)
+            {
+                var E_model = new ErrorInfo
+                {
+                    Message = "出错了",
+                    Error = "没有找到Claim对应的Id"
+                };
+                return View("/Views/Error/Index", E_model);
+            }
+
+            int id = Convert.ToInt32(claim?.Value);
+            var userInfo = await _userInfoService.FindByIdAsync(id);
+
+            var model = new UserInfoModel
+            {
+                Id = id,
+                Name = userInfo.Name,
+                UserName = userInfo.UserName,
+                UserPwd = userInfo.UserPwd,
+                Motto = userInfo.Motto,
+                MainPagePhoto = userInfo.MainPagePhoto
+            };
+
+
+            return View("UserInfo/EditUserInfo", model);
 
 
 

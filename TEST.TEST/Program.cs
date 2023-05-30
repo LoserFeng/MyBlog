@@ -1,85 +1,57 @@
 ﻿using MyBlog.Model;
 using SqlSugar;
 using System.Text.RegularExpressions;
+using Utility.MarkDown;
 
 namespace TEST.TEST
 {
 
-    public class Base
+   public class Test
     {
-        public string name;
-        public Base(string name)
+
+        public static async Task Main(string[] args)
         {
-            this.name = name;
-        }
+            Console.WriteLine("Test");
 
 
-        public string a()
-        {
+            String videoPath = "E:\\develop\\VS_Workspace\\MyBlog\\TEST.TEST\\Resource\\tmp\\test.mp4";
+            String tmpPath = "E:\\develop\\VS_Workspace\\MyBlog\\TEST.TEST\\Resource\\tmp";
 
-            return "123";
-        }
+            //String blogPath = "C:\\Users\\feng_\\Desktop\\课件\\多媒体\\大作业\\MyBlog\\TEST.TEST\\Resource\\blog";
 
+            BlogNews blogNews = new BlogNews
+            {
+                Id = 1,
 
-        public virtual string b()
-        {
-            return "234";
-        }
-
-
-
-    }
-
-
-    public class high : Base
-    {
-        public high(string name) : base(name)
-        {
-            this.name = name;
-        }
-
-
-        public new string a()
-        {
-            b();
-            return "2222";
-        }
-
-
-        public override string b()
-        {
-            return "33333";
-        }
+                Tags = null,
+                Title="test"
 
 
 
-    }
-
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-
-            Base b = new high("234");
+            };
 
 
-            Console.WriteLine(b.b());
 
-            
-        }
+            Video2MD processor = new Video2MD(videoPath,tmpPath,blogNews);
+
+
+            await processor.CoverVideo2MD();
+
+
+            Console.WriteLine("cover End");
 
 
 
 
 
-        public static string getString(string str,string regular)
-        {
-            var res = Regex.Match(str, regular);
-            
-            return res.Groups[3].ToString();
+
+
+
+
+
+
         }
     }
-
 
 
 }

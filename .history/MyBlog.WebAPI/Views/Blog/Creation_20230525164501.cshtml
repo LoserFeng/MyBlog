@@ -1,0 +1,432 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout_common";
+}
+
+@model CreationInfo
+
+
+<body>
+
+    <h1 style="text-align:center;">发表属于自己的文章</h1>
+    <form enctype="multipart/form-data" id="blog_create_form" lay-filter="blog_create_form" asp-controller="BlogNews" asp-action="Create" class="layui-form" method="post">
+
+        <div asp-validation-summary="All"></div>
+        <div  class="layui-form-item">
+            <label asp-for="@Model.Title"   class="layui-form-label"></label>
+            <div  class="layui-input-block">
+                <input asp-for="@Model.Title" lay-verify="Title" type="text" lay-reqtext="文章标题是必填项" placeholder="请输入文章标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label asp-for="@Model.CoverPhoto" class="layui-form-label" style=" text-overflow:initial"></label>
+            <div class="layui-input-block">
+                <div class="custom-file">
+                    <input asp-for="@Model.CoverPhoto" lay-verify="CoverPhoto" class="form-control custom-file-input" />
+                    <label class="custom-file-label">请选择照片....</label>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div class="layui-form-item layui-form-text">
+            <label asp-for="@Model.Introduction" class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <textarea asp-for="@Model.Introduction" lay-verify="Introduction" placeholder="文字不多于100字" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div id="TagsDiv">
+            </div>
+        </div>
+
+
+
+
+        <div class="layui-form-item">
+            <label asp-for="@Model.Type" class="layui-form-label"> </label>
+            <div class="layui-input-block">
+                <input id="Type" name="Type" lay-filter="markdown" value="markdown" type="radio" id="markdown_select" checked="" title="markdown">
+                <input id="Type" name="Type" lay-filter="text" value="text" type="radio" id="text_select" title="text">
+                <input id="Type" name="Type" lay-filter="video" value="video" type="radio" id="video_select" title="video">
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div id="markdown_input" style="">
+
+            <div class="layui-form-item">
+                <label asp-for="@Model.MarkDownFile" class="layui-form-label" style=" text-overflow:initial"></label>
+                <div class="layui-input-block">
+                    <div class="custom-file">
+                        <input asp-for="@Model.MarkDownFile" accept=".md" class="form-control custom-file-input" />
+                        <label class="custom-file-label">请选择文件....</label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="layui-form-item" style="">
+                <label asp-for="@Model.Assets" class="layui-form-label" style=" text-overflow:initial">Markdown组件</label>
+                <div class="layui-input-block">
+                    <div class="custom-file">
+                        <input asp-for="@Model.Assets" accept="image/*" class="form-control custom-file-input" />
+                        <label class="custom-file-label">请选择Markdown所需的assets组件</label>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div id="text_input" style="display:none;">
+            <div class="layui-form-item layui-form-text">
+                <label asp-for="@Model.Content" class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <textarea asp-for="@Model.Content" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        @* <form id="uploadForm" action="/api/BlogNews/Create" method="post" 
+            enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;">
+            <label asp-for="@Model.Video" class="layui-form-label" style=" text-overflow:initial"></label>
+
+            <input id="file" type="file" name="file" /> 
+            <input id="video_file" type="file" name="video_file"accept=".mp4" class="form-control custom-file-input" />
+
+            <label class="custom-file-label">请选择文件....</label>
+            
+
+            <div style="margin-top:15px">
+                <output form="uploadForm" name="result"></output>
+            </div>
+
+            <input class="btn" type="submit" value="Upload" />
+        </form> *@
+
+
+
+        <div id="video_input" style="display:none;">
+            <form id="uploadForm" action="/api/BlogNews/Create" method="post" 
+                enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;">
+                <label asp-for="@Model.Video" class="layui-form-label" style=" text-overflow:initial"></label>
+
+                @* <input id="file" type="file" name="file" /> *@
+                <input id="video_file" type="file" name="video_file"accept=".mp4" class="form-control custom-file-input" />
+
+                <label class="custom-file-label">请选择文件....</label>
+                
+
+
+
+                <input class="btn" type="submit" value="Upload" />
+                <div style="margin-top:15px">
+                    <output form="uploadForm" name="result"></output>
+                </div>
+            </form>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div>
+            <div style="text-align:center"></div>
+            <button type="button" id="public_btn" lay-submit class="layui-btn layui-btn-fluid layui-btn-radius" onClick="publish()">发表文章</button>
+
+        </div>
+
+
+    </form>
+
+
+
+    @section Scripts{
+
+        <script>
+
+
+            
+
+            layui.config(
+            { base: '../lib/ayq/modules/labelGeneration/', version: true }).use(['layer', 'labelGeneration'], function () {
+                var labelGeneration = layui.labelGeneration;
+                var render = labelGeneration.render({
+                    elem: '#TagsDiv',
+                    data: [
+                    {
+                        "ngColor": "",
+                        "value": "原创"
+                    }
+                    ],
+                    isEnter: true
+                });
+
+                window.getTags=function (){
+                    var tags= render.getData();
+                    return tags;
+                }
+
+                $(function(){
+                    getTags();
+                })
+                
+
+
+            });
+
+
+   
+
+
+
+
+            @* $(function () {
+
+                $("#Type1").attr("checked", "checked");
+                $('input:radio[name="TypeBox"]').change(function () {
+                    alert("where");
+
+                });
+
+            }) *@
+
+
+            layui.use('form', function () {
+                var form = layui.form;
+                form.on('radio(markdown)', function (data) {
+                    // console.log(data.elem);
+                    // alert(data.value);//判断单选框的选中值
+                    //alert(data.othis);
+                    // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+                   
+                   $("#markdown_select").attr("checked","checked");
+                   $("#text_select").attr("checked","false");
+                    $("#video_select").attr("checked", "false");
+                    $("#markdown_input").css("display","block");
+
+                    $("#text_input").css("display","none");
+                    $("#video_input").css("display", "none");
+
+
+                });
+                form.on('radio(text)',function(data){
+                    $("#text_select").attr("checked","checked");
+                    $("#video_select").attr("checked", "false");
+                    $("#markdown_select").attr("checked","false");
+                    $("#markdown_input").css("display","none");
+                    $("#text_input").css("display","block");
+                    $("#video_input").css("display", "none");
+                });
+
+
+                form.on('radio(video)', function (data) {
+                    $("#text_select").attr("checked", "false");
+                    $("#markdown_select").attr("checked", "false");
+                    $("#video_select").attr("checked", "checked");
+                    $("#markdown_input").css("display", "none");
+                    $("#text_input").css("display", "none");
+                    $("#video_input").css("display", "block");
+                });
+
+
+            })
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+            function text_input_show(){
+                alert("where");
+                $("#markdown_input").css("display","none");
+                $("#text_input").css("display","block");
+
+
+
+            }
+            
+            function markdown_input_show(){
+                alert("where");
+                $("#markdown_input").css("display","block");
+                $("#text_input").css("display","none")
+                                
+
+            }
+
+
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    console.log($(this).val());
+                    var fileLabel=$(this).next('.custom-file-label');
+                    var files=$(this)[0].files;
+                    if(files.length>1){
+                        fileLabel.html('您已经选择了:'+files.length+'个文件');
+
+                    }else if(files.length==1){
+                        fileLabel.html(files[0].name);
+                    }
+                });
+
+            });
+            
+
+
+
+            layui.use(['form', 'layedit', 'laydate'], function () {
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate;
+
+
+
+                //创建一个编辑器
+                var editIndex = layedit.build('LAY_demo_editor');
+
+                //自定义验证规则
+                form.verify({
+
+
+                    Title: function (value) {
+                        if (value.length > 20) {
+                            return '标题至多只能20个字符啊';
+                        }
+                        if (value.length == 0) {
+                            return '标题不能为空！'
+                        }
+                    }
+                    ,
+
+
+                    Introduction: function (value) {
+                        if (value.length > 100) {
+                            return '简介至多只能200个字符啊';
+                        }
+                    }
+
+                    , CoverPhoto: function (value) {
+                        if(value==null){
+                            return '请上传一张博客的封面';
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+
+            });
+
+
+            function publish() {
+                var tags_arr=[];
+                var tags = getTags();
+                var len=tags.length;
+                for(var i=0;i<len;i++){
+                    tags_arr.push(tags[i].value)
+                }
+                 if(tags.length==0){
+                    alert("你写一点tags呀。。。。");
+                    return;
+                } 
+                var formData = new FormData(document.getElementById('blog_create_form'));
+                formData.append("Tags_JSON",JSON.stringify(tags_arr))
+
+
+                $.ajax({
+                    type: "POST",
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken"),
+                            'RequestVerificationToken': getCookie('RequestVerificationToken')
+                    },
+                    url: "/api/BlogNews/Create",
+                    data: formData,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statusCode == 200) {
+                            alert("publish成功!");
+                            window.location.href = "/Home/Index";
+
+                        } else {
+
+                            alert(result.message);
+                        }
+                    },
+                    error: function () {
+                        alert("什么鬼！");
+                    }
+
+
+                });
+
+
+
+
+
+
+            }
+
+
+
+
+
+            function getcookie (name) {
+              var value = "; " + document.cookie;
+              var parts = value.split("; " + name + "=");
+              if (parts.length == 2) return parts.pop().split(";").shift();
+            }
+
+            
+
+
+            
+
+
+        </script>
+
+    }
+
+
+</body>
+
+
