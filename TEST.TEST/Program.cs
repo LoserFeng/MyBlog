@@ -1,31 +1,57 @@
 ﻿using MyBlog.Model;
+using SqlSugar;
 using System.Text.RegularExpressions;
+using Utility.MarkDown;
 
 namespace TEST.TEST
 {
-    internal class Program
+
+   public class Test
     {
-        static void Main(string[] args)
+
+        public static async Task Main(string[] args)
         {
-
-            //"^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$"。
-            String s = "http://123.234.435.345/asd/asd/a=1&b=2";
-            /* String regular= @"^(http://)([\w-]+\.)+[\w-]+(/[\w-./%?=&]*)?$";*/
-            String regular = @"^(http://)([\w-]+\.)+[\w-]+(/[\w-./%?=&]*)?$";
-
-            var res =getString(s, regular);
-            Console.WriteLine(res);
-        }
+            Console.WriteLine("Test");
 
 
-        public static string getString(string str,string regular)
-        {
-            var res = Regex.Match(str, regular);
-            
-            return res.Groups[3].ToString();
+            String videoPath = "E:\\develop\\VS_Workspace\\MyBlog\\TEST.TEST\\Resource\\tmp\\test.mp4";
+            String tmpPath = "E:\\develop\\VS_Workspace\\MyBlog\\TEST.TEST\\Resource\\tmp";
+
+            //String blogPath = "C:\\Users\\feng_\\Desktop\\课件\\多媒体\\大作业\\MyBlog\\TEST.TEST\\Resource\\blog";
+
+            BlogNews blogNews = new BlogNews
+            {
+                Id = 1,
+
+                Tags = null,
+                Title="test"
+
+
+
+            };
+
+
+
+            Video2MD processor = new Video2MD(videoPath,tmpPath,blogNews);
+
+
+            await processor.CoverVideo2MD();
+
+
+            Console.WriteLine("cover End");
+
+
+
+
+
+
+
+
+
+
+
         }
     }
-
 
 
 }

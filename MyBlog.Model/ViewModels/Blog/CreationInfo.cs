@@ -12,6 +12,12 @@ namespace MyBlog.Model.ViewModels.Blog
 {
     public class CreationInfo
     {
+
+
+        [Display(Name = "文章(GUID)")]
+        public String? Id { get; set; }
+
+
         [Required]
         [Display(Name = "标题")]
         public string Title { get; set; }
@@ -42,7 +48,7 @@ namespace MyBlog.Model.ViewModels.Blog
 
 
         [Display(Name = "文章组件")]
-        public List<IFormFile> Assets { get; set; }
+        public List<IFormFile>? Assets { get; set; }
 
 
         [Display(Name = "文章(Text)")]
@@ -52,6 +58,10 @@ namespace MyBlog.Model.ViewModels.Blog
 
         [Display(Name="标签")]
         public string Tags_JSON { get; set; }
+
+
+        [Display(Name = "视频")]
+        public String? VideoName { get; set; }
 
     }
 }

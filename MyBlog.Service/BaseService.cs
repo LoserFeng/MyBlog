@@ -29,7 +29,7 @@ namespace MyBlog.Service
 
 
         //这里用虚方法，还要做修改
-        public virtual async Task<TEntity> FindByIdAsync(int id)
+        public virtual async Task<TEntity?> FindByIdAsync(int id)
         {
 
             //Dto(Data Transport object) -> 用户数据，不能把密码也返回到前端 导航查询

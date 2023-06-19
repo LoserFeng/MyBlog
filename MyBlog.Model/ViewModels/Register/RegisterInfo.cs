@@ -29,7 +29,7 @@ namespace MyBlog.Model.ViewModels.Register
 
         [Display(Name = "座右铭")]
 
-        public string motto { get; set; }
+        public string Motto { get; set; }
 
         /*        public Photo MainPagePhoto { get; set; }*/
 

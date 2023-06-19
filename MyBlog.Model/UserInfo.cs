@@ -10,10 +10,10 @@ namespace MyBlog.Model
     public class UserInfo:BaseId
     {
 
-        [SugarColumn(ColumnDataType = "nvarchar(12)")]
+        [SugarColumn(ColumnDataType = "nvarchar(32)")]
         public string Name { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar(16)")]
+        [SugarColumn(ColumnDataType = "nvarchar(32)")]
         public string UserName { get; set; }
         [SugarColumn(ColumnDataType = "nvarchar(64)")]
         public string UserPwd { get; set; }
@@ -41,6 +41,17 @@ namespace MyBlog.Model
 
         [Navigate(NavigateType.OneToOne, nameof(MainPagePhoto_id))]
         public Photo MainPagePhoto { get; set; }
+
+
+
+
+        [Navigate(NavigateType.OneToMany, nameof(EventInfo.UserId))]
+        public List<EventInfo> Events { get; set; }
+
+
+        [Navigate(typeof(Like), nameof(Like.UserId), nameof(Like.BlogId))]
+        public List<BlogNews> Likes { get; set; }
+
 
 
     }

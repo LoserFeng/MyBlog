@@ -21,5 +21,8 @@ namespace MyBlog.Model
         [Navigate(NavigateType.OneToMany, nameof(BlogNews.WriterId))]
         public List<BlogNews> Blogs { get; set; }
 
+
+
+
     }
 }

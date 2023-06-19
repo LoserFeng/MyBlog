@@ -1,0 +1,280 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout_List";
+}
+
+
+
+
+
+<body>
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="getCheckData">检索</button>
+          <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+          <button class="layui-btn layui-btn-danger layui-btn-sm " lay-event="delete">删除</button>
+        </div>
+    </script>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+
+
+    @section Scripts{
+        <script>
+            layui.use(['table', 'layer'], function () {
+                var table = layui.table;
+                var layer = layui.layer;
+
+
+                table.render({
+                    elem: '#test'
+                    , url: '/api/BlogNews/BlogNewsList' //数据接口
+                    //, url: '/a.json' //数据接口
+                    , headers: { Authorization: localStorage.getItem("JWTtoken") }
+                    , response: {
+                        statusCode: 200
+                    }
+                    , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                    , cellMinWidth: 80
+                    , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                        title: '提示'
+                        , layEvent: 'LAYTABLE_TIPS'
+                        , icon: 'layui-icon-tips'
+                    }]
+                    , title: '用户数据表'
+                    , cols: [[ //表头
+                        { type: 'checkbox' }
+                        , { field: 'id', title: 'Id', width: 80, sort: true }
+                        , { field: 'guid', title: 'GUID', width: 80 }
+                        , { field: 'title', title: '标题', width: 100 }
+                        , { field: 'introduction', title: '基本介绍', width: 100 }
+                        , { field: 'summary', title: '截选', width: 100 }
+                        , { field: 'time', title: '发布时间', width: 100 }
+                        , { field: 'browseCount', title: '浏览数量', width: 100 }
+                        , { field: 'likeCount', title: '喜爱数量', width: 100 }
+                        , { field: 'type', title: '文章类型', width: 100 }
+                        , { field: 'path', title: '存储路径', width: 100 }
+                        , {
+                            field: 'coverPhoto', title: '封面图片', width: 200, templet: function (res) {
+                                if (res.coverPhoto == null) {
+                                    return "<div >null</div>"
+                                }
+                                return "<img  src=" + res.coverPhoto.url + "></img>"
+                            }
+                        }
+                        , { field: 'writerId', title: '作者ID', width: 100 }
+                        , { field: 'tags', title: '标签', width: 200 }
+                        , { field: 'admirer_Total', title: '收藏人数'}
+                        , { field: 'comment_Total', title: '评论人数' }
+                        , { fixed: 'right',width: 150 , toolbar: '#barDemo' }
+                    ]]
+                    , page: true
+                });
+
+                //头工具栏事件
+                table.on('toolbar(test)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'getCheckData':
+                            var data = checkStatus.data;
+                            layer.alert(JSON.stringify(data));
+                            break;
+                        case 'add':
+                            add_info();
+                            break;
+                        case 'delete':
+                            layer.confirm('真的删除行么', function (index) {
+                                var data = checkStatus.data;
+                                del_selected_info(data);
+                                table.reload('test', {
+                                    page: {
+                                        curr: 1
+                                    }
+                                    });
+
+                layer.close(index);
+            });
+            break;
+
+                            //自定义头工具栏右侧图标 - 提示
+                            case 'LAYTABLE_TIPS':
+            layer.alert('这是工具栏右侧自定义的一个图标按钮');
+            break;
+                        };
+                    });
+
+            //监听行工具事件
+            table.on('tool(test)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        var data = obj.data;
+                        del_info(data);
+                        obj.del();
+
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {
+                    edit_info(obj.data.id)
+
+                }
+            });
+
+
+
+
+
+            function edit_info(id) {
+                var index = layer.open({
+                    type: 2,
+                    title: '修改博客',
+                    area: ['800px', '600px'],
+                    fixed: false, //不固定
+                    maxmin: true,
+                    offset:'t',
+                    content: '/CMS/EditBlogNews?id=' + id,
+                    end: function () {
+                        table.reload('test', {
+                            page: {
+                                curr: 1
+                            }, where: {
+            @* badge: $('#badge').val() *@
+                                        }
+                });
+            }
+                        });
+
+
+
+                    }
+
+
+
+            function add_info() {
+                var index = layer.open({
+                    type: 2,
+                    title: '新增博客',
+                    area: ['800px', '600px'],
+                    fixed: false, //不固定
+                    maxmin: true,
+                    content: '/CMS/AddBlogNews',
+                    end: function () {
+                        table.reload('test', {
+                            page: {
+                                curr: 1
+                            }
+                        });
+                    }
+                });
+
+
+
+            }
+
+            function del_selected_info(data) {
+                var flag = true;
+                for (var i = 0; i < data.length; i++) {
+                    $.ajax({
+                        type: "DELETE",
+                        async: false,
+                        processData: false,//这个必须有，不然会报错
+                        contentType: false,//这个必须有，不然会报错
+                        headers: {
+                            'Authorization': localStorage.getItem("JWTtoken")
+                        },
+                        url: "/api/BlogNews/Delete?id=" + data[i].id,
+                        success: function (result) {
+                            console.log(result);
+                            if (result.statusCode == 200) {
+
+                            } else {
+
+                                alert(result.message);
+                                flag = false;
+                            }
+                        },
+                        error: function () {
+                            alert("删除失败！");
+                        }
+
+
+                    });
+
+                }
+
+                return flag;
+
+
+            }
+            function del_info(data) {
+                var flag = true;
+
+                $.ajax({
+                    type: "DELETE",
+                    async: false,
+                    processData: false,//这个必须有，不然会报错
+                    contentType: false,//这个必须有，不然会报错
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    url: "/api/BlogNews/Delete?id=" + data.id,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statusCode == 200) {
+
+                        } else {
+
+                            alert(result.message);
+                            flag = false;
+                        }
+                    },
+                    error: function () {
+                        alert("删除失败！");
+                    }
+
+
+                });
+
+
+
+                return flag;
+
+
+            }
+
+
+
+                });
+        </script>
+
+    }
+
+
+        @* <style type="text/css">
+            .layui-table-cell {
+                height: 100px;
+                white-space: normal;
+            }
+        </style> *@
+
+        <style type="text/css">
+            .layui-table-cell {
+                height: 100px;
+                white-space: normal;
+            }
+        </style>
+
+    </body>
+
+
+

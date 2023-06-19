@@ -32,6 +32,7 @@ namespace MyBlog.WebAPI.Controllers
 
 
         [Route("~/")]
+        [Route("~/Home")]
         [Route("~/Home/Index")]
 
         public IActionResult Index()

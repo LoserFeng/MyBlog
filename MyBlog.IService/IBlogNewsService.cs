@@ -1,4 +1,5 @@
 ﻿using MyBlog.Model;
+using MyBlog.Model.ViewModels.Common;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,7 @@ namespace MyBlog.IService
         Task<List<BlogNews>> QueryByTagAsync(int TagId, int CurrentPage, int PageSize, RefAsync<int> total);
         Task<BlogNews> QueryByGUIDAsync(String GUID);
         Task<List<BlogNews>> QueryTopByBrowseCountAsync();
+        Task <List<BlogNewsModel>> GetBlogNewsList(int page, int limit, RefAsync<int> total);
+
     }
 }

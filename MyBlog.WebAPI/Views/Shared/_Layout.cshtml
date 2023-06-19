@@ -17,13 +17,17 @@
     <link href="~/css/animate.min.css" rel="stylesheet" type="text/css">
 
 
-@*    极简博客的CSS*@
-    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css">
+    @*    极简博客的CSS*@
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/master.css" />
     <link rel="stylesheet" href="~/css/gloable.css" />
     <link rel="stylesheet" href="~/css/nprogress.css" />
     <link rel="stylesheet" href="~/css/blog.css" />
     <link rel="stylesheet" href="~/css/message.css" />
+    <link rel="stylesheet" href="~/css/about.css" />
+    @*    <link rel="stylesheet" href="~/css/timeline.css" /> *@
+
+
 
 
 
@@ -61,28 +65,25 @@
                             </div>
                         </div>
                     </li>
-                    <li id="li_society" class="layui-nav-item  "  style="margin-left:50px">
+                    <li id="li_society" class="layui-nav-item  " style="margin-left:50px">
                         <div>
 
-                            <div type="button" onclick="window.location.href='/Society/Message'" style="font-size:20px">
+                            <div type="button" onclick="window.location.href='/Society/Index'" style="font-size:20px">
                                 社区
                             </div>
                         </div>
                     </li>
-                    <li id="li_me" class="layui-nav-item " style="margin-left:50px">
+                    <li id="li_diary" class="layui-nav-item " style="margin-left:50px">
                         <div>
 
-                            <div type="button" onclick="window.location.href='/Me/Index'" style="font-size:20px">
-                                我
+                            <div type="button" onclick="window.location.href='/Diary/Index'" style="font-size:20px">
+                                足迹
                             </div>
                         </div>
                     </li>
 
                 </ul>
 
-                <a href="/User/QQLogin" class="blog-user">
-                    <i class="fa fa-qq"></i>
-                </a>
 
                 <ul class="layui-nav layui-layout-right">
 
@@ -103,9 +104,10 @@
                             <img id="head_img" src="" tppabs="http://t.cn/RCzsdCq" class="layui-nav-img">
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">子级菜单</a></dd>
-                            <dd><a href="javascript:;">横线隔断</a></dd>
-                           @* <hr>*@
+                            <dd><a href="/CMS/Index">CMS后台</a></dd>
+                            <dd><a id="personal_page_url" href="/Personal/Index">个人主页</a></dd>
+                            <dd><a style="text-align: center;" href="#" onclick="edit_self_info()">修改信息</a></dd>
+                            @* <hr>*@
                             <dd style="text-align: center;" onclick="exit_login()"><a href="">退出</a></dd>
                         </dl>
                     </li>
@@ -137,7 +139,7 @@
 
     <div>
         <div class="container-fixed">
-            <main role="main" >
+            <main role="main">
                 @RenderBody()
 
             </main>
@@ -145,10 +147,10 @@
         </div>
     </div>
 
-@*    <footer class="border-top footer text-muted">
-        <div class="container-fluid">
-            &copy; 2022 - MyBlog.WebAPI - <a asp-area="" asp-page="/Privacy">MyBlog</a>
-        </div>
+    @*    <footer class="border-top footer text-muted">
+    <div class="container-fluid">
+    &copy; 2022 - MyBlog.WebAPI - <a asp-area="" asp-page="/Privacy">MyBlog</a>
+    </div>
     </footer>*@
 
 
@@ -169,7 +171,7 @@
     <script src="~/js/yss/article.js"></script>
     <script src="~/js/pagecomment.js"></script>
     <script src="~/js/pagemessage.js"></script>
-
+    <script src="~/js/pagediary.js"></script>
 
 
 
@@ -190,13 +192,13 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
+        var userId = 0;
         //JS
         layui.use(['element', 'layer', 'util'], function () {
             var element = layui.element
                 , layer = layui.layer
                 , util = layui.util
                 , $ = layui.$;
-
             //头部事件
             util.event('lay-header-event', {
                 //左侧菜单事件
@@ -214,11 +216,20 @@
                     });
                 }
             });
-
         });
-
-
-
+        function edit_self_info() {
+            var index = layer.open({
+                type: 2,
+                title: '更改用户信息',
+                area: ['450px', '500px'],
+                fixed: false, //不固定
+                maxmin: true,
+                content: `/CMS/EditUserInfo?id=${userId}`,
+                end: function () {
+                    window.location.href = "/Home/Index"
+                }
+            });
+        }
         function login_register_click() {
             layer.open({
                 type: 2,
@@ -228,11 +239,7 @@
                 maxmin: true,
                 content: '/Home/Login'
             });
-
-
         }
-
-
         function getCookie(name) {
             var str = document.cookie;
             var arr = str.split("; ");
@@ -244,16 +251,9 @@
             }
             return null;
         }
-
-
-
         document.ready = function () {
-
             var is_login = getCookie("is_login");
-
             if (is_login == "true") {
-
-
                 $.ajax({
                     url: "/api/UserInfo/GetUserInfo",
                     type: 'GET',
@@ -262,80 +262,74 @@
                     },
                     success: function (res) {
                         var url_txt = res.data.mainPagePhoto.url;
+                        var userInfo = res.data;
 
+                        userId = userInfo.id;
                         var url = url_txt.toString();
                         $("#login_register").remove();
                         $("#usermodule").css("display", "inline-block");
-                        $("#publish_module").css("display","inline-block");
+                        $("#publish_module").css("display", "inline-block");
+                        if (res.data.writerInfo == null) {
+                            $("#creation_btn").addClass("layui-btn-disabled").attr("disabled", true);
+                        }
                         $("#head_img").attr("src", url);
-
                         $("#logo").text(res.data.name + " のBlog");
                         $("#header_bg").css({ "background": "url(" + url + ") ", "background-size": "100% 100%" });
-                        
 
+                        $("#personal_page_url").attr("href", `/Personal/Index?Id=${userInfo.id}`)
                     },
                     error: function (res) {
                         alert("Layout获取用户数据失败！");
                     }
-
-
-
-
                 });
             } else {
-
                 $("#login_register").css("display", "inline-block");
-
             }
-
-
-
             var pathname = window.location.pathname;
-            if(pathname=="/"||pathname=="/Home"||pathname=="/Home/Index"){
+            if (pathname == "/" || pathname == "/Home" || pathname == "/Home/Index") {
                 $("#li_main_page").addClass("layui-this");
             }
-
-            if (pathname == "/Blog" || pathname == "/Blog/BlogPage" ) {
+            if (pathname == "/Blog" || pathname == "/Blog/BlogPage") {
                 $("#li_blog").addClass("layui-this");
             }
+            if (pathname == "/Society" || pathname == "/Society/Index") {
+                $("#li_society").addClass("layui-this");
+            }
+            if (pathname == "/Diary" || pathname == "/Diary/Index") {
+                $("#li_diary").addClass("layui-this");
+            }
         }
-
-
-
         function exit_login() {
+            localStorage.removeItem("JWTtoken");
             document.cookie = "is_login" + "=" + "false" + "; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
-            localStorage.remove("JWTtoken");
+
             window.location.href = 'Home/Index';
-
-
         }
-
-
-
-
-
-
-
-
-
-
     </script>
 
 
 
     <style>
-
         .motto_class {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 1;
-            color: white;
+            color: black;
             font-size: 70px;
             font-weight: bold;
         }
 
+        .header {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            position: fixed!important;
+            background-image: url(https://yssimage.oss-cn-hangzhou.aliyuncs.com/bg9.jpg);
+            background-size: 100% 100%;
+        }
     </style>
 </body>
 </html>

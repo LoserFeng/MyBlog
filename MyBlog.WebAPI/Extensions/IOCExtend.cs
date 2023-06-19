@@ -20,8 +20,8 @@ namespace MyBlog.WebAPI.Extensions
 
             services.AddScoped<IBlogNewsRepository, BlogNewsRepository>();
             services.AddScoped<IBlogNewsService, BlogNewsService>();
-            services.AddScoped<ITagRepository, TagRepository>();
-            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<ITagInfoRepository, TagInfoRepository>();
+            services.AddScoped<ITagInfoService, TagInfoService>();
             services.AddScoped<IWriterInfoRepository, WriterInfoRepository>();
             services.AddScoped<IWriterInfoService, WriterInfoService>();
 
@@ -34,6 +34,15 @@ namespace MyBlog.WebAPI.Extensions
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
 
+            services.AddScoped<IEventInfoRepository, EventInfoRepository>();
+            services.AddScoped<IEventInfoService, EventInfoService>();
+
+
+            //三个中间表
+            services.AddScoped<IFollowRepository, FollowRepository>();
+            services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+            services.AddScoped<IClassifyRepository, ClassifyRepository>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
 
 
             return services;

@@ -10,18 +10,15 @@ namespace MyBlog.IRepository
     public interface IUserInfoRepository : IBaseRepository<UserInfo>
     {
         new Task<bool> CreateAsync(UserInfo userInfo);
-        Task<UserInfo?> QueryAsyncById(int id);
+
+
+        // Task<UserInfo?> QueryAsyncById(int id);
 
 
         Task<UserInfo?>FindByNameAsync(string name);
 
 
         Task<UserInfo?> FindByUserNameAsync(string userName);
-
-
-
-
-
-
+        Task<UserInfo?> FindByWriterIdAsync(int WriterId);
     }
 }

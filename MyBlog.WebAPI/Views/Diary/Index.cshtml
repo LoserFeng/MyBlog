@@ -1,0 +1,526 @@
+@{
+    var current_Year=DateTime.Now.Year;
+
+}
+<head>
+     <link rel="stylesheet" href="~/css/timeline.css" />
+</head>
+<body>
+
+
+ 
+    <div class="doc-container" id="doc-container">
+         <div class="container-fixed">
+            <div class="timeline-box shadow">
+                <div class="timeline-main">
+                    <h1><i class="fa fa-clock-o"></i>足迹</h1>
+                    
+
+                    <div class="timeline-line"></div>
+                        <div class="timeline-year">
+                            <h2><a class="yearToggle">@(DateTime.Now.Year) 年 </a><i class="fa fa-caret-down fa-fw"></i></h2>
+                            <div class="timeline-month">
+                                <ul id="year_list@(current_Year)">
+                                    <li id="new_event">
+                                        <div class="h4 animated fadeInLeft">
+                                            <p class="date">@(DateTime.Now.Month) 月 @(DateTime.Now.Day) 日 </p>
+                                        </div>
+                                        <p class="dot-circle animated "><i class="fa fa-dot-circle-o"></i></p>
+                                        <div class="content animated fadeInRight"  >
+                                            <span >
+                                                <span id="cl_span_new" style="font-size: 18px;">NEW!  
+                                                    <button id="add_btn" style="background-color: #009688;" class="fa  fa-plus-circle"></button>
+                                                 </span> 
+                                                 <div id="ex_div_new" style="display: none;">
+                                                    <form id="submit_form" >
+                                                        <input id="Id" name="Id" class="layui-hide">
+                                                        <textarea id="EventContent_new" name="EventContent" rows="1"   ></textarea>
+                                                        
+                                                    </form>
+                                                    <span style="font-size: 15px;" >按回车可以返回值</span>
+                                                   
+                                                 </div>
+                                            </span>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </li>
+
+                                    
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    <h1 id="end" style="padding-top:4px;padding-bottom:2px;margin-top:40px;"><i class="fa fa-hourglass-end"></i>THE END</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="grid-footer">
+        <div class="footer-fixed">
+            <div class="copyright">
+                <div class="info">
+                    <div class="contact">
+                        <a href="javascript:void(0)" class="github" target="_blank"><i class="fa fa-github"></i></a>
+                        <a href="#" class="qq" target="_blank" ><i class="fa fa-qq"></i></a>
+                        <a href="#" class="email" target="_blank" ><i class="fa fa-envelope"></i></a>
+                        <a href="javascript:void(0)" class="weixin"><i class="fa fa-weixin"></i></a>
+                    </div>
+                    <p class="mt05">
+                        Copyright &copy; 2019-2020 ZQ博客 All Rights Reserved V.3.1.3 Power by ZQ博客
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+    @section Scripts{
+
+
+        <script>
+
+        $(document).ready(function () {
+            var is_login = getCookie("is_login");
+
+            if (is_login == "true") {
+
+                $.ajax({
+                    url: "/api/UserInfo/GetUserInfo",
+                    type: 'GET',
+                    async:false,
+                    headers: {
+                        'Authorization': localStorage.getItem("JWTtoken")
+                    },
+                    success: function (result) {
+                        var data=result.data;
+                        var events=data.events;
+                        var cur_year=@current_Year;
+
+                        for(var i=0;i<events.length;i++){
+                            var event=`
+                                <li id="li_${events[i].id}">
+                                    <div class="h4 animated fadeInLeft">
+                                        <p class="date">${events[i].month} 月 ${events[i].day} 日 </p>
+                                    </div>
+                                    <p class="dot-circle animated "><i class="fa fa-dot-circle-o"></i></p>
+                                    <div name="div_out" class="content animated fadeInRight">
+                                        <span id="cl_span_${events[i].id}" >
+                                            ${events[i].eventContent}
+                                        </span>
+
+
+                                        <div id="ex_div_${events[i].id}" style="display:none;">
+                                            <form id="submit_form" >
+                                                <input id="Id" name="Id" value="${events[i].id}" class="layui-hide">
+                                                <textarea id="EventContent_${events[i].id}" name="EventContent" rows="1"   >${events[i].eventContent}</textarea>
+
+                                            </form>
+                                            <span style="font-size: 15px;" >按回车可以返回值</span>
+                                            <button type="button" id="del_btn_${events[i].id}" class="layui-btn layui-btn-danger layui-btn-radius layui-btn-sm" style="margin-right:5px" >删除</button>
+                                        </div>    
+                                        
+                                    </div>
+
+
+
+
+                                    <div class="clear"></div>
+                                </li>
+                                    
+                            `;
+                            if(cur_year!=events[i].year){
+                                cur_year=events[i].year;
+                                var list_html=`
+                                <div id="timeline_${events[i].year}" class="timeline-year">
+                                    <h2><a class="yearToggle">${cur_year} 年</a><i class="fa fa-caret-down fa-fw"></i></h2>
+                                    <div class="timeline-month">
+                                        <ul id="year_list${cur_year}">
+                                        </ul>
+                                    </div>
+                                </div>
+                                `;
+
+                                $("#end").before(list_html);
+                                $(`#year_list${cur_year}`).append(event);
+                            }else if(events[i].year==@current_Year){
+
+                                $(`#year_list${cur_year}`).append(event);
+
+
+                            }else{
+                                $(`#year_list${cur_year}`).append(event);
+                            }
+                           
+
+
+                        }
+                        
+
+                    },
+                    error: function (res) {
+                        alert("Layout获取用户数据失败！");
+                    }
+
+
+
+
+                });
+            } else {
+
+                 alert("抱歉，请先登录才可以开启足迹功能哦_(:з」∠)_");
+
+            }
+
+
+
+            var pathname = window.location.pathname;
+            if(pathname=="/"||pathname=="/Home"||pathname=="/Home/Index"){
+                $("#li_main_page").addClass("layui-this");
+            }
+
+            if (pathname == "/Blog" || pathname == "/Blog/BlogPage" ) {
+                $("#li_blog").addClass("layui-this");
+            }
+
+
+		$("#add_btn").click(function(){
+
+        
+            $(this).parent().parent().find("div[id^='ex_div']").fadeToggle();
+            $(this).parent().hide();
+            var font_size=15;
+            var base_lenth=5;
+            var textarea_target=$(this).parent().parent().find("textarea[id^='EventContent']")
+            var text=textarea_target.val();
+            var cur_length=text.length;
+            var total_length=cur_length+base_lenth;
+            var width=0;
+            var rows=0;
+            var cols=base_lenth;
+            rows=Math.floor(cur_length/40)+1;
+            if(total_length>=40){
+                cols=40;
+            }else{
+                rows=1;
+                cols=total_length;
+
+            }
+
+            textarea_target.animate({
+                'width':total_length*font_size.toString()+'px',
+                'height':(rows.length*font_size).toString()+'px',
+            });
+
+        });
+
+
+        $("textarea[id^='EventContent']").each(function(){$(this).blur(function(){
+
+            $(this).parent().parent().hide();
+            $(this).parent().parent().parent().find("span[id^='cl_span']").fadeToggle();
+           
+
+        })})
+
+
+        $("textarea[id^='EventContent']").each(function(){$(this).keypress(function(e){
+
+            if (e.keyCode == 13) return false
+        })})
+        
+        $("button[id^='del']").each(function(){$(this).click(function(event){
+
+            var target=$(this).parent().find("form");
+            DelEvent(target);
+
+        })})
+
+        $("textarea[id^='EventContent']").each(function(){$(this).keydown(function(event){
+
+            if (event.keyCode == 13) {
+                 $(this).val($(this).val().replace(/[\r\n\v]+/g, ''));
+                 if($(this).attr('id')=='EventContent_new'){
+                    AddEvent($(this));
+                 }else{
+                    EditEvent($(this))
+                 }
+            }
+        })})
+        
+
+
+
+        $("span[id^='cl_span']").each(function(){$(this).dblclick(function () {
+            $(this).parent().find("div[id^='ex_div']").fadeToggle();
+            $(this).hide();
+
+
+            var font_size=15;
+            var base_lenth=5;
+            var textarea_target=$(this).parent().parent().find("textarea[id^='EventContent']")
+            var text=textarea_target.val();
+            var cur_length=text.length;
+            var total_length=cur_length+base_lenth;
+            var width=0;
+            var rows=0;
+            var cols=base_lenth;
+            rows=Math.floor(cur_length/40)+1;
+            if(total_length>=40){
+                cols=40;
+            }else{
+                rows=1;
+                cols=total_length;
+
+            }
+            textarea_target.attr('rows',rows);
+            textarea_target.attr('cols',cols);
+            textarea_target.animate({
+                'width':total_length*font_size.toString()+'px',
+                'height':(rows.length*font_size).toString()+'px',
+            });
+        })})
+
+
+
+        $("textarea[id^='EventContent']").each(function(){
+            $(this).on('propertychange input', function () {
+            
+                var font_size=15;
+                var base_lenth=5;
+                var cur_length=$(this).val().length;
+                var total_length=cur_length+base_lenth;
+                var width=0;
+                var rows=0;
+                var cols=base_lenth;
+                rows=Math.floor(cur_length/40)+1;
+                if(total_length>=40){
+                    cols=40;
+                }else{
+                    rows=1;
+                    cols=total_length;
+
+                }
+                $(this).attr('rows',rows);
+                $(this).attr('cols',cols);
+                $(this).css({
+                    'width':total_length*font_size.toString()+'px',
+                    'height':(rows.length*font_size).toString()+'px'
+                });
+
+            });
+
+
+
+        })
+        
+
+
+
+
+
+
+
+
+
+        }
+        );
+
+
+        function AddEvent(target){
+            var formData=new FormData(target.parent()[0])
+            $.ajax({
+                url: "/api/EventInfo/Create",
+                type: 'POST',
+                data: formData,
+                contentType : false,
+                processData : false,
+                async:false,
+                headers: {
+                    'Authorization': localStorage.getItem("JWTtoken")
+                },
+                success: function (result) {
+                    var data=result.data;
+
+
+                    var event=`
+                            <li id="li_${data.id}">
+                                <div class="h4 animated fadeInLeft">
+                                    <p class="date">${data.month} 月 ${data.day} 日 </p>
+                                </div>
+                                <p class="dot-circle animated "><i class="fa fa-dot-circle-o"></i></p>
+                                <div name="div_out" class="content animated fadeInRight">
+                                    <span id="cl_span_${data.id}" >
+                                        ${data.eventContent}
+                                    </span>
+
+
+                                    <div id="ex_div_${data.id}" style="display:none;">
+                                        <form id="submit_form" >
+                                            <input id="Id" name="Id" value="${data.id}" class="layui-hide">
+                                            <textarea id="EventContent_${data.id}" name="EventContent" rows="1"    >${data.eventContent}</textarea>
+
+                                        </form>
+                                        <span style="font-size: 15px;" >按回车可以返回值</span>
+                                         <button type="button" id="del_btn_${data.id}" class="layui-btn layui-btn-danger layui-btn-radius layui-btn-sm" style="margin-right:5px" >删除</button>
+                                    </div>    
+                                    
+                                </div>
+
+
+
+
+                                <div class="clear"></div>
+                            </li>
+                                
+                        `;
+                    $("#new_event").after(event)
+                    target.val("");
+                    target.attr('rows',1);
+                    target.attr('cols',5);
+                    target.css({
+                        'width':(5*15).toString()+'px'
+                    });
+                    target.blur();
+
+
+                    
+
+                },
+                error: function (res) {
+                    alert("Layout获取用户数据失败！");
+                }
+
+
+
+
+            });
+
+
+        }
+
+
+        function DelEvent(target){
+            var del_id=target.find("#Id").val();
+            var timeline=target.parent().parent().parent().parent().parent().parent();
+
+
+            $.ajax({
+                type: "DELETE",
+                async: false,
+                processData: false,//这个必须有，不然会报错
+                contentType: false,//这个必须有，不然会报错
+                headers: {
+                    'Authorization': localStorage.getItem("JWTtoken")
+                },
+                url: "/api/EventInfo/Delete?id=" + del_id,
+                success: function (result) {
+                    console.log(result);
+                    if (result.statusCode == 200) {
+                        $(`#li_${del_id}`).remove();
+                        if(timeline.find('li').size==0){
+                            timeline.remove();
+                        }
+
+
+                    } else {
+
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    alert("删除失败！");
+                }
+
+
+            });
+
+
+
+
+
+
+            
+        }
+
+
+        function EditEvent(target){
+            var formData=new FormData(target.parent()[0])
+            $.ajax({
+                url: "/api/EventInfo/Edit",
+                type: 'POST',
+                data: formData,
+                contentType : false,
+                processData : false,
+                async:false,
+                headers: {
+                    'Authorization': localStorage.getItem("JWTtoken")
+                },
+                success: function (result) {
+                    var data=result.data;
+                    $(`#cl_span_${data.id}`).html(data.eventContent);
+                    target.blur();
+
+                },
+                error: function (res) {
+                    alert("更新数据失败");
+                }
+
+
+
+
+            });
+        }
+
+
+		
+
+
+       
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+    <script>NProgress.start();</script>
+    <script> 
+        window.onload = function () {
+            NProgress.done();
+        };
+    </script>
+
+    }
+
+
+    <style>
+        textarea{
+            font-size: 15px;
+            resize: none;
+            border: darkgreen 5px solid;
+            max-width: 600px;
+
+            
+        }
+        .submit_btn{
+
+        }
+    </style>
+
+
+</body>
+

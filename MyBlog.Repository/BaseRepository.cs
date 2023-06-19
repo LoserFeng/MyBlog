@@ -24,7 +24,7 @@ namespace MyBlog.Repository
 
             //创建过一次之后就不用重复创建了
 
-            //创建数据库
+ /*           //创建数据库
             base.Context.DbMaintenance.CreateDatabase();
             //创建表
             base.Context.CodeFirst.SetStringDefaultLength(200).InitTables(
@@ -35,15 +35,17 @@ namespace MyBlog.Repository
                 typeof(Photo),
                 typeof(Favorite),
                 typeof(Follow),
-                typeof(Classify),
-                typeof(Comment)
-                );
+                typeof(Comment),
+                typeof(EventInfo),
+                typeof(Like),
+                typeof(Classify)
+                );*/
 
 
 
         }
 
-        public async Task<bool> CreateAsync(TEntity entity)
+        public virtual async Task<bool> CreateAsync(TEntity entity)
         {
             return await base.InsertAsync(entity);
         }
@@ -58,8 +60,10 @@ namespace MyBlog.Repository
             return await base.UpdateAsync(entity);
         }
 
+
+
         //导航查询
-        public virtual async Task<TEntity> FindByIdAsync(int id)
+        public virtual async Task<TEntity?> FindByIdAsync(int id)
         {
             return await base.GetByIdAsync(id);
         }

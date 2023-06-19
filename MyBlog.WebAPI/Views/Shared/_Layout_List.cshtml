@@ -1,0 +1,84 @@
+﻿@{
+    //全局视图的layout
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyBlog.WebAPI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/layui/css/layui.css">
+
+
+    <link href="~/css/index_style.css" rel="stylesheet" type="text/css">
+    <link href="~/css/animate.min.css" rel="stylesheet" type="text/css">
+
+
+    @*    极简博客的CSS*@
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/master.css" />
+    <link rel="stylesheet" href="~/css/gloable.css" />
+    <link rel="stylesheet" href="~/css/nprogress.css" />
+    <link rel="stylesheet" href="~/css/blog.css" />
+
+    @*    引入input_label的样式*@
+    <link rel="stylesheet" href="~/lib/ayq/modules/labelGeneration/labelGeneration.css" />
+
+    <style>
+        body {
+            margin: 10px;
+        }
+
+        .demo-carousel {
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <main role="main">
+            @RenderBody()
+
+        </main>
+    </div>
+
+
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    <script src="~/layui/layui.js"></script>
+    <script src="~/js/wow.min.js"></script>
+
+    <script src="~/lib/ayq/modules/Sortable/Sortable.js"> </script>
+
+    <script src="~/js/yss/gloable.js"></script>
+    <script src="~/js/plugins/nprogress.js"></script>
+    <script src="~/js/yss/article.js"></script>
+    <script>NProgress.start();</script>
+
+
+
+
+    <script>
+        window.onload = function () {
+            NProgress.done();
+        };
+    </script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+</body>
+</html>

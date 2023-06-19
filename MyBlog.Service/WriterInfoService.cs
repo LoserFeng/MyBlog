@@ -1,6 +1,8 @@
 ﻿using MyBlog.IRepository;
 using MyBlog.IService;
 using MyBlog.Model;
+using MyBlog.Model.ViewModels.Common;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,57 @@ namespace MyBlog.Service
             _iWriterInfoRepository = iWriterInfoRepository;
 
 
+
+
         }
+        public async Task<List<WriterInfoModel>> GetWriterInfoList(int page, int limit, RefAsync<int> total)
+        {
+            var writerInfos=await _iWriterInfoRepository.QueryAsync(page, limit, total);
+
+
+            var writerInfoList = new List<WriterInfoModel>();
+
+
+            foreach(var writerInfo in writerInfos)
+            {
+
+                WriterInfoModel model = new WriterInfoModel
+                {
+                    Id = writerInfo.Id,
+                    WriterName = writerInfo.WriterName,
+                    Blog_Total = writerInfo.Blogs.Count(),
+                    Fan_Total = writerInfo.Fans.Count(),
+                    Browse_Total = writerInfo.Blogs.Sum(blog => blog.BrowseCount)
+                };
+                writerInfoList.Add(model);
+
+
+
+            }
+
+
+
+            return writerInfoList;
+
+        }
+
+        public override async Task<bool> UpdateAsync(WriterInfo writerInfo)
+        {
+
+            var pre_writerInfo = await _iWriterInfoRepository.FindByIdAsync(writerInfo.Id);
+            var update_writerInfo = new WriterInfo
+            {
+                Id=writerInfo.Id,
+                WriterName=writerInfo.WriterName==null?pre_writerInfo.WriterName:writerInfo.WriterName
+            };
+
+
+
+            return await _iWriterInfoRepository.UpdateAsync(update_writerInfo);
+
+        }
+
+
+
     }
 }

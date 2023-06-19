@@ -35,14 +35,16 @@ namespace MyBlog.Repository
                 .ToListAsync();
         }*/
 
-        public async override Task<List<BlogNews>> QueryAsync(int page, int size, RefAsync<int> total)
+        public async override Task<List<BlogNews>> QueryAsync(int page, int limit, RefAsync<int> total)
         {
-
-            /* return await base.QueryAsync(page, size, total);*/
-
             return await base.Context.Queryable<BlogNews>()
-                .Mapper(c => c.WriterInfo, c => c.WriterId, c => c.WriterInfo.Id)
-                .ToPageListAsync(page, size,total);
+                .Includes(b => b.WriterInfo)
+                .Includes(b=>b.Tags)
+                .Includes(b=>b.Comments)
+                .Includes(b=>b.CoverPhoto)
+                .Includes(b=>b.Admirers)
+                .Includes(b=>b.Likers)
+                .ToPageListAsync(page, limit, total);
 
         }
         public async override Task<List<BlogNews>> QueryAsync(Expression<Func<BlogNews, bool>> func, int page, int size, RefAsync<int> total)
@@ -53,6 +55,7 @@ namespace MyBlog.Repository
             return await base.Context.Queryable<BlogNews>()
                 .Where(func)
                 .Mapper(c=>c.WriterInfo,c=>c.WriterId,c=>c.WriterInfo.Id)
+
                 .ToPageListAsync(page, size, total);
 
         }
@@ -60,7 +63,7 @@ namespace MyBlog.Repository
 
 
 
-        public new async Task<bool> CreateAsync(BlogNews blogNews)
+        public override async Task<bool> CreateAsync(BlogNews blogNews)
         {
 
 
@@ -75,7 +78,7 @@ namespace MyBlog.Repository
 
 
 
-        public async Task<BlogNews?> QueryAsyncById(int id)
+        public override async Task<BlogNews?> FindByIdAsync(int id)
         {
 
             var list = await base.Context.Queryable<BlogNews>()
@@ -83,6 +86,7 @@ namespace MyBlog.Repository
                                 .Includes(c => c.Tags)
                                 .Includes(c => c.CoverPhoto)
                                 .Includes(c => c.Admirers)
+                                .Includes(c=>c.Likers)
                                 .Where(c => c.Id == id).ToListAsync();
 
 
@@ -102,6 +106,7 @@ namespace MyBlog.Repository
                                 .Includes(c => c.Tags)
                                 .Includes(c => c.CoverPhoto)
                                 .Includes(c => c.Admirers)
+                                .Includes(c=>c.Likers)
                                 .ToListAsync();
 
 
@@ -119,6 +124,7 @@ namespace MyBlog.Repository
                     .Includes(c => c.Tags)
                     .Includes(c => c.CoverPhoto)
                     .Includes(c => c.Admirers)
+                    .Includes(c=>c.Likers)
                     .Where(c=>c.Tags.Any(tag=>tag.Id==TagId))
                     .ToListAsync();
 
@@ -134,6 +140,7 @@ namespace MyBlog.Repository
                 .Includes(c => c.Tags)
                 .Includes(c => c.CoverPhoto)
                 .Includes(c => c.Admirers)
+                .Includes(c=>c.Likers)
                 .Where(c=>c.Title.Contains(SearchString))
                 .ToListAsync();
 
@@ -151,6 +158,7 @@ namespace MyBlog.Repository
                 .Includes(c => c.Tags)
                 .Includes(c => c.CoverPhoto)
                 .Includes(c => c.Admirers)
+                .Includes(c => c.Likers)
                 .Where(c => c.Tags.Any(tag => tag.Id == TagId))
                 .ToPageListAsync(CurrentPage,PageSize,total);
 
@@ -169,6 +177,7 @@ namespace MyBlog.Repository
                 .Includes(c => c.Tags)
                 .Includes(c => c.CoverPhoto)
                 .Includes(c => c.Admirers)
+                .Includes(c => c.Likers)
                 .Where(c => c.Title.Contains(SearchString))
                 .ToPageListAsync(CurrentPage, PageSize, total);
 
@@ -183,6 +192,7 @@ namespace MyBlog.Repository
                     .Includes(c => c.Tags)
                     .Includes(c => c.CoverPhoto)
                     .Includes(c => c.Admirers)
+                    .Includes(c => c.Likers)
                     .Includes(c=>c.Comments,c=>c.UserInfo,c=>c.MainPagePhoto)
                     .Includes(c=>c.Comments,c=>c.Comments,c=>c.UserInfo,c=>c.MainPagePhoto)
 
@@ -203,6 +213,53 @@ namespace MyBlog.Repository
                 .ToListAsync();
 
             return list;
+        }
+
+
+        public override async Task<bool>UpdateAsync(BlogNews blogNews)
+        {
+            var res = await base.Context.UpdateNav<BlogNews>(blogNews)
+                .Include(b => b.CoverPhoto)
+                .Include(b => b.Tags,new UpdateNavOptions
+                {
+                    ManyToManyIsUpdateA = true,
+                    ManyToManyIsUpdateB = true
+                })
+                .ExecuteCommandAsync();
+
+            return res;
+        }
+
+
+        public override async Task<bool>DeleteByIdAsync(int id)
+        {
+            return await base.Context.DeleteNav<BlogNews>(b => b.Id == id)
+                .Include(b => b.Comments)
+                .Include(b => b.Tags, new DeleteNavOptions{
+                    ManyToManyIsDeleteA = true
+                })
+                .Include(b=>b.CoverPhoto)
+                .Include(c => c.Likers,new DeleteNavOptions
+                {
+                    ManyToManyIsDeleteA = true
+                })
+                .Include(b=>b.Admirers,new DeleteNavOptions
+                {
+                    ManyToManyIsDeleteA=true
+                })
+                .ExecuteCommandAsync();
+        }
+
+
+
+        public async Task<bool> UpdateLikeCountAsync(BlogNews update_blogNews)
+        {
+
+            var res=await base.Context.Updateable(update_blogNews)
+                .UpdateColumns(b => b.LikeCount)
+                .ExecuteCommandAsync();
+            return res == 1;
+
         }
     }
 }
